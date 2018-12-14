@@ -1,0 +1,37 @@
+/*
+ * Copyright (c) 2017. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion  rootProject.ext.android.compileSdkVersion
+    defaultConfig {
+        minSdkVersion  rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    api rootProject.ext.dependencies.photoview
+    api rootProject.ext.dependencies.Luban
+    api rootProject.ext.dependencies.appcompatV7
+    api rootProject.ext.dependencies.recyclerview
+    api rootProject.ext.dependencies.glide
+    api rootProject.ext.dependencies.IDimensCompat
+}

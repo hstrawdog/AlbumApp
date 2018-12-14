@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
+<resources>
+
+    <color name="white">#ffffff</color>
+
+    <color name="title_text_color">#ff363636</color>
+    <color name="common_title_bg">#aa111213</color>
+    <color name="primary_title_text_color">#ffeeeeee</color>
+    <color name="album_item_bg">#fffcfcfd</color>
+    <color name="mine_bg">#ffffff</color>
+    <color name="mine_bg_selected">#d9d9d9</color>
+
+    <color name="gray_3">#333333</color>
+    <color name="gray_dividing">#ffcccccc</color>
+
+    <!--Crop View-->
+    <color name="ucrop_color_default_crop_grid">#80ffffff</color>
+    <color name="ucrop_color_default_crop_frame">#ffffff</color>
+    <color name="ucrop_color_default_dimmed">#8c000000</color>
+    <color name="ucrop_color_default_logo">#4f212121</color>
+    <color name="color_fa">#fafafa</color>
+    <color name="color_f2">#F2F2F2</color>
+    <color name="color_4d">#4d4d4d</color>
+    <color name="black">#000000</color>
+    <color name="grey">#999999</color>
+    <color name="line_color">#EEEEEE</color>
+    <color name="green_70">#AD43c117</color>
+    <color name="green">#43c117</color>
+    <color name="bar_grey">#393a3e</color>
+    <color name="transparent">#00000000</color>
+    <color name="content_grey">#353535</color>
+    <color name="tab_color_true">#FA632D</color>
+    <color name="tab_color_false">#9b9b9b</color>
+    <color name="image_overlay">#20000000</color>
+    <color name="image_overlay2">#80000000</color>
+    <color name="color_f6">#f6f6f6</color>
+    <color name="bar_grey_90">#dd393a3e</color>
+    <color name="blue">#00AFFF</color>
+    <color name="ucrop_color_toolbar_widget">#fff</color>
+    <color name="color_999">#999999</color>
+    <color name="color_333">#333333</color>
+    <color name="color_eee">#eeeeee</color>
+</resources>
