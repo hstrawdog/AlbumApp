@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/buybuybuy"
+        android:background="@drawable/ic_buybuybuy"
         android:visibility="gone">
 
         <TextView

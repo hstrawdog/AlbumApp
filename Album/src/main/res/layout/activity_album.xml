@@ -51,7 +51,7 @@
             android:layout_centerVertical="true"
             android:paddingRight="@dimen/padding_15"
             android:visibility="gone"
-            android:src="@drawable/btn_posts_camera_l"/>
+            android:src="@drawable/ic_btn_posts_camera_l"/>
     </RelativeLayout>
 
     <View style="@style/dividing_line_style"/>
@@ -76,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="center"
-            android:src="@drawable/progress_icon"
+            android:src="@drawable/ic_progress_icon"
             android:visibility="visible"/>
 
         <TextView
