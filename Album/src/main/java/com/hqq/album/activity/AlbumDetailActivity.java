@@ -20,19 +20,20 @@ import com.hqq.album.common.PictureConfig;
 import com.hqq.album.decoration.GridSpacingItemDecoration;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.utils.ScreenUtils;
- /**
-  * @Author : huangqiqiang
-  * @Package : cn.hqq.halbum.activity
-  * @FileName :   AlbumDetailActivity
-  * @Date  : 2018/10/8 0008  
-  * @Descrive :
-  * @Email : 
-  */
+
+/**
+ * @Author : huangqiqiang
+ * @Package : cn.hqq.halbum.activity
+ * @FileName :   AlbumDetailActivity
+ * @Date : 2018/10/8 0008
+ * @Descrive :
+ * @Email :
+ */
 public class AlbumDetailActivity extends BaseActivity implements View.OnClickListener, AlbumDetailAdapter.OnPhotoSelectChangedListener {
 
 
-     private static final int CODE_CLOSE =  0x9910;
-     private RecyclerView mRecyclerView;
+    private static final int CODE_CLOSE = 0x9910;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,8 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        List<LocalMedia> list = getIntent().getParcelableArrayListExtra(FunctionConfig.IMAGES);
+        List<LocalMedia> list = PictureConfig.getInstance().getSelectLocalMedia();
+        // List<LocalMedia> list = getIntent().getParcelableArrayListExtra(FunctionConfig.IMAGES);
         mAlbumDetailAdapter.bindImagesData(list);
         mTvFinish.setText("完成(" + PictureConfig.getInstance().getSelectMedia().size() + "/" + PictureConfig.getInstance().getBuilder().getMaxSelectNum() + ")");
 
@@ -103,21 +105,21 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onPictureClick(LocalMedia media, int position) {
         startActivityForResult(new Intent(this, AlbumPreviewActivity.class)
-                .putExtra(FunctionConfig.FOLDER_DETAIL_POSITION, position + 1)
-                .putExtra(FunctionConfig.FOLDER_NAME, getIntent().getStringExtra(FunctionConfig.FOLDER_NAME))
-                .putParcelableArrayListExtra(FunctionConfig.IMAGES, getIntent().getParcelableArrayListExtra(FunctionConfig.IMAGES))
-                ,CODE_CLOSE
+                        .putExtra(FunctionConfig.FOLDER_DETAIL_POSITION, position + 1)
+                        .putExtra(FunctionConfig.FOLDER_NAME, getIntent().getStringExtra(FunctionConfig.FOLDER_NAME))
+                        .putParcelableArrayListExtra(FunctionConfig.IMAGES, getIntent().getParcelableArrayListExtra(FunctionConfig.IMAGES))
+                , CODE_CLOSE
 
         );
     }
 
 
-     @Override
-     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-         super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode ==CODE_CLOSE && resultCode ==Activity.RESULT_OK){
-                finish();
-            }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CODE_CLOSE && resultCode == Activity.RESULT_OK) {
+            finish();
+        }
 
-     }
- }
+    }
+}

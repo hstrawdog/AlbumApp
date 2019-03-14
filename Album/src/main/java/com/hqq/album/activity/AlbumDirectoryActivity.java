@@ -60,7 +60,7 @@ import com.hqq.album.weight.FilterImageView;
  */
 public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirectoryAdapter.OnItemClickListener, View.OnClickListener {
 
-    FilterImageView mLoacalAlbumCamera;
+    FilterImageView mLocalAlbumCamera;
 
     RecyclerView mRecyclerView;
     List<LocalMediaFolder> mFolderList = new ArrayList<>();
@@ -74,8 +74,6 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
         initViews();
-
-
     }
 
     private void initData() {
@@ -107,9 +105,9 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
 
         // 判断是否显示相机
         if (PictureConfig.getInstance().getBuilder().isDisplayCamera()) {
-            mLoacalAlbumCamera = findViewById(R.id.loacal_album_camera);
-            mLoacalAlbumCamera.setOnClickListener(this);
-            mLoacalAlbumCamera.setVisibility(View.VISIBLE);
+            mLocalAlbumCamera = findViewById(R.id.loacal_album_camera);
+            mLocalAlbumCamera.setOnClickListener(this);
+            mLocalAlbumCamera.setVisibility(View.VISIBLE);
         }
 
 
@@ -144,6 +142,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
     protected void onDestroy() {
         super.onDestroy();
         mFolderList=null;
+        PictureConfig.getInstance().setSelectLocalMedia(null);
     }
 
     @Override
@@ -151,8 +150,9 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
 
         startActivity(new Intent(this, AlbumDetailActivity.class)
                 .putExtra(FunctionConfig.FOLDER_NAME, folderName)
-                .putParcelableArrayListExtra(FunctionConfig.IMAGES, (ArrayList<? extends Parcelable>) images)
+               // .putParcelableArrayListExtra(FunctionConfig.IMAGES, (ArrayList<? extends Parcelable>) images)
         );
+        PictureConfig.getInstance().setSelectLocalMedia(images);
         // ToastUtils.show(this,folderName);
     }
 

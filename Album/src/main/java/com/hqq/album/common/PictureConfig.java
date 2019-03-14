@@ -22,9 +22,18 @@ import com.hqq.album.utils.Utils;
  */
 public class PictureConfig {
     public static PictureConfig sInstance;
-
     public FunctionOptions.Builder sBuilder;
     public OnSelectResultCallback resultCallback;
+
+    protected List<LocalMedia> mSelectLocalMedia;
+
+    public List<LocalMedia> getSelectLocalMedia() {
+        return mSelectLocalMedia;
+    }
+
+    public void setSelectLocalMedia(List<LocalMedia> selectLocalMedia) {
+        mSelectLocalMedia = selectLocalMedia;
+    }
 
     public static PictureConfig getInstance() {
         if (sInstance == null) {
@@ -99,10 +108,10 @@ public class PictureConfig {
      * 选择的数据
      */
 
-    private List<LocalMedia> sSelectMedia = new ArrayList<>();
+    private List<LocalMedia> mSelectMedia = new ArrayList<>();
 
     public List<LocalMedia> getSelectMedia() {
-        return sSelectMedia;
+        return mSelectMedia;
     }
 
     public OnSelectResultCallback getResultCallback() {
