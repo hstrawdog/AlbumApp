@@ -4,8 +4,6 @@
         <root-path
             name="camera_photos"
             path="" />
-
-
         <external-path
             name="download_apk"
             path="" />

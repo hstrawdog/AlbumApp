@@ -148,11 +148,11 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
     @Override
     public void onItemClick(String folderName, List<LocalMedia> images) {
 
+        PictureConfig.getInstance().setSelectLocalMedia(images);
         startActivity(new Intent(this, AlbumDetailActivity.class)
                 .putExtra(FunctionConfig.FOLDER_NAME, folderName)
                // .putParcelableArrayListExtra(FunctionConfig.IMAGES, (ArrayList<? extends Parcelable>) images)
         );
-        PictureConfig.getInstance().setSelectLocalMedia(images);
         // ToastUtils.show(this,folderName);
     }
 

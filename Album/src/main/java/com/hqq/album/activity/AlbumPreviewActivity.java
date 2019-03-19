@@ -24,6 +24,7 @@ import com.hqq.album.entity.LocalMedia;
 
 /**
  * 预览界面
+ *
  * @Author : huangqiqiang
  * @Package : cn.hqq.halbum.activity
  * @FileName :   AlbumPreviewActivity
@@ -55,7 +56,7 @@ public class AlbumPreviewActivity extends BaseActivity implements View.OnClickLi
         mTvTttle = ((TextView) findViewById(R.id.album_title));
 
 
-        mLocalMediaList = getIntent().getParcelableArrayListExtra(FunctionConfig.IMAGES);
+        mLocalMediaList = PictureConfig.getInstance().getSelectLocalMedia();
         mTvTttle.setText(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) + "/" + mLocalMediaList.size());
 
 

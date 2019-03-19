@@ -70,7 +70,6 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
     protected void onResume() {
         super.onResume();
         List<LocalMedia> list = PictureConfig.getInstance().getSelectLocalMedia();
-        // List<LocalMedia> list = getIntent().getParcelableArrayListExtra(FunctionConfig.IMAGES);
         mAlbumDetailAdapter.bindImagesData(list);
         mTvFinish.setText("完成(" + PictureConfig.getInstance().getSelectMedia().size() + "/" + PictureConfig.getInstance().getBuilder().getMaxSelectNum() + ")");
 
@@ -107,7 +106,6 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
         startActivityForResult(new Intent(this, AlbumPreviewActivity.class)
                         .putExtra(FunctionConfig.FOLDER_DETAIL_POSITION, position + 1)
                         .putExtra(FunctionConfig.FOLDER_NAME, getIntent().getStringExtra(FunctionConfig.FOLDER_NAME))
-                        .putParcelableArrayListExtra(FunctionConfig.IMAGES, getIntent().getParcelableArrayListExtra(FunctionConfig.IMAGES))
                 , CODE_CLOSE
 
         );
