@@ -137,6 +137,7 @@ public class AlbumPreviewActivity extends BaseActivity implements View.OnClickLi
             }
             setResult(Activity.RESULT_OK);
             AppManager.getAppManager().finishAllActivity();
+            PictureConfig.getInstance().setResultCallback(null);
 
         }
     }

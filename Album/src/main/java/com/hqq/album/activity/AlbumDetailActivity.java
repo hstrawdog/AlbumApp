@@ -87,7 +87,7 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
                 resultCallback.onSelectSuccess(PictureConfig.getInstance().getSelectMedia());
             }
             AppManager.getAppManager().finishAllActivity();
-
+            PictureConfig.getInstance().setResultCallback(null);
         }
     }
 

@@ -110,12 +110,6 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        PictureConfig.getInstance().setResultCallback(null);
-    }
-
     public interface PhotoDialogClick {
         void onClickPictures();
 

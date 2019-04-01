@@ -21,19 +21,10 @@ import com.hqq.album.utils.Utils;
  * @date: 2017-05-07 21:51
  */
 public class PictureConfig {
+    /**
+     * 单例对象
+     */
     public static PictureConfig sInstance;
-    public FunctionOptions.Builder sBuilder;
-    public OnSelectResultCallback resultCallback;
-
-    protected List<LocalMedia> mSelectLocalMedia;
-
-    public List<LocalMedia> getSelectLocalMedia() {
-        return mSelectLocalMedia;
-    }
-
-    public void setSelectLocalMedia(List<LocalMedia> selectLocalMedia) {
-        mSelectLocalMedia = selectLocalMedia;
-    }
 
     public static PictureConfig getInstance() {
         if (sInstance == null) {
@@ -45,6 +36,29 @@ public class PictureConfig {
         }
         return sInstance;
     }
+
+    /**
+     * 缓存 相册的最基本 属性
+     */
+    public FunctionOptions.Builder sBuilder;
+    /**
+     * 全局回调
+     * 使用完需要 置空 或者会内存泄漏
+     */
+    public OnSelectResultCallback mResultCallback;
+    /**
+     * 选择的图片集合
+     */
+    protected List<LocalMedia> mSelectLocalMedia;
+
+    public List<LocalMedia> getSelectLocalMedia() {
+        return mSelectLocalMedia;
+    }
+
+    public void setSelectLocalMedia(List<LocalMedia> selectLocalMedia) {
+        mSelectLocalMedia = selectLocalMedia;
+    }
+
 
     public FunctionOptions.Builder getBuilder() {
         if (sBuilder == null) {
@@ -70,7 +84,7 @@ public class PictureConfig {
         Intent intent = new Intent(activity, AlbumDirectoryActivity.class);
         activity.startActivity(intent);
         // 绑定图片接口回调函数事件
-        resultCallback = resultCall;
+        mResultCallback = resultCall;
         getBuilder().setMaxSelectNum(maxSelectNum);
         // 清除 上次选择过的数据
         if (getSelectMedia() != null) {
@@ -95,7 +109,7 @@ public class PictureConfig {
         Intent intent = new Intent(activity, AlbumDirectoryActivity.class);
         activity.startActivity(intent);
         // 绑定图片接口回调函数事件
-        resultCallback = resultCall;
+        mResultCallback = resultCall;
         setBuilder(builder);
         // 清除 上次选择过的数据
         if (getSelectMedia() != null) {
@@ -115,10 +129,10 @@ public class PictureConfig {
     }
 
     public OnSelectResultCallback getResultCallback() {
-        return resultCallback;
+        return mResultCallback;
     }
 
     public void setResultCallback(OnSelectResultCallback resultCallback) {
-        this.resultCallback = resultCallback;
+        this.mResultCallback = resultCallback;
     }
 }

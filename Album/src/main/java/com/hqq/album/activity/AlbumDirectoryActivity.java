@@ -228,6 +228,8 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
                     resultCallback.onSelectSuccess(result);
                 }
                 AppManager.getAppManager().finishAllActivity();
+                PictureConfig.getInstance().setResultCallback(null);
+
             }
         } else if (requestCode == FunctionConfig.REQUEST_CAMERA && resultCode != RESULT_OK) {
 
