@@ -84,6 +84,20 @@ public class AlbumPreviewActivity extends BaseActivity implements View.OnClickLi
 
             }
         });
+
+
+        updateSelectMenu();
+
+    }
+
+    private void updateSelectMenu() {
+        if ((PictureConfig.getInstance().getSelectMedia().size() > 0)) {
+            mAlbumFinish.setVisibility(View.VISIBLE);
+            mAlbumFinish.setText("完成(" + PictureConfig.getInstance().getSelectMedia().size() + "/" + PictureConfig.getInstance().getBuilder().getMaxSelectNum() + ")");
+        } else {
+            mAlbumFinish.setVisibility(View.GONE);
+
+        }
     }
 
     List<LocalMedia> mLocalMediaList;
@@ -113,8 +127,7 @@ public class AlbumPreviewActivity extends BaseActivity implements View.OnClickLi
                     Toast.makeText(mContext, mContext.getString(R.string.picture_message_max_num, PictureConfig.getInstance().getBuilder().getMaxSelectNum() + ""), Toast.LENGTH_LONG).show();
                 }
             }
-
-            mAlbumFinish.setText("完成(" + PictureConfig.getInstance().getSelectMedia().size() + "/" + PictureConfig.getInstance().getBuilder().getMaxSelectNum() + ")");
+            updateSelectMenu();
 
         } else if (i == R.id.album_finish) {
 
