@@ -93,14 +93,6 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
-//        if (isClickable()) {
-//            lockClick();
-//            super.startActivityForResult(intent, requestCode, options);
-//        }
-//    }
-
     public void goActivity(Class<? extends Activity> activity) {
         goActivity(activity, null);
     }

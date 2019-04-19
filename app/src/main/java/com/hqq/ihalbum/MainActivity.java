@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 List<String> list = new ArrayList<>();
-
                 list.add("http://img.pptjia.com/image/20180117/f4b76385a3ccdbac48893cc6418806d5.jpg");
                 list.add("http://img.pptjia.com/image/20180117/f4b76385a3ccdbac48893cc6418806d5.jpg");
                 list.add("http://img.pptjia.com/image/20180117/f4b76385a3ccdbac48893cc6418806d5.jpg");

@@ -19,7 +19,7 @@ import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.common.PictureConfig;
 import com.hqq.album.decoration.GridSpacingItemDecoration;
 import com.hqq.album.entity.LocalMedia;
-import com.hqq.album.utils.ScreenUtils;
+import com.hqq.album.utils.AlbumScreenUtils;
 
 /**
  * @Author : huangqiqiang
@@ -50,7 +50,7 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
     private void initViews() {
         mRecyclerView = (RecyclerView) findViewById(R.id.rcv_album_detail);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(4, ScreenUtils.dip2px(this, 2), false));
+        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(4, AlbumScreenUtils.dip2px(this, 2), false));
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         mAlbumDetailAdapter = new AlbumDetailAdapter(this, PictureConfig.getInstance().getBuilder().getMaxSelectNum());
 

@@ -14,7 +14,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -23,6 +22,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -46,11 +46,12 @@ import com.hqq.album.decoration.RecycleViewDivider;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.entity.LocalMediaFolder;
 import com.hqq.album.utils.FileUtils;
-import com.hqq.album.utils.ScreenUtils;
+import com.hqq.album.utils.AlbumScreenUtils;
 import com.hqq.album.weight.FilterImageView;
 
 /**
  * 文件夹 选择界面
+ *
  * @Author : huangqiqiang
  * @Package : cn.hqq.halbum.activity
  * @FileName :   AlbumDirectoryActivity
@@ -74,6 +75,13 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
         initViews();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFolderList = null;
+        PictureConfig.getInstance().setSelectLocalMedia(null);
     }
 
     private void initData() {
@@ -114,7 +122,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new RecycleViewDivider(
-                this, LinearLayoutManager.HORIZONTAL, ScreenUtils.dip2px(this, 0.5f), ContextCompat.getColor(this, R.color.line_color)));
+                this, LinearLayoutManager.HORIZONTAL, AlbumScreenUtils.dip2px(this, 0.5f), ContextCompat.getColor(this, R.color.line_color)));
 
         mRecyclerView.setLayoutManager(manager);
         mAdapte = new AlbumDirectoryAdapter(this);
@@ -139,19 +147,12 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
 
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mFolderList=null;
-        PictureConfig.getInstance().setSelectLocalMedia(null);
-    }
-
-    @Override
     public void onItemClick(String folderName, List<LocalMedia> images) {
 
         PictureConfig.getInstance().setSelectLocalMedia(images);
         startActivity(new Intent(this, AlbumDetailActivity.class)
-                .putExtra(FunctionConfig.FOLDER_NAME, folderName)
-               // .putParcelableArrayListExtra(FunctionConfig.IMAGES, (ArrayList<? extends Parcelable>) images)
+                        .putExtra(FunctionConfig.FOLDER_NAME, folderName)
+                // .putParcelableArrayListExtra(FunctionConfig.IMAGES, (ArrayList<? extends Parcelable>) images)
         );
         // ToastUtils.show(this,folderName);
     }
@@ -232,10 +233,11 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
 
             }
         } else if (requestCode == FunctionConfig.REQUEST_CAMERA && resultCode != RESULT_OK) {
-
             // 这边是直接打开相册的 那返回的话 直接到上个界面
             if (PictureConfig.getInstance().getBuilder().isStartUpCamera()) {
+                PictureConfig.getInstance().getResultCallback().onSelectSuccess(new ArrayList<LocalMedia>());
                 AppManager.getAppManager().finishAllActivity();
+
             }
 
         }
@@ -249,7 +251,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     initData();
                 } else {
-                    Toast.makeText(mContext,"读取内存卡权限已被拒绝,请在系统设置中开启权限",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "读取内存卡权限已被拒绝,请在系统设置中开启权限", Toast.LENGTH_SHORT).show();
 
                     mTvProgress.setText("哎呀!没有获取到读取内存卡权限已被拒绝,\n请在系统设置中开启权限");
 
@@ -263,7 +265,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startOpenCamera();
                 } else {
-                    Toast.makeText(mContext,"拍照权限已被拒绝,请在系统设置中开启权限",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "拍照权限已被拒绝,请在系统设置中开启权限", Toast.LENGTH_SHORT).show();
                     mTvProgress.setText("哎呀!没有获取到拍照权限,\n请在系统设置中开启权限");
                     //应用程序详情页面
                     Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
