@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import com.hqq.album.activity.PreviewUrlActivity;
 import com.hqq.album.common.FunctionOptions;
 import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.common.PictureConfig;
@@ -84,6 +85,17 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+            }
+        });
+
+        findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+//                String gif = "https://images.shangwenwan.com/social/1d4mde3s3igo0000?imageMogr2/size-limit/681.2k!/thumbnail/300.0x300.0";
+                String gif = "http://img.soogif.com/VVbrYJ6dFaV3Ps3ZwVZFhUxC021s7uO1.gif";
+                PreviewUrlActivity.goPreviewUrlActivity(MainActivity.this, gif);
+
             }
         });
     }
