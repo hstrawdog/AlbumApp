@@ -1,6 +1,7 @@
 package com.hqq.album.activity;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,9 +28,13 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 
+import com.bumptech.glide.signature.ObjectKey;
 import com.hqq.album.R;
 import com.hqq.album.common.FunctionConfig;
 import com.hqq.album.entity.LocalMedia;
+
+import java.security.Signature;
+import java.util.UUID;
 
 /**
  * 在此写用途
@@ -153,22 +158,35 @@ public class AlbumPreviewFragment extends Fragment {
             case FunctionConfig.TYPE_IMAGE:
                 imageView.setMaxScale(6);
                 imageView.enable();
-                Glide.with(getContext()).asGif()
+                Glide.with(getContext())
                         .load(path)
-                        //   .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
-                        .listener(new RequestListener<GifDrawable>() {
+                        .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                        .listener(new RequestListener<Drawable>() {
                             @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                 Toast.makeText(getContext(), "图片预览失败", Toast.LENGTH_SHORT).show();
                                 return false;
                             }
 
                             @Override
-                            public boolean onResourceReady(GifDrawable resource, Object model, Target<GifDrawable> target, DataSource dataSource, boolean isFirstResource) {
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                 progressBar.setVisibility(View.GONE);
                                 return false;
                             }
                         })
+//                        .listener(new RequestListener<GifDrawable>() {
+//                            @Override
+//                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
+//                                Toast.makeText(getContext(), "图片预览失败", Toast.LENGTH_SHORT).show();
+//                                return false;
+//                            }
+//
+//                            @Override
+//                            public boolean onResourceReady(GifDrawable resource, Object model, Target<GifDrawable> target, DataSource dataSource, boolean isFirstResource) {
+//                                progressBar.setVisibility(View.GONE);
+//                                return false;
+//                            }
+//                        })
 
                         .into(imageView);
                 break;

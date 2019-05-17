@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,13 @@ import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.common.PictureConfig;
 import com.hqq.album.dialog.PhotoDialog;
 import com.hqq.album.entity.LocalMedia;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import static com.hqq.album.activity.PreviewUrlActivity.goPreviewUrlActivity;
 
@@ -91,12 +100,46 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                handleSSLHandshake();
 //                String gif = "https://images.shangwenwan.com/social/1d4mde3s3igo0000?imageMogr2/size-limit/681.2k!/thumbnail/300.0x300.0";
-                String gif = "http://img.soogif.com/VVbrYJ6dFaV3Ps3ZwVZFhUxC021s7uO1.gif";
+//                String gif = "http://img.soogif.com/VVbrYJ6dFaV3Ps3ZwVZFhUxC021s7uO1.gif";
+                String gif = "https://images.shangwenwan.com/mall/6d392bfd-6273-4992-a24d-74f4b39b19d3?imageMogr2/size-limit/54.7k!/crop/!485x485a6a8";
                 PreviewUrlActivity.goPreviewUrlActivity(MainActivity.this, gif);
 
             }
         });
     }
+
+    public static void handleSSLHandshake() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+
+                @Override
+                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                }
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                }
+            }};
+
+            SSLContext sc = SSLContext.getInstance("TLS");
+            // trustAllCerts信任所有的证书
+            sc.init(null, trustAllCerts, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
+        } catch (Exception ignored) {
+        }
+    }
+
+
 }
