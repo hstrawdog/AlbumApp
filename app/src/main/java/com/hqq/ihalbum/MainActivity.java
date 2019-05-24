@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 FunctionOptions.Builder builder = new FunctionOptions.Builder();
-                builder.setMaxSelectNum(1).setStartAlbum();
+                builder.setMaxSelectNum(10).setStartAlbum();
                 PictureConfig.getInstance().openPhoto(MainActivity.this, builder, new OnSelectResultCallback() {
                     @Override
                     public void onSelectSuccess(List<LocalMedia> resultList) {

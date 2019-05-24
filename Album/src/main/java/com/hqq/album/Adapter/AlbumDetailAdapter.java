@@ -81,7 +81,7 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         contentHolder.mLlCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!Utils.isFastDoubleClick()) {
+                if (!Utils.isFastDoubleClick(200)) {
                     changeCheckboxState(contentHolder, image);
                 }
             }

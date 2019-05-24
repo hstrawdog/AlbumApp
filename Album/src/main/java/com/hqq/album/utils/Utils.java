@@ -28,6 +28,13 @@ public class Utils {
         }
         lastClickTime = time;
         return false;
+    }    public static boolean isFastDoubleClick(int times) {
+        long time = System.currentTimeMillis();
+        if (time - lastClickTime < times) {
+            return true;
+        }
+        lastClickTime = time;
+        return false;
     }
 
     public static boolean isNull(Object... objects) {
