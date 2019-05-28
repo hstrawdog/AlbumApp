@@ -19,22 +19,29 @@ package com.hqq.album.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hqq.album.Adapter.FragmentAdapter;
 import com.hqq.album.BaseActivity;
 import com.hqq.album.R;
 import com.hqq.album.common.FunctionConfig;
 import com.hqq.album.entity.LocalMedia;
+import com.hqq.album.utils.AlbumUtils;
 
 /**
  * @Author : huangqiqiang
@@ -44,13 +51,14 @@ import com.hqq.album.entity.LocalMedia;
  * @Descrive :
  * @Email :
  */
-public class PreviewUrlActivity extends BaseActivity implements View.OnClickListener {
+public class PreviewUrlActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     ViewPager mViewPager;
     TextView mTvCheck;
     TextView mTvTttle;
     int mPosition = 0;
     List<String> mLocalMediaList;
-    FragmentAdapte mFragmentAdapte;
+    FragmentAdapter mFragmentAdapte;
+    ConstraintLayout mRelativeLayout;
 
     public static void goPreviewUrlActivity2LocalMedia(Activity context, List<LocalMedia> data, int position) {
 
@@ -85,58 +93,34 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
 
 
     @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        fullWindow();
+        setContentView(R.layout.activity_album_preview);
+        mRelativeLayout = findViewById(R.id.album_title_bar);
+        findViewById(R.id.ll_complete).setVisibility(View.GONE);
+        findViewById(R.id.ll_check).setVisibility(View.GONE);
+        mTvTttle = findViewById(R.id.album_title);
+        mViewPager = findViewById(R.id.vp_preview);
+        mViewPager.setOffscreenPageLimit(3);
+        findViewById(R.id.album_back).setOnClickListener(this);
+        mViewPager.setCurrentItem(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) - 1);
+        mViewPager.addOnPageChangeListener(this);
+        mViewPager.setOnClickListener(this);
+
+        mLocalMediaList = getIntent().getStringArrayListExtra("data");
+        mFragmentAdapte = new FragmentAdapter(getSupportFragmentManager(),mLocalMediaList);
+        mViewPager.setAdapter(mFragmentAdapte);
+        mTvTttle.setText(getIntent().getIntExtra("position", 1) + "/" + mLocalMediaList.size());
+
+        mRelativeLayout.setPadding(0, AlbumUtils.getStatusBarHeight(this), 0, 0);
 
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_album_preview);
-        mTvTttle = findViewById(R.id.album_title);
-        findViewById(R.id.ll_complete).setVisibility(View.GONE);
-        findViewById(R.id.ll_check).setVisibility(View.GONE);
-        mViewPager = findViewById(R.id.vp_preview);
-        mViewPager.setOffscreenPageLimit(3);
-        findViewById(R.id.album_back).setOnClickListener(this);
-
-        mLocalMediaList = getIntent().getStringArrayListExtra("data");
-        mTvTttle.setText(getIntent().getIntExtra("position", 1) + "/" + mLocalMediaList.size());
-
-
-        mFragmentAdapte = new FragmentAdapte(getSupportFragmentManager());
-        mViewPager.setAdapter(mFragmentAdapte);
-
-        mViewPager.setCurrentItem(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) - 1);
-
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                mTvTttle.setText(position + 1 + "/" + mLocalMediaList.size());
-                mPosition = position;
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        mViewPager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                finish();
-            }
-        });
-
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override
@@ -144,34 +128,29 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
         int i = v.getId();
         if (i == R.id.album_back) {
             finish();
+        } else if (i == R.id.vp_preview) {
+            finish();
         }
     }
 
-
-    public class FragmentAdapte extends FragmentPagerAdapter {
-
-        SparseArray<Fragment> mSparseArray = new SparseArray<>();
-
-        public FragmentAdapte(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-
-            Fragment fragment = mSparseArray.get(position);
-            if (fragment == null) {
-                fragment = AlbumPreviewFragment.getInstance(mLocalMediaList.get(position), true);
-            }
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return mLocalMediaList.size();
-        }
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        mTvTttle.setText(position + 1 + "/" + mLocalMediaList.size());
+        mPosition = position;
     }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+
+
 
 
 }

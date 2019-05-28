@@ -34,4 +34,6 @@ dependencies {
     api rootProject.ext.dependencies.recyclerview
     api rootProject.ext.dependencies.glide
     api rootProject.ext.dependencies.IDimensCompat
+    api rootProject.ext.dependencies.constraintlayout
+
 }

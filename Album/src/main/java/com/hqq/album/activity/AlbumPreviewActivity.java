@@ -2,17 +2,22 @@ package com.hqq.album.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.animation.Animation;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
+import com.hqq.album.Adapter.FragmentAdapter;
 import com.hqq.album.AppManager;
 import com.hqq.album.BaseActivity;
 import com.hqq.album.R;
@@ -21,6 +26,7 @@ import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.common.PictureConfig;
 import com.hqq.album.dialog.OptAnimationLoader;
 import com.hqq.album.entity.LocalMedia;
+import com.hqq.album.utils.AlbumUtils;
 
 /**
  * 预览界面
@@ -35,40 +41,44 @@ import com.hqq.album.entity.LocalMedia;
 public class AlbumPreviewActivity extends BaseActivity implements View.OnClickListener {
 
     ViewPager mViewPager;
-    TextView mTvCheck;
-    TextView mTvTttle;
+    ImageView mTvCheck;
+    TextView mTvTitle;
     TextView mAlbumFinish;
     int mPosition = 0;
     private Animation mAnimation;
-
+    ConstraintLayout mRelativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fullWindow();
         setContentView(R.layout.activity_album_preview);
-        mViewPager = (ViewPager) findViewById(R.id.vp_preview);
+        mViewPager = findViewById(R.id.vp_preview);
         findViewById(R.id.album_back).setOnClickListener(this);
         findViewById(R.id.ll_check).setOnClickListener(this);
-        mTvCheck = (TextView) findViewById(R.id.tv_check);
-        mAlbumFinish = (TextView) findViewById(R.id.album_finish);
+        mTvCheck = findViewById(R.id.tv_check);
+        mAlbumFinish =  findViewById(R.id.album_finish);
         mAlbumFinish.setOnClickListener(this);
+        mRelativeLayout = findViewById(R.id.album_title_bar);
 
         mAnimation = OptAnimationLoader.loadAnimation(mContext, R.anim.modal_in);
-        mTvTttle = ((TextView) findViewById(R.id.album_title));
+        mTvTitle = findViewById(R.id.album_title);
 
 
         mLocalMediaList = PictureConfig.getInstance().getSelectLocalMedia();
-        mTvTttle.setText(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) + "/" + mLocalMediaList.size());
+        mTvTitle.setText(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) + "/" + mLocalMediaList.size());
 
-
-        mFragmentAdapte = new FragmentAdapte(getSupportFragmentManager());
-        mViewPager.setAdapter(mFragmentAdapte);
+        mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(),mLocalMediaList);
+        mViewPager.setAdapter(mFragmentAdapter);
 
         mViewPager.setCurrentItem(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) - 1);
+
+        mRelativeLayout.setPadding(0, AlbumUtils.getStatusBarHeight(this), 0, 0);
+
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                mTvTttle.setText(position + 1 + "/" + mLocalMediaList.size());
+                mTvTitle.setText(position + 1 + "/" + mLocalMediaList.size());
                 mPosition = position;
                 mTvCheck.setSelected(isSelected(mLocalMediaList.get(position)));
 
@@ -101,7 +111,7 @@ public class AlbumPreviewActivity extends BaseActivity implements View.OnClickLi
     }
 
     List<LocalMedia> mLocalMediaList;
-    FragmentAdapte mFragmentAdapte;
+    FragmentAdapter mFragmentAdapter;
 
     @Override
     public void onClick(View v) {
@@ -142,23 +152,6 @@ public class AlbumPreviewActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    public class FragmentAdapte extends FragmentPagerAdapter {
-
-        public FragmentAdapte(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            AlbumPreviewFragment fragment = AlbumPreviewFragment.getInstance(mLocalMediaList.get(position));
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return mLocalMediaList.size();
-        }
-    }
 
     /**
      * 当前图片是否选中

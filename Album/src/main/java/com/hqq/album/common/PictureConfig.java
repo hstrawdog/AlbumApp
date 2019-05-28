@@ -8,7 +8,7 @@ import java.util.List;
 
 import com.hqq.album.activity.AlbumDirectoryActivity;
 import com.hqq.album.entity.LocalMedia;
-import com.hqq.album.utils.Utils;
+import com.hqq.album.utils.AlbumUtils;
 
 /**
  * 把启动相关的东西 写到这里
@@ -75,7 +75,7 @@ public class PictureConfig {
      * 启动相册
      */
     public void openPhoto(Activity activity, int maxSelectNum, OnSelectResultCallback resultCall) {
-        if (Utils.isFastDoubleClick()) {
+        if (AlbumUtils.isFastDoubleClick()) {
             return;
         }
         if (sBuilder == null) {
@@ -100,7 +100,7 @@ public class PictureConfig {
      * @param resultCall
      */
     public void openPhoto(Activity activity, FunctionOptions.Builder builder, OnSelectResultCallback resultCall) {
-        if (Utils.isFastDoubleClick()) {
+        if (AlbumUtils.isFastDoubleClick()) {
             return;
         }
         if (sBuilder == null) {

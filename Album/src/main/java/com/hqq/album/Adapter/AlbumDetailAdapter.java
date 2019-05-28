@@ -26,7 +26,7 @@ import com.hqq.album.common.FunctionConfig;
 import com.hqq.album.common.PictureConfig;
 import com.hqq.album.dialog.OptAnimationLoader;
 import com.hqq.album.entity.LocalMedia;
-import com.hqq.album.utils.Utils;
+import com.hqq.album.utils.AlbumUtils;
 
 /**
  * Created by huangqiqiang on 17/5/7.
@@ -81,7 +81,7 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         contentHolder.mLlCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!Utils.isFastDoubleClick(200)) {
+                if (!AlbumUtils.isFastDoubleClick(200)) {
                     changeCheckboxState(contentHolder, image);
                 }
             }
@@ -92,7 +92,7 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 if (imageSelectChangedListener != null) {
                     imageSelectChangedListener.onPictureClick(image, position);
                 } else {
-                    if (!Utils.isFastDoubleClick()) {
+                    if (!AlbumUtils.isFastDoubleClick()) {
                         changeCheckboxState(contentHolder, image);
                     }
                 }
@@ -108,7 +108,7 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView picture;
-        TextView check;
+        ImageView check;
         TextView mTvDuration;
         View contentView;
         LinearLayout mLlCheck;
@@ -118,7 +118,7 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             super(itemView);
             contentView = itemView;
             picture = (ImageView) itemView.findViewById(R.id.picture);
-            check = (TextView) itemView.findViewById(R.id.check);
+            check =  itemView.findViewById(R.id.check);
             mLlCheck = (LinearLayout) itemView.findViewById(R.id.ll_check);
             mTvDuration = (TextView) itemView.findViewById(R.id.tv_duration);
             mRlDuration = (RelativeLayout) itemView.findViewById(R.id.rl_duration);

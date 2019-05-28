@@ -22,7 +22,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -45,8 +44,8 @@ import com.hqq.album.common.PictureConfig;
 import com.hqq.album.decoration.RecycleViewDivider;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.entity.LocalMediaFolder;
-import com.hqq.album.utils.FileUtils;
-import com.hqq.album.utils.AlbumScreenUtils;
+import com.hqq.album.utils.AlbumUtils;
+import com.hqq.album.utils.AlbumFileUtils;
 import com.hqq.album.weight.FilterImageView;
 
 /**
@@ -122,7 +121,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new RecycleViewDivider(
-                this, LinearLayoutManager.HORIZONTAL, AlbumScreenUtils.dip2px(this, 0.5f), ContextCompat.getColor(this, R.color.line_color)));
+                this, LinearLayoutManager.HORIZONTAL, AlbumUtils.dip2px(this, 0.5f), ContextCompat.getColor(this, R.color.line_color)));
 
         mRecyclerView.setLayoutManager(manager);
         mAdapte = new AlbumDirectoryAdapter(this);
@@ -184,7 +183,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
     public void startOpenCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-            File cameraFile = FileUtils.createCameraFile(this, 1);
+            File cameraFile = AlbumFileUtils.createCameraFile(this, 1);
             cameraPath = cameraFile.getAbsolutePath();
             Uri imageUri;
             String authority = getPackageName() + ".provider";
@@ -209,7 +208,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
             if (requestCode == FunctionConfig.REQUEST_CAMERA) {
                 // 拍照返回
                 File file = new File(cameraPath);
-                int degree = FileUtils.readPictureDegree(file.getAbsolutePath());
+                int degree = AlbumFileUtils.readPictureDegree(file.getAbsolutePath());
                 //   rotateImage(degree, file);  旋转图片
                 sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
                 // takePhotoSuccess = true;

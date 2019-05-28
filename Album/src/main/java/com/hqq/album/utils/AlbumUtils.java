@@ -8,19 +8,22 @@
 
 package com.hqq.album.utils;
 
+import android.content.Context;
+
 /**
  * 在此写用途
  *
  * @version V1.0 <描述当前版本功能>
- * @FileName: cn.huangqiqiang.halbum.utils.Utils.java
+ * @FileName: cn.huangqiqiang.halbum.utils.AlbumUtils.java
  * @author: 黄其强
  * @date: 2017-05-05 16:56
  */
-public class Utils {
+public class AlbumUtils {
     /**
      * 防止连续点击跳转两个页面
      */
     public static long lastClickTime;
+
     public static boolean isFastDoubleClick() {
         long time = System.currentTimeMillis();
         if (time - lastClickTime < 800) {
@@ -28,7 +31,9 @@ public class Utils {
         }
         lastClickTime = time;
         return false;
-    }    public static boolean isFastDoubleClick(int times) {
+    }
+
+    public static boolean isFastDoubleClick(int times) {
         long time = System.currentTimeMillis();
         if (time - lastClickTime < times) {
             return true;
@@ -45,4 +50,28 @@ public class Utils {
         }
         return false;
     }
+
+    /**
+     * dp2px
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    /**
+     * 状态栏高度
+     *
+     * @param context
+     * @return
+     */
+    public static int getStatusBarHeight(Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
 }

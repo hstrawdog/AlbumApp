@@ -14,11 +14,11 @@ import java.util.Locale;
  * @version V1.0 <描述当前版本功能>
  * @author: huangqiqiang
  * 在此写用途
- * @FileName: cn.huangqiqiang.halbum.utils.FileUtils.java
+ * @FileName: cn.huangqiqiang.halbum.utils.AlbumFileUtils.java
  * @emain: 593979591@qq.com
  * @date: 2017-05-07 21:25
  */
-public class FileUtils {
+public class AlbumFileUtils {
     public static final String POSTFIX = ".JPEG";
     public static final String POST_VIDEO = ".mp4";
     public static final String APP_NAME = "ImageSelector";
@@ -36,7 +36,6 @@ public class FileUtils {
         if (!folderDir.exists() && folderDir.mkdirs()) {
 
         }
-
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA).format(new Date());
         String fileName = APP_NAME + "_" + timeStamp + "";
         File tmpFile = null;
