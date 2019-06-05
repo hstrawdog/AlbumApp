@@ -26,7 +26,6 @@ public class FunctionConfig {
      */
     public static final int TYPE_VIDEO = 2;
     public final static int REQUEST_CAMERA = 99;
-
     public static final int READ_EXTERNAL_STORAGE = 0x01;
     public static final int CAMERA = 0x02;
     /**

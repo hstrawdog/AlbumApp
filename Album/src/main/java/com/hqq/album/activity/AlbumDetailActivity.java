@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.hqq.album.Adapter.AlbumDetailAdapter;
 import com.hqq.album.AppManager;
-import com.hqq.album.BaseActivity;
 import com.hqq.album.R;
+import com.hqq.album.activity.base.BaseActivity;
 import com.hqq.album.common.FunctionConfig;
 import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.common.PictureConfig;

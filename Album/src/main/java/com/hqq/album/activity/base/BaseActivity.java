@@ -17,7 +17,7 @@
  *
  */
 
-package com.hqq.album;
+package com.hqq.album.activity.base;
 
 import android.app.Activity;
 import android.content.Context;
@@ -33,6 +33,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.hqq.album.AppManager;
 
 /**
  * 在此写用途

@@ -21,10 +21,31 @@ import com.hqq.album.utils.AlbumUtils;
  * @date: 2017-05-07 21:51
  */
 public class PictureConfig {
+
     /**
      * 单例对象
      */
     public static PictureConfig sInstance;
+    /**
+     * 缓存 相册的最基本 属性
+     */
+    public FunctionOptions.Builder sBuilder;
+    /**
+     * 由于是单利的 PictureConfig  会存在内存泄漏的问题
+     * 全局回调
+     * 使用完需要 置空 或者会内存泄漏
+     */
+    public OnSelectResultCallback mResultCallback;
+    /**
+     * 选择的图片集合
+     */
+    protected List<LocalMedia> mSelectLocalMedia;
+    /**
+     * 选择的数据
+     */
+
+    private List<LocalMedia> mSelectMedia = new ArrayList<>();
+
 
     public static PictureConfig getInstance() {
         if (sInstance == null) {
@@ -38,18 +59,16 @@ public class PictureConfig {
     }
 
     /**
-     * 缓存 相册的最基本 属性
+     * 回收当前缓存数据
+     * 避免内存占用与泄漏
      */
-    public FunctionOptions.Builder sBuilder;
-    /**
-     * 全局回调
-     * 使用完需要 置空 或者会内存泄漏
-     */
-    public OnSelectResultCallback mResultCallback;
-    /**
-     * 选择的图片集合
-     */
-    protected List<LocalMedia> mSelectLocalMedia;
+    public void recover() {
+        mSelectLocalMedia = null;
+        mResultCallback = null;
+        mSelectMedia = null;
+        sBuilder = null;
+    }
+
 
     public List<LocalMedia> getSelectLocalMedia() {
         return mSelectLocalMedia;
@@ -58,7 +77,6 @@ public class PictureConfig {
     public void setSelectLocalMedia(List<LocalMedia> selectLocalMedia) {
         mSelectLocalMedia = selectLocalMedia;
     }
-
 
     public FunctionOptions.Builder getBuilder() {
         if (sBuilder == null) {
@@ -70,6 +88,7 @@ public class PictureConfig {
     public void setBuilder(FunctionOptions.Builder builder) {
         sBuilder = builder;
     }
+
 
     /**
      * 启动相册
@@ -118,12 +137,6 @@ public class PictureConfig {
     }
 
 
-    /**
-     * 选择的数据
-     */
-
-    private List<LocalMedia> mSelectMedia = new ArrayList<>();
-
     public List<LocalMedia> getSelectMedia() {
         return mSelectMedia;
     }
@@ -135,4 +148,6 @@ public class PictureConfig {
     public void setResultCallback(OnSelectResultCallback resultCallback) {
         this.mResultCallback = resultCallback;
     }
+
+
 }

@@ -3,15 +3,10 @@ package com.hqq.album.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +14,8 @@ import java.util.List;
 
 import com.hqq.album.Adapter.FragmentAdapter;
 import com.hqq.album.AppManager;
-import com.hqq.album.BaseActivity;
 import com.hqq.album.R;
+import com.hqq.album.activity.base.BaseActivity;
 import com.hqq.album.common.FunctionConfig;
 import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.common.PictureConfig;

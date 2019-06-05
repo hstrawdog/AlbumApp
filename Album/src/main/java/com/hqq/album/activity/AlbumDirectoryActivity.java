@@ -35,8 +35,8 @@ import java.util.List;
 
 import com.hqq.album.Adapter.AlbumDirectoryAdapter;
 import com.hqq.album.AppManager;
-import com.hqq.album.BaseActivity;
 import com.hqq.album.R;
+import com.hqq.album.activity.base.BaseActivity;
 import com.hqq.album.common.FunctionConfig;
 import com.hqq.album.common.LocalMediaLoader;
 import com.hqq.album.common.OnSelectResultCallback;
@@ -83,67 +83,6 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         PictureConfig.getInstance().setSelectLocalMedia(null);
     }
 
-    private void initData() {
-        // 判断是否直接打开相机
-        if (PictureConfig.getInstance().getBuilder().isStartUpCamera()) {
-            startUpCamera();
-            return;
-        }
-
-        LocalMediaLoader localMediaLoader = new LocalMediaLoader(this, PictureConfig.getInstance().getBuilder().getAlbumType(), true);
-        localMediaLoader.loadAllImage(new LocalMediaLoader.LocalMediaLoadListener() {
-            @Override
-            public void loadComplete(List<LocalMediaFolder> folders) {
-                mAdapte.bindFolderData(folders);
-                mIvProgressBar.clearAnimation();
-                ((View) mIvProgressBar.getParent()).setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.VISIBLE);
-
-            }
-        });
-    }
-
-
-    private void initViews() {
-        mRecyclerView = findViewById(R.id.rcv_album_list);
-        mIvProgressBar = findViewById(R.id.iv_progress_bar);
-        mTvProgress = findViewById(R.id.tv_progress);
-        findViewById(R.id.album_back).setOnClickListener(this);
-
-        // 判断是否显示相机
-        if (PictureConfig.getInstance().getBuilder().isDisplayCamera()) {
-            mLocalAlbumCamera = findViewById(R.id.loacal_album_camera);
-            mLocalAlbumCamera.setOnClickListener(this);
-            mLocalAlbumCamera.setVisibility(View.VISIBLE);
-        }
-
-
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.addItemDecoration(new RecycleViewDivider(
-                this, LinearLayoutManager.HORIZONTAL, AlbumUtils.dip2px(this, 0.5f), ContextCompat.getColor(this, R.color.line_color)));
-
-        mRecyclerView.setLayoutManager(manager);
-        mAdapte = new AlbumDirectoryAdapter(this);
-        mAdapte.bindFolderData(mFolderList);
-        mRecyclerView.setAdapter(mAdapte);
-        mAdapte.setOnItemClickListener(this);
-
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate_loading);
-        mIvProgressBar.startAnimation(animation);
-
-
-        // 第一次启动ImageActivity，没有获取过相册列表
-        // 先判断手机是否有读取权限，主要是针对6.0已上系统
-        if (hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            initData();
-        } else {
-            requestPermission(FunctionConfig.READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
-        }
-
-
-    }
-
 
     @Override
     public void onItemClick(String folderName, List<LocalMedia> images) {
@@ -176,6 +115,63 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         }
     }
 
+    private void initViews() {
+        mRecyclerView = findViewById(R.id.rcv_album_list);
+        mIvProgressBar = findViewById(R.id.iv_progress_bar);
+        mTvProgress = findViewById(R.id.tv_progress);
+        findViewById(R.id.album_back).setOnClickListener(this);
+
+        // 判断是否显示相机
+        if (PictureConfig.getInstance().getBuilder().isDisplayCamera()) {
+            mLocalAlbumCamera = findViewById(R.id.loacal_album_camera);
+            mLocalAlbumCamera.setOnClickListener(this);
+            mLocalAlbumCamera.setVisibility(View.VISIBLE);
+        }
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addItemDecoration(new RecycleViewDivider(
+                this, LinearLayoutManager.HORIZONTAL, AlbumUtils.dip2px(this, 0.5f), ContextCompat.getColor(this, R.color.line_color)));
+        mRecyclerView.setLayoutManager(manager);
+        mAdapte = new AlbumDirectoryAdapter(this);
+        mAdapte.bindFolderData(mFolderList);
+        mRecyclerView.setAdapter(mAdapte);
+        mAdapte.setOnItemClickListener(this);
+
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate_loading);
+        mIvProgressBar.startAnimation(animation);
+
+
+        // 第一次启动ImageActivity，没有获取过相册列表
+        // 先判断手机是否有读取权限，主要是针对6.0已上系统
+        if (hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            initData();
+        } else {
+            requestPermission(FunctionConfig.READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+
+
+    }
+
+    private void initData() {
+        // 判断是否直接打开相机
+        if (PictureConfig.getInstance().getBuilder().isStartUpCamera()) {
+            startUpCamera();
+            return;
+        }
+        // 否则再去 读书内存中的数据
+        LocalMediaLoader localMediaLoader = new LocalMediaLoader(this, PictureConfig.getInstance().getBuilder().getAlbumType(), true);
+        localMediaLoader.loadAllImage(new LocalMediaLoader.LocalMediaLoadListener() {
+            @Override
+            public void loadComplete(List<LocalMediaFolder> folders) {
+                mAdapte.bindFolderData(folders);
+                mIvProgressBar.clearAnimation();
+                ((View) mIvProgressBar.getParent()).setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+    }
 
     /**
      * start to camera、preview、crop
@@ -190,7 +186,6 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 //通过FileProvider创建一个content类型的Uri
                 imageUri = FileProvider.getUriForFile(this, authority, cameraFile);
-                //添加权限
             } else {
                 imageUri = Uri.fromFile(cameraFile);
             }
@@ -208,8 +203,9 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
             if (requestCode == FunctionConfig.REQUEST_CAMERA) {
                 // 拍照返回
                 File file = new File(cameraPath);
-                int degree = AlbumFileUtils.readPictureDegree(file.getAbsolutePath());
-                //   rotateImage(degree, file);  旋转图片
+                //  int degree = AlbumFileUtils.readPictureDegree(file.getAbsolutePath());
+                //rotateImage(degree, file);  旋转图片
+
                 sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
                 // takePhotoSuccess = true;
 
@@ -224,7 +220,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
                 result.add(media);
                 OnSelectResultCallback resultCallback = PictureConfig.getInstance().getResultCallback();
                 if (resultCallback != null) {
-                    // 暂时不去判断 是否 单选
+                    // 暂时不去判断是否 单选
                     resultCallback.onSelectSuccess(result);
                 }
                 AppManager.getAppManager().finishAllActivity();
@@ -251,9 +247,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
                     initData();
                 } else {
                     Toast.makeText(mContext, "读取内存卡权限已被拒绝,请在系统设置中开启权限", Toast.LENGTH_SHORT).show();
-
                     mTvProgress.setText("哎呀!没有获取到读取内存卡权限已被拒绝,\n请在系统设置中开启权限");
-
                     //应用程序详情页面
                     Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                     intent.setData(Uri.parse("package:" + getPackageName()));

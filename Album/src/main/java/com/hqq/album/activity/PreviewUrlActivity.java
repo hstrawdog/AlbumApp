@@ -19,26 +19,18 @@ package com.hqq.album.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.SparseArray;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.hqq.album.Adapter.FragmentAdapter;
-import com.hqq.album.BaseActivity;
 import com.hqq.album.R;
+import com.hqq.album.activity.base.BaseActivity;
 import com.hqq.album.common.FunctionConfig;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.utils.AlbumUtils;
