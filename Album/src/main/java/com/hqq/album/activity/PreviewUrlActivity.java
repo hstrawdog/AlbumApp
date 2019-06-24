@@ -60,7 +60,7 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
         }
         Intent intent = new Intent(context, PreviewUrlActivity.class);
         intent.putStringArrayListExtra("data", (ArrayList<String>) list);
-        intent.putExtra("position", position + 1);
+        intent.putExtra(FunctionConfig.FOLDER_DETAIL_POSITION, position + 1);
         context.startActivity(intent);
         context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
@@ -68,7 +68,7 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
     public static void goPreviewUrlActivity(Activity context, List<String> list, int mPosition) {
         Intent intent = new Intent(context, PreviewUrlActivity.class);
         intent.putStringArrayListExtra("data", (ArrayList<String>) list);
-        intent.putExtra("position", mPosition + 1);
+        intent.putExtra(FunctionConfig.FOLDER_DETAIL_POSITION, mPosition + 1);
         context.startActivity(intent);
         context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
@@ -78,7 +78,7 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
         List<String> list = new ArrayList<>();
         list.add(url);
         intent.putStringArrayListExtra("data", (ArrayList<String>) list);
-        intent.putExtra("position", 1);
+        intent.putExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1);
         context.startActivity(intent);
         context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
@@ -96,14 +96,15 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
         mViewPager = findViewById(R.id.vp_preview);
         mViewPager.setOffscreenPageLimit(3);
         findViewById(R.id.album_back).setOnClickListener(this);
-        mViewPager.setCurrentItem(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) - 1);
         mViewPager.addOnPageChangeListener(this);
         mViewPager.setOnClickListener(this);
 
         mLocalMediaList = getIntent().getStringArrayListExtra("data");
         mFragmentAdapte = new FragmentAdapter(getSupportFragmentManager(),mLocalMediaList);
         mViewPager.setAdapter(mFragmentAdapte);
-        mTvTttle.setText(getIntent().getIntExtra("position", 1) + "/" + mLocalMediaList.size());
+
+        mTvTttle.setText(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) + "/" + mLocalMediaList.size());
+        mViewPager.setCurrentItem(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) - 1);
 
         mRelativeLayout.setPadding(0, AlbumUtils.getStatusBarHeight(this), 0, 0);
 
