@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,7 +68,9 @@ public class AlbumPreviewActivity extends BaseActivity implements View.OnClickLi
 
         mViewPager.setCurrentItem(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) - 1);
 
-        mRelativeLayout.setPadding(0, AlbumUtils.getStatusBarHeight(this), 0, 0);
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRelativeLayout.getLayoutParams();
+        layoutParams.setMargins(0, AlbumUtils.getStatusBarHeight(this), 0, 0);
+        mRelativeLayout.setLayoutParams(layoutParams);
 
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
