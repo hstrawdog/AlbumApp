@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -100,13 +101,14 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
         mViewPager.setOnClickListener(this);
 
         mLocalMediaList = getIntent().getStringArrayListExtra("data");
-        mFragmentAdapte = new FragmentAdapter(getSupportFragmentManager(),mLocalMediaList);
+        mFragmentAdapte = new FragmentAdapter(getSupportFragmentManager(), mLocalMediaList);
         mViewPager.setAdapter(mFragmentAdapte);
 
         mTvTttle.setText(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) + "/" + mLocalMediaList.size());
         mViewPager.setCurrentItem(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) - 1);
-
-        mRelativeLayout.setPadding(0, AlbumUtils.getStatusBarHeight(this), 0, 0);
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRelativeLayout.getLayoutParams();
+        layoutParams.setMargins(0, AlbumUtils.getStatusBarHeight(this), 0, 0);
+        mRelativeLayout.setLayoutParams(layoutParams);
 
     }
 
@@ -141,9 +143,6 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
     public void onPageScrollStateChanged(int state) {
 
     }
-
-
-
 
 
 }
