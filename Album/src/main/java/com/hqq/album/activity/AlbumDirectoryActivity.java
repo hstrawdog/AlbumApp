@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -143,10 +142,10 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
 
         // 第一次启动ImageActivity，没有获取过相册列表
         // 先判断手机是否有读取权限，主要是针对6.0已上系统
-        if (hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             initData();
         } else {
-            requestPermission(FunctionConfig.READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+            requestPermission(FunctionConfig.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE);
         }
 
 
@@ -240,7 +239,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,  String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case FunctionConfig.READ_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
