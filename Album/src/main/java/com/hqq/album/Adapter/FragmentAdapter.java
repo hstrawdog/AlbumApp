@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.hqq.album.activity.AlbumPreviewFragment;
-import com.hqq.album.common.PictureConfig;
 import com.hqq.album.entity.LocalMedia;
 
 import java.util.List;

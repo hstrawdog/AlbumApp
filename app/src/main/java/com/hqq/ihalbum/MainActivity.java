@@ -25,8 +25,14 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import static com.hqq.album.activity.PreviewUrlActivity.goPreviewUrlActivity;
-
+ /**
+  * @Author : huangqiqiang
+  * @Package : com.hqq.ihalbum
+  * @FileName :   MainActivity
+  * @Date  : 2019/9/16 0016  下午 8:33
+  * @Email :  qiqiang213@gmail.com
+  * @Descrive :
+  */
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -44,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 list.add("http://img.pptjia.com/image/20180117/f4b76385a3ccdbac48893cc6418806d5.jpg");
                 list.add("http://img.pptjia.com/image/20180117/f4b76385a3ccdbac48893cc6418806d5.jpg");
 
-                goPreviewUrlActivity(MainActivity.this, list, 0);
+                PreviewUrlActivity.goPreviewUrlActivity(MainActivity.this, list, 0);
 
 
             }

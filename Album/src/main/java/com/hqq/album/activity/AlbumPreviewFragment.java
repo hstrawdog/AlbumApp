@@ -1,13 +1,11 @@
 package com.hqq.album.activity;
 
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,25 +14,18 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.bm.library.PhotoView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
-
-import com.bumptech.glide.signature.ObjectKey;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.hqq.album.R;
 import com.hqq.album.common.FunctionConfig;
 import com.hqq.album.entity.LocalMedia;
-
-import java.security.Signature;
-import java.util.UUID;
 
 /**
  * 在此写用途
@@ -156,8 +147,8 @@ public class AlbumPreviewFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         switch (localMedia) {
             case FunctionConfig.TYPE_IMAGE:
-                imageView.setMaxScale(6);
-                imageView.enable();
+//                imageView.setMaxScale(6);
+//                imageView.enable();
                 Glide.with(getContext())
                         .load(path)
                         .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
@@ -174,20 +165,6 @@ public class AlbumPreviewFragment extends Fragment {
                                 return false;
                             }
                         })
-//                        .listener(new RequestListener<GifDrawable>() {
-//                            @Override
-//                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
-//                                Toast.makeText(getContext(), "图片预览失败", Toast.LENGTH_SHORT).show();
-//                                return false;
-//                            }
-//
-//                            @Override
-//                            public boolean onResourceReady(GifDrawable resource, Object model, Target<GifDrawable> target, DataSource dataSource, boolean isFirstResource) {
-//                                progressBar.setVisibility(View.GONE);
-//                                return false;
-//                            }
-//                        })
-
                         .into(imageView);
                 break;
             case FunctionConfig.TYPE_VIDEO:

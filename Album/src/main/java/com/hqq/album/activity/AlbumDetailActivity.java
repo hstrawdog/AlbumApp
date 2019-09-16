@@ -106,9 +106,7 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
         startActivityForResult(new Intent(this, AlbumPreviewActivity.class)
                         .putExtra(FunctionConfig.FOLDER_DETAIL_POSITION, position + 1)
                         .putExtra(FunctionConfig.FOLDER_NAME, getIntent().getStringExtra(FunctionConfig.FOLDER_NAME))
-                , CODE_CLOSE
-
-        );
+                , CODE_CLOSE);
     }
 
 

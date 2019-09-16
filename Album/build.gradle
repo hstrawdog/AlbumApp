@@ -35,5 +35,6 @@ dependencies {
     api rootProject.ext.dependencies.glide
     api rootProject.ext.dependencies.IDimensCompat
     api rootProject.ext.dependencies.constraintlayout
+    implementation 'com.github.chrisbanes:PhotoView:2.1.4'
 
 }

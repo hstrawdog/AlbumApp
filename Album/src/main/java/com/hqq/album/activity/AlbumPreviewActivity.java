@@ -51,9 +51,9 @@ public class AlbumPreviewActivity extends BaseActivity implements View.OnClickLi
         mViewPager = findViewById(R.id.vp_preview);
         findViewById(R.id.album_back).setOnClickListener(this);
         findViewById(R.id.ll_check).setOnClickListener(this);
+        mAlbumFinish.setOnClickListener(this);
         mTvCheck = findViewById(R.id.tv_check);
         mAlbumFinish =  findViewById(R.id.album_finish);
-        mAlbumFinish.setOnClickListener(this);
         mRelativeLayout = findViewById(R.id.album_title_bar);
 
         mAnimation = OptAnimationLoader.loadAnimation(mContext, R.anim.modal_in);
@@ -138,7 +138,6 @@ public class AlbumPreviewActivity extends BaseActivity implements View.OnClickLi
             updateSelectMenu();
 
         } else if (i == R.id.album_finish) {
-
             OnSelectResultCallback resultCallback = PictureConfig.getInstance().getResultCallback();
             if (resultCallback != null) {
                 resultCallback.onSelectSuccess(PictureConfig.getInstance().getSelectMedia());

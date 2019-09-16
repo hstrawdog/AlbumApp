@@ -63,7 +63,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
 
     RecyclerView mRecyclerView;
     List<LocalMediaFolder> mFolderList = new ArrayList<>();
-    private AlbumDirectoryAdapter mAdapte;
+    private AlbumDirectoryAdapter mAdapter;
     ImageView mIvProgressBar;
     TextView mTvProgress;
     private String cameraPath;
@@ -131,10 +131,10 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         mRecyclerView.addItemDecoration(new RecycleViewDivider(
                 this, LinearLayoutManager.HORIZONTAL, AlbumUtils.dip2px(this, 0.5f), ContextCompat.getColor(this, R.color.line_color)));
         mRecyclerView.setLayoutManager(manager);
-        mAdapte = new AlbumDirectoryAdapter(this);
-        mAdapte.bindFolderData(mFolderList);
-        mRecyclerView.setAdapter(mAdapte);
-        mAdapte.setOnItemClickListener(this);
+        mAdapter = new AlbumDirectoryAdapter(this);
+        mAdapter.bindFolderData(mFolderList);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(this);
 
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate_loading);
         mIvProgressBar.startAnimation(animation);
@@ -162,7 +162,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         localMediaLoader.loadAllImage(new LocalMediaLoader.LocalMediaLoadListener() {
             @Override
             public void loadComplete(List<LocalMediaFolder> folders) {
-                mAdapte.bindFolderData(folders);
+                mAdapter.bindFolderData(folders);
                 mIvProgressBar.clearAnimation();
                 ((View) mIvProgressBar.getParent()).setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.VISIBLE);
