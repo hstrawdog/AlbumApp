@@ -34,6 +34,7 @@ import com.hqq.album.utils.AlbumUtils;
  * @Descrive : TODO
  * @Email :
  */
+@Deprecated
 public class AlbumPreviewActivity extends BaseActivity implements View.OnClickListener {
 
     ViewPager mViewPager;
@@ -43,6 +44,7 @@ public class AlbumPreviewActivity extends BaseActivity implements View.OnClickLi
     int mPosition = 0;
     private Animation mAnimation;
     ConstraintLayout mRelativeLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +55,7 @@ public class AlbumPreviewActivity extends BaseActivity implements View.OnClickLi
         findViewById(R.id.ll_check).setOnClickListener(this);
         mAlbumFinish.setOnClickListener(this);
         mTvCheck = findViewById(R.id.tv_check);
-        mAlbumFinish =  findViewById(R.id.album_finish);
+        mAlbumFinish = findViewById(R.id.album_finish);
         mRelativeLayout = findViewById(R.id.album_title_bar);
 
         mAnimation = OptAnimationLoader.loadAnimation(mContext, R.anim.modal_in);
@@ -63,7 +65,7 @@ public class AlbumPreviewActivity extends BaseActivity implements View.OnClickLi
         mLocalMediaList = PictureConfig.getInstance().getSelectLocalMedia();
         mTvTitle.setText(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) + "/" + mLocalMediaList.size());
 
-        mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(),mLocalMediaList);
+        mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), mLocalMediaList);
         mViewPager.setAdapter(mFragmentAdapter);
 
         mViewPager.setCurrentItem(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) - 1);
