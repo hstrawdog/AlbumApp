@@ -18,23 +18,51 @@
 package com.hqq.album.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.hqq.album.Adapter.FragmentAdapter;
+import com.hqq.album.AppManager;
 import com.hqq.album.R;
 import com.hqq.album.activity.base.BaseActivity;
 import com.hqq.album.common.FunctionConfig;
+import com.hqq.album.common.OnSelectResultCallback;
+import com.hqq.album.common.PictureConfig;
+import com.hqq.album.dialog.OptAnimationLoader;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.utils.AlbumUtils;
+import com.hqq.album.weight.FilterImageView;
 
 /**
  * @Author : huangqiqiang
@@ -44,14 +72,9 @@ import com.hqq.album.utils.AlbumUtils;
  * @Descrive :
  * @Email :
  */
-public class PreviewUrlActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
-    ViewPager mViewPager;
-    TextView mTvCheck;
-    TextView mTvTttle;
-    int mPosition = 0;
+public class PreviewUrlActivity extends BaseActivity implements View.OnClickListener {
     List<String> mLocalMediaList;
-    FragmentAdapter mFragmentAdapte;
-    ConstraintLayout mRelativeLayout;
+
 
     public static void goPreviewUrlActivity2LocalMedia(Activity context, List<LocalMedia> data, int position) {
 
@@ -85,62 +108,146 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
     }
 
 
+    private RecyclerView mRcAlbumList;
+    private ConstraintLayout mAlbumTitleBar;
+    private FilterImageView mAlbumBack;
+    private TextView mAlbumTitle;
+    private LinearLayout mLlCheck;
+    private ImageView mTvCheck;
+    private LinearLayout mLlComplete;
+    private TextView mAlbumFinish;
+    int mPosition = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fullWindow();
-        setContentView(R.layout.activity_album_preview);
-        mRelativeLayout = findViewById(R.id.album_title_bar);
-        findViewById(R.id.ll_complete).setVisibility(View.GONE);
-        findViewById(R.id.ll_check).setVisibility(View.GONE);
-        mTvTttle = findViewById(R.id.album_title);
-        mViewPager = findViewById(R.id.vp_preview);
-        mViewPager.setOffscreenPageLimit(3);
-        findViewById(R.id.album_back).setOnClickListener(this);
-        mViewPager.addOnPageChangeListener(this);
-        mViewPager.setOnClickListener(this);
-
+        setContentView(R.layout.activity_album_preview_v2);
         mLocalMediaList = getIntent().getStringArrayListExtra("data");
-        mFragmentAdapte = new FragmentAdapter(getSupportFragmentManager(), mLocalMediaList);
-        mViewPager.setAdapter(mFragmentAdapte);
+        initView();
+        mLlCheck.setVisibility(View.GONE);
+        PreviewAdapter previewAdapter = new PreviewAdapter();
+        mRcAlbumList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        new PagerSnapHelper().attachToRecyclerView(mRcAlbumList);
+        mRcAlbumList.setAdapter(previewAdapter);
+        mRcAlbumList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int first = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                    int last = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                    if (first == last && mPosition != last) {
+                        mPosition = last;
+                        updateSelectMenu();
+                    }
+                }
 
-        mTvTttle.setText(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) + "/" + mLocalMediaList.size());
-        mViewPager.setCurrentItem(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) - 1);
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRelativeLayout.getLayoutParams();
-        layoutParams.setMargins(0, AlbumUtils.getStatusBarHeight(this), 0, 0);
-        mRelativeLayout.setLayoutParams(layoutParams);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+        mPosition = getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) - 1;
+        mRcAlbumList.scrollToPosition(mPosition);
 
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    private void initView() {
+        mRcAlbumList = (RecyclerView) findViewById(R.id.rc_album_list);
+        mAlbumTitleBar = (ConstraintLayout) findViewById(R.id.album_title_bar);
+        mAlbumBack = (FilterImageView) findViewById(R.id.album_back);
+        mAlbumTitle = (TextView) findViewById(R.id.album_title);
+        mLlCheck = (LinearLayout) findViewById(R.id.ll_check);
+        mTvCheck = (ImageView) findViewById(R.id.tv_check);
+        mLlComplete = (LinearLayout) findViewById(R.id.ll_complete);
+        mAlbumFinish = (TextView) findViewById(R.id.album_finish);
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mAlbumTitleBar.getLayoutParams();
+        layoutParams.setMargins(0, AlbumUtils.getStatusBarHeight(this), 0, 0);
+        mAlbumTitleBar.setLayoutParams(layoutParams);
+
+        mAlbumBack.setOnClickListener(this);
+        mLlCheck.setOnClickListener(this);
+        mAlbumFinish.setOnClickListener(this);
+
+        mAlbumTitle.setText(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) + "/" + mLocalMediaList.size());
+
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.album_back) {
-            finish();
-        } else if (i == R.id.vp_preview) {
-            finish();
+            AppManager.getAppManager().finishActivity();
         }
     }
 
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        mTvTttle.setText(position + 1 + "/" + mLocalMediaList.size());
-        mPosition = position;
-    }
+    private void updateSelectMenu() {
 
-    @Override
-    public void onPageSelected(int position) {
+        mAlbumTitle.setText(mPosition + 1 + "/" + mLocalMediaList.size());
 
     }
 
-    @Override
-    public void onPageScrollStateChanged(int state) {
+
+    class PreviewAdapter extends RecyclerView.Adapter<PreviewAdapter.ViewHolder> {
+
+        @NonNull
+        @Override
+        public PreviewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_album_preview, viewGroup, false);
+            return new PreviewAdapter.ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull PreviewAdapter.ViewHolder viewHolder, int i) {
+            initData(PreviewUrlActivity.this, viewHolder, mLocalMediaList.get(i));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mLocalMediaList.size();
+        }
+
+
+        private void initData(final Context context, final PreviewAdapter.ViewHolder viewHolder, String localMedia) {
+            viewHolder.progressBar.setVisibility(View.VISIBLE);
+            Glide.with(context)
+                    .load(localMedia)
+                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            Toast.makeText(context, "图片预览失败", Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            viewHolder.progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
+                    .into(viewHolder.imageView);
+        }
+
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            VideoView videoView;
+            ImageView imageView;
+            ProgressBar progressBar;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                imageView = itemView.findViewById(R.id.preview_image);
+                videoView = itemView.findViewById(R.id.vv_view);
+                progressBar = itemView.findViewById(R.id.pb_bar);
+
+            }
+        }
+
 
     }
 
