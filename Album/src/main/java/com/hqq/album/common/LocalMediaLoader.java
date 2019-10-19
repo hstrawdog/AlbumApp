@@ -53,7 +53,7 @@ public class LocalMediaLoader {
             MediaStore.Video.Media.DURATION,
     };
 
-    private int type = FunctionConfig.TYPE_IMAGE;
+    private int type = FunctionKey.VALUE_TYPE_IMAGE;
     private FragmentActivity activity;
 
     public LocalMediaLoader(FragmentActivity activity, int type, boolean isGif) {
@@ -79,12 +79,12 @@ public class LocalMediaLoader {
                     condition = MediaStore.Images.Media.MIME_TYPE + "=? or "
                             + MediaStore.Images.Media.MIME_TYPE + "=?";
                 }
-                if (id == FunctionConfig.TYPE_IMAGE) {
+                if (id == FunctionKey.VALUE_TYPE_IMAGE) {
                     cursorLoader = new CursorLoader(
                             activity, MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                             IMAGE_PROJECTION, condition,
                             select, IMAGE_PROJECTION[2] + " DESC");
-                } else if (id == FunctionConfig.TYPE_VIDEO) {
+                } else if (id == FunctionKey.VALUE_TYPE_VIDEO) {
                     cursorLoader = new CursorLoader(
                             activity, MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                             VIDEO_PROJECTION, null, null, VIDEO_PROJECTION[2] + " DESC");
@@ -109,7 +109,7 @@ public class LocalMediaLoader {
                                     continue;
                                 }
                                 long dateTime = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[2]));
-                                int duration = (type == FunctionConfig.TYPE_VIDEO ? data.getInt(data.getColumnIndexOrThrow(VIDEO_PROJECTION[4])) : 0);
+                                int duration = (type == FunctionKey.VALUE_TYPE_VIDEO ? data.getInt(data.getColumnIndexOrThrow(VIDEO_PROJECTION[4])) : 0);
                                 LocalMedia image = new LocalMedia(path, dateTime, duration, type);
                                 LocalMediaFolder folder = getImageFolder(path, imageFolders);
                                 folder.getImages().add(image);
@@ -128,10 +128,10 @@ public class LocalMediaLoader {
                                 imageFolders.add(0, allImageFolder);
                                 String title = "";
                                 switch (type) {
-                                    case FunctionConfig.TYPE_VIDEO:
+                                    case FunctionKey.VALUE_TYPE_VIDEO:
                                         title = activity.getString(R.string.lately_video);
                                         break;
-                                    case FunctionConfig.TYPE_IMAGE:
+                                    case FunctionKey.VALUE_TYPE_IMAGE:
                                         title = activity.getString(R.string.lately_image);
                                         break;
                                     default:

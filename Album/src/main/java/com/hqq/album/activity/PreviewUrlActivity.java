@@ -21,12 +21,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
@@ -35,15 +33,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -52,17 +46,16 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.hqq.album.Adapter.FragmentAdapter;
 import com.hqq.album.AppManager;
 import com.hqq.album.R;
 import com.hqq.album.activity.base.BaseActivity;
-import com.hqq.album.common.FunctionConfig;
-import com.hqq.album.common.OnSelectResultCallback;
-import com.hqq.album.common.PictureConfig;
-import com.hqq.album.dialog.OptAnimationLoader;
+import com.hqq.album.common.FunctionKey;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.utils.AlbumUtils;
 import com.hqq.album.weight.FilterImageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author : huangqiqiang
@@ -83,16 +76,16 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
             list.add(localMedia.getPath());
         }
         Intent intent = new Intent(context, PreviewUrlActivity.class);
-        intent.putStringArrayListExtra("data", (ArrayList<String>) list);
-        intent.putExtra(FunctionConfig.FOLDER_DETAIL_POSITION, position + 1);
+        intent.putStringArrayListExtra(FunctionKey.KEY_DATA, (ArrayList<String>) list);
+        intent.putExtra(FunctionKey.KEY_POSITION, position + 1);
         context.startActivity(intent);
         context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     public static void goPreviewUrlActivity(Activity context, List<String> list, int mPosition) {
         Intent intent = new Intent(context, PreviewUrlActivity.class);
-        intent.putStringArrayListExtra("data", (ArrayList<String>) list);
-        intent.putExtra(FunctionConfig.FOLDER_DETAIL_POSITION, mPosition + 1);
+        intent.putStringArrayListExtra(FunctionKey.KEY_DATA, (ArrayList<String>) list);
+        intent.putExtra(FunctionKey.KEY_POSITION, mPosition + 1);
         context.startActivity(intent);
         context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
@@ -101,8 +94,8 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
         Intent intent = new Intent(context, PreviewUrlActivity.class);
         List<String> list = new ArrayList<>();
         list.add(url);
-        intent.putStringArrayListExtra("data", (ArrayList<String>) list);
-        intent.putExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1);
+        intent.putStringArrayListExtra(FunctionKey.KEY_DATA, (ArrayList<String>) list);
+        intent.putExtra(FunctionKey.KEY_POSITION, 1);
         context.startActivity(intent);
         context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
@@ -122,7 +115,7 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_preview_v2);
-        mLocalMediaList = getIntent().getStringArrayListExtra("data");
+        mLocalMediaList = getIntent().getStringArrayListExtra(FunctionKey.KEY_DATA);
         initView();
         mLlCheck.setVisibility(View.GONE);
         PreviewAdapter previewAdapter = new PreviewAdapter();
@@ -149,7 +142,7 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-        mPosition = getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) - 1;
+        mPosition = getIntent().getIntExtra(FunctionKey.KEY_POSITION, 1) - 1;
         mRcAlbumList.scrollToPosition(mPosition);
 
     }
@@ -172,7 +165,7 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
         mLlCheck.setOnClickListener(this);
         mAlbumFinish.setOnClickListener(this);
 
-        mAlbumTitle.setText(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) + "/" + mLocalMediaList.size());
+        mAlbumTitle.setText(getIntent().getIntExtra(FunctionKey.KEY_POSITION, 1) + "/" + mLocalMediaList.size());
 
     }
 

@@ -12,7 +12,7 @@ import com.hqq.album.Adapter.AlbumDetailAdapter;
 import com.hqq.album.AppManager;
 import com.hqq.album.R;
 import com.hqq.album.activity.base.BaseActivity;
-import com.hqq.album.common.FunctionConfig;
+import com.hqq.album.common.FunctionKey;
 import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.common.PictureConfig;
 import com.hqq.album.decoration.GridSpacingItemDecoration;
@@ -62,7 +62,7 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.album_finish).setOnClickListener(this);
         mTvFinish = (TextView) findViewById(R.id.album_finish);
         mTvTile = (TextView) findViewById(R.id.album_title);
-        mTvTile.setText(getIntent().getStringExtra(FunctionConfig.FOLDER_NAME));
+        mTvTile.setText(getIntent().getStringExtra(FunctionKey.KEY_FOLDER_NAME));
 
     }
 
@@ -104,8 +104,8 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onPictureClick(LocalMedia media, int position) {
         startActivityForResult(new Intent(this, AlbumPreviewV2Activity.class)
-                        .putExtra(FunctionConfig.FOLDER_DETAIL_POSITION, position + 1)
-                        .putExtra(FunctionConfig.FOLDER_NAME, getIntent().getStringExtra(FunctionConfig.FOLDER_NAME))
+                        .putExtra(FunctionKey.KEY_POSITION, position + 1)
+                        .putExtra(FunctionKey.KEY_FOLDER_NAME, getIntent().getStringExtra(FunctionKey.KEY_FOLDER_NAME))
                 , CODE_CLOSE);
     }
 

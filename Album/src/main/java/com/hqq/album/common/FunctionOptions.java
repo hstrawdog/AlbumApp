@@ -24,7 +24,7 @@ public class FunctionOptions {
     /**
      * 默认显示的图片
      */
-    private int albumType = FunctionConfig.TYPE_IMAGE;
+    private int albumType = FunctionKey.VALUE_TYPE_IMAGE;
 
     private boolean isStartUpCamera() {
         return startUpCamera;

@@ -36,7 +36,7 @@ import com.hqq.album.Adapter.AlbumDirectoryAdapter;
 import com.hqq.album.AppManager;
 import com.hqq.album.R;
 import com.hqq.album.activity.base.BaseActivity;
-import com.hqq.album.common.FunctionConfig;
+import com.hqq.album.common.FunctionKey;
 import com.hqq.album.common.LocalMediaLoader;
 import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.common.PictureConfig;
@@ -88,8 +88,8 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
 
         PictureConfig.getInstance().setSelectLocalMedia(images);
         startActivity(new Intent(this, AlbumDetailActivity.class)
-                        .putExtra(FunctionConfig.FOLDER_NAME, folderName)
-                // .putParcelableArrayListExtra(FunctionConfig.IMAGES, (ArrayList<? extends Parcelable>) images)
+                        .putExtra(FunctionKey.KEY_FOLDER_NAME, folderName)
+                // .putParcelableArrayListExtra(FunctionKey.IMAGES, (ArrayList<? extends Parcelable>) images)
         );
         // ToastUtils.show(this,folderName);
     }
@@ -110,7 +110,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         if (hasPermission(Manifest.permission.CAMERA)) {
             startOpenCamera();
         } else {
-            requestPermission(FunctionConfig.CAMERA, Manifest.permission.CAMERA);
+            requestPermission(FunctionKey.REQUEST_CODE_CAMERA, Manifest.permission.CAMERA);
         }
     }
 
@@ -145,7 +145,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         if (hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             initData();
         } else {
-            requestPermission(FunctionConfig.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE);
+            requestPermission(FunctionKey.REQUEST_CODE_READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE);
         }
 
 
@@ -190,7 +190,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
             }
             cameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-            startActivityForResult(cameraIntent, FunctionConfig.REQUEST_CAMERA);
+            startActivityForResult(cameraIntent, FunctionKey.REQUEST_CODE_REQUEST_CAMERA);
         }
     }
 
@@ -199,7 +199,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             // on take photo success
-            if (requestCode == FunctionConfig.REQUEST_CAMERA) {
+            if (requestCode == FunctionKey.REQUEST_CODE_REQUEST_CAMERA) {
                 // 拍照返回
                 File file = new File(cameraPath);
                 //  int degree = AlbumFileUtils.readPictureDegree(file.getAbsolutePath());
@@ -226,7 +226,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
                 PictureConfig.getInstance().setResultCallback(null);
 
             }
-        } else if (requestCode == FunctionConfig.REQUEST_CAMERA && resultCode != RESULT_OK) {
+        } else if (requestCode == FunctionKey.REQUEST_CODE_REQUEST_CAMERA && resultCode != RESULT_OK) {
             // 这边是直接打开相册的 那返回的话 直接到上个界面
             if (PictureConfig.getInstance().getBuilder().isStartUpCamera()) {
                 PictureConfig.getInstance().getResultCallback().onSelectSuccess(new ArrayList<LocalMedia>());
@@ -241,7 +241,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
     @Override
     public void onRequestPermissionsResult(int requestCode,  String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case FunctionConfig.READ_EXTERNAL_STORAGE:
+            case FunctionKey.REQUEST_CODE_READ_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     initData();
                 } else {
@@ -253,7 +253,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
                     startActivity(intent);
                 }
                 break;
-            case FunctionConfig.CAMERA:
+            case FunctionKey.REQUEST_CODE_CAMERA:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startOpenCamera();
                 } else {

@@ -9,9 +9,9 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion  rootProject.ext.android.compileSdkVersion
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
     defaultConfig {
-        minSdkVersion  rootProject.ext.android.minSdkVersion
+        minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode 1
         versionName "1.0"
@@ -36,5 +36,6 @@ dependencies {
     api rootProject.ext.dependencies.IDimensCompat
     api rootProject.ext.dependencies.constraintlayout
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
 }

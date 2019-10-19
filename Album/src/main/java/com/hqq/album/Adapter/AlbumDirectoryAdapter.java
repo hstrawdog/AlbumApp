@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hqq.album.R;
-import com.hqq.album.common.FunctionConfig;
+import com.hqq.album.common.FunctionKey;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.entity.LocalMediaFolder;
 
@@ -73,7 +73,7 @@ public class AlbumDirectoryAdapter extends RecyclerView.Adapter<AlbumDirectoryAd
             holder.mTvImgNum.setVisibility(View.INVISIBLE);
         }
         int type = folder.getType();
-        if (type == FunctionConfig.TYPE_VIDEO) {
+        if (type == FunctionKey.VALUE_TYPE_VIDEO) {
             Glide.with(holder.itemView.getContext()).load(imagePath).thumbnail(0.5f).into(holder.mFirstImage);
         } else {
 

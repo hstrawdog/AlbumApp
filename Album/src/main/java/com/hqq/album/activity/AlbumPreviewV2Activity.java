@@ -33,7 +33,7 @@ import com.bumptech.glide.request.target.Target;
 import com.hqq.album.AppManager;
 import com.hqq.album.R;
 import com.hqq.album.activity.base.BaseActivity;
-import com.hqq.album.common.FunctionConfig;
+import com.hqq.album.common.FunctionKey;
 import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.common.PictureConfig;
 import com.hqq.album.dialog.OptAnimationLoader;
@@ -95,7 +95,7 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-        mPosition = getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) - 1;
+        mPosition = getIntent().getIntExtra(FunctionKey.KEY_POSITION, 1) - 1;
         mRcAlbumList.scrollToPosition(mPosition);
 
     }
@@ -119,7 +119,7 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
         mAlbumFinish.setOnClickListener(this);
 
         mLocalMediaList = PictureConfig.getInstance().getSelectLocalMedia();
-        mAlbumTitle.setText(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) + "/" + mLocalMediaList.size());
+        mAlbumTitle.setText(getIntent().getIntExtra(FunctionKey.KEY_POSITION, 1) + "/" + mLocalMediaList.size());
 
     }
 
@@ -214,7 +214,7 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
 
             viewHolder.progressBar.setVisibility(View.VISIBLE);
             switch (localMedia.getType()) {
-                case FunctionConfig.TYPE_IMAGE:
+                case FunctionKey.VALUE_TYPE_IMAGE:
                     Glide.with(context)
                             .load(localMedia.getPath())
                             .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
@@ -233,7 +233,7 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
                             })
                             .into(viewHolder.imageView);
                     break;
-                case FunctionConfig.TYPE_VIDEO:
+                case FunctionKey.VALUE_TYPE_VIDEO:
                     viewHolder.videoView.setMediaController(new MediaController(context));
                     viewHolder.videoView.setVideoURI(Uri.parse(localMedia.getPath()));
                     viewHolder.videoView.start();

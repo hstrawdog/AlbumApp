@@ -24,7 +24,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.hqq.album.R;
-import com.hqq.album.common.FunctionConfig;
+import com.hqq.album.common.FunctionKey;
 import com.hqq.album.entity.LocalMedia;
 
 /**
@@ -52,7 +52,7 @@ public class AlbumPreviewFragment extends Fragment {
     public static AlbumPreviewFragment getInstance(String path) {
         AlbumPreviewFragment fragment = new AlbumPreviewFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(Type, FunctionConfig.TYPE_IMAGE);
+        bundle.putInt(Type, FunctionKey.VALUE_TYPE_IMAGE);
         bundle.putString(PATH, path);
         bundle.putBoolean(clickType, false);
 
@@ -63,7 +63,7 @@ public class AlbumPreviewFragment extends Fragment {
     public static AlbumPreviewFragment getInstance(String path, boolean type) {
         AlbumPreviewFragment fragment = new AlbumPreviewFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(Type, FunctionConfig.TYPE_IMAGE);
+        bundle.putInt(Type, FunctionKey.VALUE_TYPE_IMAGE);
         bundle.putBoolean(clickType, type);
         bundle.putString(PATH, path);
         fragment.setArguments(bundle);
@@ -129,7 +129,7 @@ public class AlbumPreviewFragment extends Fragment {
     private void initData() {
 
         imageView = mRootView.findViewById(R.id.preview_image);
-        localMedia = getArguments().getInt(Type, FunctionConfig.TYPE_IMAGE);
+        localMedia = getArguments().getInt(Type, FunctionKey.VALUE_TYPE_IMAGE);
         videoView = mRootView.findViewById(R.id.vv_view);
         boolean type = getArguments().getBoolean(clickType);
         if (type) {
@@ -146,7 +146,7 @@ public class AlbumPreviewFragment extends Fragment {
         final ProgressBar progressBar = mRootView.findViewById(R.id.pb_bar);
         progressBar.setVisibility(View.VISIBLE);
         switch (localMedia) {
-            case FunctionConfig.TYPE_IMAGE:
+            case FunctionKey.VALUE_TYPE_IMAGE:
 //                imageView.setMaxScale(6);
 //                imageView.enable();
                 Glide.with(getContext())
@@ -167,7 +167,7 @@ public class AlbumPreviewFragment extends Fragment {
                         })
                         .into(imageView);
                 break;
-            case FunctionConfig.TYPE_VIDEO:
+            case FunctionKey.VALUE_TYPE_VIDEO:
                 videoView.setMediaController(new MediaController(getContext()));
                 videoView.setVideoURI(Uri.parse(path));
                 videoView.start();

@@ -17,7 +17,7 @@ import com.hqq.album.Adapter.FragmentAdapter;
 import com.hqq.album.AppManager;
 import com.hqq.album.R;
 import com.hqq.album.activity.base.BaseActivity;
-import com.hqq.album.common.FunctionConfig;
+import com.hqq.album.common.FunctionKey;
 import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.common.PictureConfig;
 import com.hqq.album.dialog.OptAnimationLoader;
@@ -63,12 +63,12 @@ public class AlbumPreviewActivity extends BaseActivity implements View.OnClickLi
 
 
         mLocalMediaList = PictureConfig.getInstance().getSelectLocalMedia();
-        mTvTitle.setText(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) + "/" + mLocalMediaList.size());
+        mTvTitle.setText(getIntent().getIntExtra(FunctionKey.KEY_POSITION, 1) + "/" + mLocalMediaList.size());
 
         mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), mLocalMediaList);
         mViewPager.setAdapter(mFragmentAdapter);
 
-        mViewPager.setCurrentItem(getIntent().getIntExtra(FunctionConfig.FOLDER_DETAIL_POSITION, 1) - 1);
+        mViewPager.setCurrentItem(getIntent().getIntExtra(FunctionKey.KEY_POSITION, 1) - 1);
 
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRelativeLayout.getLayoutParams();
         layoutParams.setMargins(0, AlbumUtils.getStatusBarHeight(this), 0, 0);

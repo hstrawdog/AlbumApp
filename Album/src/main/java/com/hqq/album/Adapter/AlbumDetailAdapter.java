@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hqq.album.R;
-import com.hqq.album.common.FunctionConfig;
+import com.hqq.album.common.FunctionKey;
 import com.hqq.album.common.PictureConfig;
 import com.hqq.album.dialog.OptAnimationLoader;
 import com.hqq.album.entity.LocalMedia;
@@ -65,13 +65,13 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         selectImage(contentHolder, isSelected(image), false);
         RequestOptions options = new RequestOptions().placeholder(R.drawable.image_placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE).centerCrop();
-        if (image.getType() == FunctionConfig.TYPE_IMAGE) {
+        if (image.getType() == FunctionKey.VALUE_TYPE_IMAGE) {
             Glide.with(holder.itemView.getContext())
                     .load(image.getPath())
                     .apply(options)
                     // .override(150, 150)
                     .into(contentHolder.picture);
-        } else if (image.getType() == FunctionConfig.TYPE_VIDEO) {
+        } else if (image.getType() == FunctionKey.VALUE_TYPE_VIDEO) {
             Glide.with(holder.itemView.getContext()).load(image.getPath()).thumbnail(0.5f).into(contentHolder.picture);
         }
 
