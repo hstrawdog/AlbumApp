@@ -1,8 +1,8 @@
 package com.hqq.album.common;
 
-import java.util.List;
-
 import com.hqq.album.entity.LocalMedia;
+
+import java.util.List;
 
 /**
  * @version V1.0 <描述当前版本功能>
@@ -11,6 +11,7 @@ import com.hqq.album.entity.LocalMedia;
  * @FileName: cn.hqq.halbum.common.OnSelectResultCallback.java
  * @emain: 593979591@qq.com
  * @date: 2018-11-02 15:14
+ * 单利的回调会造成内存泄漏
  */
 public interface OnSelectResultCallback {
     /**
