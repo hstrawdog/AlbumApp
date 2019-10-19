@@ -19,19 +19,16 @@
         android:supportsRtl="true">
         <activity
             android:name="com.hqq.album.activity.AlbumDirectoryActivity"
-            android:theme="@style/NoTitle"></activity>
+            android:theme="@style/NoTitle"/>
         <activity
             android:name="com.hqq.album.activity.AlbumDetailActivity"
-            android:theme="@style/NoTitle"></activity>
-        <activity
-            android:name="com.hqq.album.activity.AlbumPreviewActivity"
-            android:theme="@style/NoTitle" />
+            android:theme="@style/NoTitle"/>
         <activity
             android:name="com.hqq.album.activity.AlbumPreviewV2Activity"
             android:theme="@style/NoTitle" />
         <activity
             android:name="com.hqq.album.activity.PreviewUrlActivity"
-            android:theme="@style/NoTitle"></activity>
+            android:theme="@style/NoTitle"/>
     </application>
 
 </manifest>
