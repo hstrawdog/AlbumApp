@@ -35,6 +35,21 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
     private static final int CODE_CLOSE = 0x9910;
     private RecyclerView mRecyclerView;
 
+
+    TextView mTvFinish;
+    TextView mTvTile;
+    AlbumDetailAdapter mAlbumDetailAdapter;
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        List<LocalMedia> list = PictureConfig.getInstance().getSelectLocalMedia();
+        mAlbumDetailAdapter.bindImagesData(list);
+        mTvFinish.setText("完成(" + PictureConfig.getInstance().getSelectMedia().size() + "/" + PictureConfig.getInstance().getBuilder().getMaxSelectNum() + ")");
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +57,6 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
         initViews();
     }
 
-
-    TextView mTvFinish;
-    TextView mTvTile;
-    AlbumDetailAdapter mAlbumDetailAdapter;
 
     private void initViews() {
         mRecyclerView = (RecyclerView) findViewById(R.id.rcv_album_detail);
@@ -56,23 +67,11 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
 
         mRecyclerView.setAdapter(mAlbumDetailAdapter);
         mAlbumDetailAdapter.setOnPhotoSelectChangedListener(this);
-
-
         findViewById(R.id.album_back).setOnClickListener(this);
         findViewById(R.id.album_finish).setOnClickListener(this);
         mTvFinish = (TextView) findViewById(R.id.album_finish);
         mTvTile = (TextView) findViewById(R.id.album_title);
         mTvTile.setText(getIntent().getStringExtra(FunctionKey.KEY_FOLDER_NAME));
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        List<LocalMedia> list = PictureConfig.getInstance().getSelectLocalMedia();
-        mAlbumDetailAdapter.bindImagesData(list);
-        mTvFinish.setText("完成(" + PictureConfig.getInstance().getSelectMedia().size() + "/" + PictureConfig.getInstance().getBuilder().getMaxSelectNum() + ")");
-
     }
 
     @Override

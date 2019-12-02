@@ -82,7 +82,6 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         PictureConfig.getInstance().setSelectLocalMedia(null);
     }
 
-
     @Override
     public void onItemClick(String folderName, List<LocalMedia> images) {
 

@@ -6,15 +6,7 @@
   -->
 <resources>
     <!-- Title -->
-    <dimen name="title_view_left_back_padding_left">12.0dip</dimen>
-    <dimen name="title_view_left_back_padding_right">12.0dip</dimen>
     <dimen name="header_bar_height">@dimen/x88</dimen>
-    <dimen name="album_header_bar_height">50.0dip</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-
-    <dimen name="middle_text_size">17sp</dimen>
     <dimen name="margin_text">8dp</dimen>
 
 </resources>

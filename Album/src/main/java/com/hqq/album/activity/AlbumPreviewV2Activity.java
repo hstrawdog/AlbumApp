@@ -100,29 +100,6 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
 
     }
 
-    private void initView() {
-        mRcAlbumList = (RecyclerView) findViewById(R.id.rc_album_list);
-        mAlbumTitleBar = (ConstraintLayout) findViewById(R.id.album_title_bar);
-        mAlbumBack = (FilterImageView) findViewById(R.id.album_back);
-        mAlbumTitle = (TextView) findViewById(R.id.album_title);
-        mLlCheck = (LinearLayout) findViewById(R.id.ll_check);
-        mTvCheck = (ImageView) findViewById(R.id.tv_check);
-        mLlComplete = (LinearLayout) findViewById(R.id.ll_complete);
-        mAlbumFinish = (TextView) findViewById(R.id.album_finish);
-
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mAlbumTitleBar.getLayoutParams();
-        layoutParams.setMargins(0, AlbumUtils.getStatusBarHeight(this), 0, 0);
-        mAlbumTitleBar.setLayoutParams(layoutParams);
-
-        mAlbumBack.setOnClickListener(this);
-        mLlCheck.setOnClickListener(this);
-        mAlbumFinish.setOnClickListener(this);
-
-        mLocalMediaList = PictureConfig.getInstance().getSelectLocalMedia();
-        mAlbumTitle.setText(getIntent().getIntExtra(FunctionKey.KEY_POSITION, 1) + "/" + mLocalMediaList.size());
-
-    }
-
     @Override
     public void onClick(View v) {
         int i = v.getId();
@@ -160,6 +137,29 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
         }
     }
 
+
+    private void initView() {
+        mRcAlbumList = (RecyclerView) findViewById(R.id.rc_album_list);
+        mAlbumTitleBar = (ConstraintLayout) findViewById(R.id.album_title_bar);
+        mAlbumBack = (FilterImageView) findViewById(R.id.album_back);
+        mAlbumTitle = (TextView) findViewById(R.id.album_title);
+        mLlCheck = (LinearLayout) findViewById(R.id.ll_check);
+        mTvCheck = (ImageView) findViewById(R.id.tv_check);
+        mLlComplete = (LinearLayout) findViewById(R.id.ll_complete);
+        mAlbumFinish = (TextView) findViewById(R.id.album_finish);
+
+        //  RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mAlbumTitleBar.getLayoutParams();
+        //    layoutParams.setMargins(0, AlbumUtils.getStatusBarHeight(this), 0, 0);
+        //   mAlbumTitleBar.setLayoutParams(layoutParams);
+
+        mAlbumBack.setOnClickListener(this);
+        mLlCheck.setOnClickListener(this);
+        mAlbumFinish.setOnClickListener(this);
+
+        mLocalMediaList = PictureConfig.getInstance().getSelectLocalMedia();
+        mAlbumTitle.setText(getIntent().getIntExtra(FunctionKey.KEY_POSITION, 1) + "/" + mLocalMediaList.size());
+
+    }
 
     private void updateSelectMenu() {
         if ((PictureConfig.getInstance().getSelectMedia().size() > 0)) {

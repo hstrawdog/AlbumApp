@@ -67,6 +67,15 @@ import java.util.List;
  */
 public class PreviewUrlActivity extends BaseActivity implements View.OnClickListener {
     List<String> mLocalMediaList;
+    private RecyclerView mRcAlbumList;
+    private ConstraintLayout mAlbumTitleBar;
+    private FilterImageView mAlbumBack;
+    private TextView mAlbumTitle;
+    private LinearLayout mLlCheck;
+    private ImageView mTvCheck;
+    private LinearLayout mLlComplete;
+    private TextView mAlbumFinish;
+    int mPosition = 0;
 
 
     public static void goPreviewUrlActivity2LocalMedia(Activity context, List<LocalMedia> data, int position) {
@@ -99,17 +108,6 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
         context.startActivity(intent);
         context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
-
-
-    private RecyclerView mRcAlbumList;
-    private ConstraintLayout mAlbumTitleBar;
-    private FilterImageView mAlbumBack;
-    private TextView mAlbumTitle;
-    private LinearLayout mLlCheck;
-    private ImageView mTvCheck;
-    private LinearLayout mLlComplete;
-    private TextView mAlbumFinish;
-    int mPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +145,14 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
 
     }
 
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.album_back) {
+            AppManager.getAppManager().finishActivity();
+        }
+    }
+
     private void initView() {
         mRcAlbumList = (RecyclerView) findViewById(R.id.rc_album_list);
         mAlbumTitleBar = (ConstraintLayout) findViewById(R.id.album_title_bar);
@@ -157,9 +163,9 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
         mLlComplete = (LinearLayout) findViewById(R.id.ll_complete);
         mAlbumFinish = (TextView) findViewById(R.id.album_finish);
 
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mAlbumTitleBar.getLayoutParams();
-        layoutParams.setMargins(0, AlbumUtils.getStatusBarHeight(this), 0, 0);
-        mAlbumTitleBar.setLayoutParams(layoutParams);
+//        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mAlbumTitleBar.getLayoutParams();
+//        layoutParams.setMargins(0, AlbumUtils.getStatusBarHeight(this), 0, 0);
+//        mAlbumTitleBar.setLayoutParams(layoutParams);
 
         mAlbumBack.setOnClickListener(this);
         mLlCheck.setOnClickListener(this);
@@ -167,14 +173,6 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
 
         mAlbumTitle.setText(getIntent().getIntExtra(FunctionKey.KEY_POSITION, 1) + "/" + mLocalMediaList.size());
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.album_back) {
-            AppManager.getAppManager().finishActivity();
-        }
     }
 
     private void updateSelectMenu() {
