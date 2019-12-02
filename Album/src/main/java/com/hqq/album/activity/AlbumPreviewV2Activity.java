@@ -213,7 +213,7 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
 
 
             viewHolder.progressBar.setVisibility(View.VISIBLE);
-            switch (localMedia.getType()) {
+            switch (localMedia.getLocalMediaType()) {
                 case FunctionKey.VALUE_TYPE_IMAGE:
                     Glide.with(context)
                             .load(localMedia.getPath())

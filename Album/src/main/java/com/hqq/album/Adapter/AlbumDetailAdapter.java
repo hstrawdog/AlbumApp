@@ -65,13 +65,13 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         selectImage(contentHolder, isSelected(image), false);
         RequestOptions options = new RequestOptions().placeholder(R.drawable.image_placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE).centerCrop();
-        if (image.getType() == FunctionKey.VALUE_TYPE_IMAGE) {
+        if (image.getLocalMediaType() == FunctionKey.VALUE_TYPE_IMAGE) {
             Glide.with(holder.itemView.getContext())
                     .load(image.getPath())
                     .apply(options)
                     // .override(150, 150)
                     .into(contentHolder.picture);
-        } else if (image.getType() == FunctionKey.VALUE_TYPE_VIDEO) {
+        } else if (image.getLocalMediaType() == FunctionKey.VALUE_TYPE_VIDEO) {
             Glide.with(holder.itemView.getContext()).load(image.getPath()).thumbnail(0.5f).into(contentHolder.picture);
         }
 

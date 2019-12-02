@@ -211,7 +211,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
                 // 生成新拍照片或视频对象
                 LocalMedia media = new LocalMedia();
                 media.setPath(cameraPath);
-                media.setType(1);
+                media.setLocalMediaType(1);
                 List<LocalMedia> result;
                 // 去压缩
                 result = new ArrayList<>();

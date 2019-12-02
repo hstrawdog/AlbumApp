@@ -17,15 +17,16 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
 
+import com.hqq.album.R;
+import com.hqq.album.annotation.LocalMediaType;
+import com.hqq.album.entity.LocalMedia;
+import com.hqq.album.entity.LocalMediaFolder;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import com.hqq.album.R;
-import com.hqq.album.entity.LocalMedia;
-import com.hqq.album.entity.LocalMediaFolder;
 
 /**
  * 在此写用途
@@ -53,10 +54,11 @@ public class LocalMediaLoader {
             MediaStore.Video.Media.DURATION,
     };
 
-    private int type = FunctionKey.VALUE_TYPE_IMAGE;
+    @LocalMediaType
+    private int type = LocalMediaType.VALUE_TYPE_IMAGE;
     private FragmentActivity activity;
 
-    public LocalMediaLoader(FragmentActivity activity, int type, boolean isGif) {
+    public LocalMediaLoader(FragmentActivity activity,     @LocalMediaType int type, boolean isGif) {
         this.activity = activity;
         this.type = type;
         this.isGif = isGif;

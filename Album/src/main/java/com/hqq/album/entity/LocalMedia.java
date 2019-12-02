@@ -11,6 +11,8 @@ package com.hqq.album.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.hqq.album.annotation.LocalMediaType;
+
 /**
  * 在此写用途
  *
@@ -60,17 +62,18 @@ public class LocalMedia implements Parcelable {
     /**
      * 类型 图片 视频
      */
-    private int type;
+    @LocalMediaType
+    private int localMediaType;
 
 
     public LocalMedia() {
     }
 
-    public LocalMedia(String path, long lastUpdateAt, long duration, int type) {
+    public LocalMedia(String path, long lastUpdateAt, long duration, @LocalMediaType int type) {
         this.path = path;
         this.duration = duration;
         this.lastUpdateAt = lastUpdateAt;
-        this.type = type;
+        this.localMediaType = type;
     }
 
     public String getCutPath() {
@@ -97,12 +100,13 @@ public class LocalMedia implements Parcelable {
         this.compressPath = compressPath;
     }
 
-    public int getType() {
-        return type;
+    public int getLocalMediaType() {
+        return localMediaType;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public LocalMedia setLocalMediaType(@LocalMediaType int localMediaType) {
+        this.localMediaType = localMediaType;
+        return this;
     }
 
     public boolean isChecked() {
@@ -168,7 +172,7 @@ public class LocalMedia implements Parcelable {
         dest.writeByte(this.isChecked ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isCut ? (byte) 1 : (byte) 0);
         dest.writeInt(this.position);
-        dest.writeInt(this.type);
+        dest.writeInt(this.localMediaType);
     }
 
     protected LocalMedia(Parcel in) {
@@ -180,7 +184,7 @@ public class LocalMedia implements Parcelable {
         this.isChecked = in.readByte() != 0;
         this.isCut = in.readByte() != 0;
         this.position = in.readInt();
-        this.type = in.readInt();
+        this.localMediaType = in.readInt();
     }
 
     public static final Creator<LocalMedia> CREATOR = new Creator<LocalMedia>() {
