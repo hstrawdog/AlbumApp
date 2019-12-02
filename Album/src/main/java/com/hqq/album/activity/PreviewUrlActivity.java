@@ -208,7 +208,8 @@ public class PreviewUrlActivity extends BaseActivity implements View.OnClickList
             viewHolder.progressBar.setVisibility(View.VISIBLE);
             Glide.with(context)
                     .load(localMedia)
-                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .apply(new RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
