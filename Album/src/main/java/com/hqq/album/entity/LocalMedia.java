@@ -35,7 +35,14 @@ public class LocalMedia implements Parcelable {
      */
     private String cutPath;
 
+    /**
+     * 应该是 视频的时长
+     */
     private long duration;
+
+    /**
+     * 添加时间
+     */
     private long lastUpdateAt;
 
     /**
@@ -50,33 +57,13 @@ public class LocalMedia implements Parcelable {
      * 预览下标
      */
     public int position;
-    private int num;
+    /**
+     * 类型 图片 视频
+     */
     private int type;
 
 
-    /**
-     * 上传进度
-     * 999  是成功
-     */
-    int progress;
-    /**
-     * 上传后得地址
-     */
-    String netPath;
-
-    /**
-     * id
-     */
-    String netId;
-
-    private Object tags;
-
-    public Object getTags() {
-        return tags;
-    }
-
-    public void setTags(Object tags) {
-        this.tags = tags;
+    public LocalMedia() {
     }
 
     public LocalMedia(String path, long lastUpdateAt, long duration, int type) {
@@ -85,21 +72,6 @@ public class LocalMedia implements Parcelable {
         this.lastUpdateAt = lastUpdateAt;
         this.type = type;
     }
-
-    public LocalMedia(String path, long duration, long lastUpdateAt,
-                      boolean isChecked, int position, int num, int type) {
-        this.path = path;
-        this.duration = duration;
-        this.lastUpdateAt = lastUpdateAt;
-        this.isChecked = isChecked;
-        this.position = position;
-        this.num = num;
-        this.type = type;
-    }
-
-    public LocalMedia() {
-    }
-
 
     public String getCutPath() {
         return cutPath;
@@ -117,8 +89,6 @@ public class LocalMedia implements Parcelable {
         isCut = cut;
     }
 
-
-
     public String getCompressPath() {
         return compressPath;
     }
@@ -127,38 +97,13 @@ public class LocalMedia implements Parcelable {
         this.compressPath = compressPath;
     }
 
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
-
     public int getType() {
         return type;
-    }
-
-    public String getNetPath() {
-        return netPath == null ? "" : netPath;
-    }
-
-    public void setNetPath(String netPath) {
-        this.netPath = netPath;
-    }
-
-    public String getNetId() {
-        return netId == null ? "" : netId;
-    }
-
-    public void setNetId(String netId) {
-        this.netId = netId;
     }
 
     public void setType(int type) {
         this.type = type;
     }
-
 
     public boolean isChecked() {
         return isChecked;
@@ -208,14 +153,6 @@ public class LocalMedia implements Parcelable {
         this.position = position;
     }
 
-    public int getProgress() {
-        return progress;
-    }
-
-    public void setProgress(int progress) {
-        this.progress = progress;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -231,12 +168,7 @@ public class LocalMedia implements Parcelable {
         dest.writeByte(this.isChecked ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isCut ? (byte) 1 : (byte) 0);
         dest.writeInt(this.position);
-        dest.writeInt(this.num);
         dest.writeInt(this.type);
-        dest.writeInt(this.progress);
-        dest.writeString(this.netPath);
-        dest.writeString(this.netId);
-        dest.writeParcelable((Parcelable) this.tags, flags);
     }
 
     protected LocalMedia(Parcel in) {
@@ -248,12 +180,7 @@ public class LocalMedia implements Parcelable {
         this.isChecked = in.readByte() != 0;
         this.isCut = in.readByte() != 0;
         this.position = in.readInt();
-        this.num = in.readInt();
         this.type = in.readInt();
-        this.progress = in.readInt();
-        this.netPath = in.readString();
-        this.netId = in.readString();
-        this.tags = in.readParcelable(Object.class.getClassLoader());
     }
 
     public static final Creator<LocalMedia> CREATOR = new Creator<LocalMedia>() {

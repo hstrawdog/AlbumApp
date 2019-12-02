@@ -172,7 +172,6 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
         } else {
             selectImages.add(image);
-            image.setNum(selectImages.size());
         }
         //通知点击项发生了改变
         //notifyItemChanged(contentHolder.getAdapterPosition());
@@ -189,9 +188,6 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         // if (is_checked_num) {
         for (int index = 0, len = selectImages.size(); index < len; index++) {
             LocalMedia media = selectImages.get(index);
-            media.setNum(index + 1);
-            //     notifyItemChanged(media.position);
-            //   }
         }
     }
 
