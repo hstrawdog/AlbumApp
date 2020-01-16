@@ -55,17 +55,17 @@ public class LocalMediaLoader {
     };
 
     @LocalMediaType
-    private int type = LocalMediaType.VALUE_TYPE_IMAGE;
+    private int mLocalMediaType = LocalMediaType.VALUE_TYPE_IMAGE;
     private FragmentActivity activity;
 
-    public LocalMediaLoader(FragmentActivity activity,     @LocalMediaType int type, boolean isGif) {
+    public LocalMediaLoader(FragmentActivity activity, @LocalMediaType int localMediaType, boolean isGif) {
         this.activity = activity;
-        this.type = type;
+        this.mLocalMediaType = localMediaType;
         this.isGif = isGif;
     }
 
     public void loadAllImage(final LocalMediaLoadListener imageLoadListener) {
-        activity.getSupportLoaderManager().initLoader(type, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+        activity.getSupportLoaderManager().initLoader(mLocalMediaType, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                 CursorLoader cursorLoader = null;
@@ -81,12 +81,12 @@ public class LocalMediaLoader {
                     condition = MediaStore.Images.Media.MIME_TYPE + "=? or "
                             + MediaStore.Images.Media.MIME_TYPE + "=?";
                 }
-                if (id == FunctionKey.VALUE_TYPE_IMAGE) {
+                if (id == LocalMediaType.VALUE_TYPE_IMAGE) {
                     cursorLoader = new CursorLoader(
                             activity, MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                             IMAGE_PROJECTION, condition,
                             select, IMAGE_PROJECTION[2] + " DESC");
-                } else if (id == FunctionKey.VALUE_TYPE_VIDEO) {
+                } else if (id == LocalMediaType.VALUE_TYPE_VIDEO) {
                     cursorLoader = new CursorLoader(
                             activity, MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                             VIDEO_PROJECTION, null, null, VIDEO_PROJECTION[2] + " DESC");
@@ -111,17 +111,17 @@ public class LocalMediaLoader {
                                     continue;
                                 }
                                 long dateTime = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[2]));
-                                int duration = (type == FunctionKey.VALUE_TYPE_VIDEO ? data.getInt(data.getColumnIndexOrThrow(VIDEO_PROJECTION[4])) : 0);
-                                LocalMedia image = new LocalMedia(path, dateTime, duration, type);
+                                int duration = (mLocalMediaType == LocalMediaType.VALUE_TYPE_VIDEO ? data.getInt(data.getColumnIndexOrThrow(VIDEO_PROJECTION[4])) : 0);
+                                LocalMedia image = new LocalMedia(path, dateTime, duration, mLocalMediaType);
                                 LocalMediaFolder folder = getImageFolder(path, imageFolders);
                                 folder.getImages().add(image);
-                                folder.setType(type);
+                                folder.setType(mLocalMediaType);
                                 index++;
                                 folder.setImageNum(folder.getImageNum() + 1);
                                 // 最近相册中  只添加最新的100条
                                 if (index <= 100) {
                                     allImages.add(image);
-                                    allImageFolder.setType(type);
+                                    allImageFolder.setType(mLocalMediaType);
                                     allImageFolder.setImageNum(allImageFolder.getImageNum() + 1);
                                 }
                             } while (data.moveToNext());
@@ -129,18 +129,18 @@ public class LocalMediaLoader {
                                 sortFolder(imageFolders);
                                 imageFolders.add(0, allImageFolder);
                                 String title = "";
-                                switch (type) {
-                                    case FunctionKey.VALUE_TYPE_VIDEO:
+                                switch (mLocalMediaType) {
+                                    case LocalMediaType.VALUE_TYPE_VIDEO:
                                         title = activity.getString(R.string.lately_video);
                                         break;
-                                    case FunctionKey.VALUE_TYPE_IMAGE:
+                                    case LocalMediaType.VALUE_TYPE_IMAGE:
                                         title = activity.getString(R.string.lately_image);
                                         break;
                                     default:
                                 }
                                 allImageFolder.setFirstImagePath(allImages.get(0).getPath());
                                 allImageFolder.setName(title);
-                                allImageFolder.setType(type);
+                                allImageFolder.setType(mLocalMediaType);
                                 allImageFolder.setImages(allImages);
                             }
                             imageLoadListener.loadComplete(imageFolders);

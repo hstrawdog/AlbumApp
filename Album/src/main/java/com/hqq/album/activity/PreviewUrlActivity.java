@@ -34,7 +34,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -51,8 +50,7 @@ import com.hqq.album.R;
 import com.hqq.album.activity.base.BaseActivity;
 import com.hqq.album.common.FunctionKey;
 import com.hqq.album.entity.LocalMedia;
-import com.hqq.album.utils.AlbumUtils;
-import com.hqq.album.weight.FilterImageView;
+import com.hqq.album.customize.FilterImageView;
 
 import java.util.ArrayList;
 import java.util.List;

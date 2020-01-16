@@ -45,7 +45,7 @@ import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.entity.LocalMediaFolder;
 import com.hqq.album.utils.AlbumUtils;
 import com.hqq.album.utils.AlbumFileUtils;
-import com.hqq.album.weight.FilterImageView;
+import com.hqq.album.customize.FilterImageView;
 
 /**
  * 文件夹 选择界面

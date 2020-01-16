@@ -23,7 +23,7 @@
         android:background="@color/white"
         android:gravity="top">
 
-        <com.hqq.album.weight.FilterImageView
+        <com.hqq.album.customize.FilterImageView
             app:layout_constraintLeft_toLeftOf="parent"
             android:id="@+id/album_back"
             android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
             android:textColor="@color/title_text_color"
             android:textSize="@dimen/textsize_18"/>
 
-        <com.hqq.album.weight.FilterImageView
+        <com.hqq.album.customize.FilterImageView
             android:id="@+id/loacal_album_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

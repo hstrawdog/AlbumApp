@@ -13,7 +13,7 @@
  * Contact:
  */
 
-package com.hqq.album.weight;
+package com.hqq.album.customize;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -78,7 +78,6 @@ public class FilterImageView extends ImageView {
         if (drawable != null) {
             //设置滤镜
             drawable.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-            ;
         }
     }
 

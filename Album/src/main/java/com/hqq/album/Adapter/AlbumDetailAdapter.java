@@ -14,19 +14,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.hqq.album.R;
-import com.hqq.album.common.FunctionKey;
+import com.hqq.album.annotation.LocalMediaType;
 import com.hqq.album.common.PictureConfig;
 import com.hqq.album.dialog.OptAnimationLoader;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.utils.AlbumUtils;
+import com.hqq.album.utils.LoadUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by huangqiqiang on 17/5/7.
@@ -60,29 +57,47 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ViewHolder contentHolder = (ViewHolder) holder;
-        final LocalMedia image = images.get(position);
-        image.position = contentHolder.getAdapterPosition();
-        selectImage(contentHolder, isSelected(image), false);
-        RequestOptions options = new RequestOptions().placeholder(R.drawable.image_placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE).centerCrop();
-        if (image.getLocalMediaType() == FunctionKey.VALUE_TYPE_IMAGE) {
-            Glide.with(holder.itemView.getContext())
-                    .load(image.getPath())
-                    .apply(options)
-                    // .override(150, 150)
-                    .into(contentHolder.picture);
-        } else if (image.getLocalMediaType() == FunctionKey.VALUE_TYPE_VIDEO) {
-            Glide.with(holder.itemView.getContext()).load(image.getPath()).thumbnail(0.5f).into(contentHolder.picture);
+        final LocalMedia localMedia = images.get(position);
+        localMedia.position = contentHolder.getAdapterPosition();
+
+        selectImage(contentHolder, isSelected(localMedia), false);
+
+        LoadUtils.loadLocalMediaPath(localMedia.getLocalMediaType(), localMedia.getPath(), contentHolder.mIvPicture);
+
+        if (localMedia.getLocalMediaType() == LocalMediaType.VALUE_TYPE_VIDEO) {
+            contentHolder.mRlDuration.setVisibility(View.VISIBLE);
+            contentHolder.mTvDuration.setText("时长: " + formatDuring(localMedia.getDuration()));
+        } else {
+            contentHolder.mRlDuration.setVisibility(View.GONE);
+
         }
 
-        if (contentHolder.mRlDuration.getVisibility() == View.VISIBLE) {
-            contentHolder.mRlDuration.setVisibility(View.GONE);
-        }
+        bindClick(position, contentHolder, localMedia);
+    }
+
+
+    public static String formatDuring(long mss) {
+        long hours = (mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+        long minutes = (mss % (1000 * 60 * 60)) / (1000 * 60);
+        long seconds = (mss % (1000 * 60)) / 1000;
+        return hours + ":" + minutes + " "
+                + seconds + "";
+    }
+
+
+    /**
+     * 绑定 点击事件
+     *
+     * @param position
+     * @param contentHolder
+     * @param localMedia
+     */
+    private void bindClick(final int position, final ViewHolder contentHolder, final LocalMedia localMedia) {
         contentHolder.mLlCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!AlbumUtils.isFastDoubleClick(200)) {
-                    changeCheckboxState(contentHolder, image);
+                    changeCheckboxState(contentHolder, localMedia);
                 }
             }
         });
@@ -90,10 +105,10 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             @Override
             public void onClick(View v) {
                 if (imageSelectChangedListener != null) {
-                    imageSelectChangedListener.onPictureClick(image, position);
+                    imageSelectChangedListener.onPictureClick(localMedia, position);
                 } else {
                     if (!AlbumUtils.isFastDoubleClick()) {
-                        changeCheckboxState(contentHolder, image);
+                        changeCheckboxState(contentHolder, localMedia);
                     }
                 }
             }
@@ -107,7 +122,7 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView picture;
+        ImageView mIvPicture;
         ImageView check;
         TextView mTvDuration;
         View contentView;
@@ -117,8 +132,8 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
             contentView = itemView;
-            picture = (ImageView) itemView.findViewById(R.id.picture);
-            check =  itemView.findViewById(R.id.check);
+            mIvPicture = (ImageView) itemView.findViewById(R.id.iv_picture);
+            check = itemView.findViewById(R.id.check);
             mLlCheck = (LinearLayout) itemView.findViewById(R.id.ll_check);
             mTvDuration = (TextView) itemView.findViewById(R.id.tv_duration);
             mRlDuration = (RelativeLayout) itemView.findViewById(R.id.rl_duration);
@@ -134,6 +149,13 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return false;
     }
 
+    /**
+     * 设置图片点击效果
+     *
+     * @param holder
+     * @param isChecked
+     * @param isAnim
+     */
     public void selectImage(ViewHolder holder, boolean isChecked, boolean isAnim) {
         holder.check.setSelected(isChecked);
         if (isChecked) {
@@ -141,9 +163,9 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 Animation animation = OptAnimationLoader.loadAnimation(context, R.anim.modal_in);
                 holder.check.startAnimation(animation);
             }
-            holder.picture.setColorFilter(ContextCompat.getColor(context, R.color.image_overlay2), PorterDuff.Mode.SRC_ATOP);
+            holder.mIvPicture.setColorFilter(ContextCompat.getColor(context, R.color.image_overlay2), PorterDuff.Mode.SRC_ATOP);
         } else {
-            holder.picture.setColorFilter(ContextCompat.getColor(context, R.color.image_overlay), PorterDuff.Mode.SRC_ATOP);
+            holder.mIvPicture.setColorFilter(ContextCompat.getColor(context, R.color.image_overlay), PorterDuff.Mode.SRC_ATOP);
         }
     }
 

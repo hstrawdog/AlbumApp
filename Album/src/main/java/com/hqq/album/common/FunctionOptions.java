@@ -1,5 +1,7 @@
 package com.hqq.album.common;
 
+import com.hqq.album.annotation.LocalMediaType;
+
 /**
  * @version V1.0 <描述当前版本功能>
  * @author: huangqiqiang
@@ -24,7 +26,7 @@ public class FunctionOptions {
     /**
      * 默认显示的图片
      */
-    private int albumType = FunctionKey.VALUE_TYPE_IMAGE;
+    private int albumType = LocalMediaType.VALUE_TYPE_IMAGE;
 
     private boolean isStartUpCamera() {
         return startUpCamera;

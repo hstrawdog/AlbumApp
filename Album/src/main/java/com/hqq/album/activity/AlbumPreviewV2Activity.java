@@ -1,35 +1,19 @@
 package com.hqq.album.activity;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
+import com.hqq.album.Adapter.PreviewAdapter;
 import com.hqq.album.AppManager;
 import com.hqq.album.R;
 import com.hqq.album.activity.base.BaseActivity;
@@ -38,8 +22,7 @@ import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.common.PictureConfig;
 import com.hqq.album.dialog.OptAnimationLoader;
 import com.hqq.album.entity.LocalMedia;
-import com.hqq.album.utils.AlbumUtils;
-import com.hqq.album.weight.FilterImageView;
+import com.hqq.album.customize.FilterImageView;
 
 import java.util.List;
 
@@ -64,17 +47,15 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
     private TextView mAlbumFinish;
     List<LocalMedia> mLocalMediaList;
     int mPosition = 0;
+    PreviewAdapter mPreviewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_preview_v2);
         initView();
-
-        PreviewAdapter previewAdapter = new PreviewAdapter();
         mRcAlbumList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         new PagerSnapHelper().attachToRecyclerView(mRcAlbumList);
-        mRcAlbumList.setAdapter(previewAdapter);
         mRcAlbumList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -157,7 +138,10 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
         mAlbumFinish.setOnClickListener(this);
 
         mLocalMediaList = PictureConfig.getInstance().getSelectLocalMedia();
+
         mAlbumTitle.setText(getIntent().getIntExtra(FunctionKey.KEY_POSITION, 1) + "/" + mLocalMediaList.size());
+        mPreviewAdapter = new PreviewAdapter(this, mLocalMediaList);
+        mRcAlbumList.setAdapter(mPreviewAdapter);
 
     }
 
@@ -186,84 +170,6 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
             }
         }
         return false;
-    }
-
-
-    class PreviewAdapter extends RecyclerView.Adapter<PreviewAdapter.ViewHolder> {
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_album_preview, viewGroup, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-            initData(AlbumPreviewV2Activity.this, viewHolder, mLocalMediaList.get(i));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mLocalMediaList.size();
-        }
-
-
-        private void initData(final Context context, final ViewHolder viewHolder, LocalMedia localMedia) {
-
-
-            viewHolder.progressBar.setVisibility(View.VISIBLE);
-            switch (localMedia.getLocalMediaType()) {
-                case FunctionKey.VALUE_TYPE_IMAGE:
-                    Glide.with(context)
-                            .load(localMedia.getPath())
-                            .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    Toast.makeText(context, "图片预览失败", Toast.LENGTH_SHORT).show();
-                                    return false;
-                                }
-
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    viewHolder.progressBar.setVisibility(View.GONE);
-                                    return false;
-                                }
-                            })
-                            .into(viewHolder.imageView);
-                    break;
-                case FunctionKey.VALUE_TYPE_VIDEO:
-                    viewHolder.videoView.setMediaController(new MediaController(context));
-                    viewHolder.videoView.setVideoURI(Uri.parse(localMedia.getPath()));
-                    viewHolder.videoView.start();
-                    viewHolder.videoView.requestFocus();
-                    viewHolder.imageView.setVisibility(View.GONE);
-                    viewHolder.progressBar.setVisibility(View.GONE);
-
-                    break;
-                default:
-
-            }
-        }
-
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-
-            VideoView videoView;
-            ImageView imageView;
-            ProgressBar progressBar;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                imageView = itemView.findViewById(R.id.preview_image);
-                videoView = itemView.findViewById(R.id.vv_view);
-                progressBar = itemView.findViewById(R.id.pb_bar);
-
-            }
-        }
-
-
     }
 
 

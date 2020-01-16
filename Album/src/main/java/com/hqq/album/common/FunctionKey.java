@@ -19,14 +19,6 @@ package com.hqq.album.common;
  */
 public class FunctionKey {
     /**
-     * 图片类型
-     */
-    public static final int VALUE_TYPE_IMAGE = 1;
-    /**
-     * 视频类型
-     */
-    public static final int VALUE_TYPE_VIDEO = 2;
-    /**
      * 请求拍照
      */
     public final static int REQUEST_CODE_REQUEST_CAMERA = 0x99;

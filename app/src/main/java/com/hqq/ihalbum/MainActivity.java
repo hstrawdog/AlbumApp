@@ -25,7 +25,9 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
- /**
+import static com.hqq.album.annotation.LocalMediaType.VALUE_TYPE_VIDEO;
+
+/**
   * @Author : huangqiqiang
   * @Package : com.hqq.ihalbum
   * @FileName :   MainActivity
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 FunctionOptions.Builder builder = new FunctionOptions.Builder();
+//                builder.setAlbumType(VALUE_TYPE_VIDEO);
                 builder.setMaxSelectNum(10).setStartAlbum();
                 PictureConfig.getInstance().openPhoto(MainActivity.this, builder, new OnSelectResultCallback() {
                     @Override

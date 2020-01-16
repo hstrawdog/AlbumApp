@@ -23,10 +23,13 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bumptech.glide.signature.ObjectKey;
 import com.hqq.album.R;
+import com.hqq.album.annotation.LocalMediaType;
 import com.hqq.album.common.FunctionKey;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.entity.LocalMediaFolder;
+import com.hqq.album.utils.LoadUtils;
 
 /**
  * 在此写用途
@@ -65,29 +68,17 @@ public class AlbumDirectoryAdapter extends RecyclerView.Adapter<AlbumDirectoryAd
         final LocalMediaFolder folder = folders.get(position);
         String name = folder.getName();
         int imageNum = folder.getImageNum();
-        String imagePath = folder.getFirstImagePath();
         if (folder.isChecked()) {
             holder.mTvImgNum.setVisibility(View.VISIBLE);
             holder.mTvImgNum.setText(folder.getCheckedNum() + "");
         } else {
             holder.mTvImgNum.setVisibility(View.INVISIBLE);
         }
-        int type = folder.getType();
-        if (type == FunctionKey.VALUE_TYPE_VIDEO) {
-            Glide.with(holder.itemView.getContext()).load(imagePath).thumbnail(0.5f).into(holder.mFirstImage);
-        } else {
+        LoadUtils.loadLocalMediaPath(folder.getType(), folder.getFirstImagePath(), holder.mFirstImage);
 
-            RequestOptions options =new RequestOptions().placeholder(R.drawable.image_placeholder)
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE).centerCrop().override(180,180);
-            Glide.with(holder.itemView.getContext())
-                    .load(imagePath)
-                    .apply(options)
-                    .into(holder.mFirstImage);
-
-        }
         holder.mImageNum.setText("(" + imageNum + ")");
         holder.mTvFolderName.setText(name);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (onItemClickListener != null) {

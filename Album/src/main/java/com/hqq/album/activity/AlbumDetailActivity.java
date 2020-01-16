@@ -34,12 +34,9 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
 
     private static final int CODE_CLOSE = 0x9910;
     private RecyclerView mRecyclerView;
-
-
     TextView mTvFinish;
     TextView mTvTile;
     AlbumDetailAdapter mAlbumDetailAdapter;
-
 
     @Override
     protected void onResume() {
