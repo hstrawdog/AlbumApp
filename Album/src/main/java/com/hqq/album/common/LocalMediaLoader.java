@@ -144,7 +144,6 @@ public class LocalMediaLoader {
                                 allImageFolder.setImages(allImages);
                             }
                             imageLoadListener.loadComplete(imageFolders);
-                            data.close();
                         } else {
                             // 如果没有相册
                             imageLoadListener.loadComplete(imageFolders);
