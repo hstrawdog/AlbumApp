@@ -9,12 +9,12 @@
     tools:context="com.hqq.album.activity.AlbumPreviewV2Activity">
 
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rc_album_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/album_title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x88">
@@ -64,7 +64,7 @@
                 android:src="@drawable/checkbox_selector" />
         </LinearLayout>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <LinearLayout

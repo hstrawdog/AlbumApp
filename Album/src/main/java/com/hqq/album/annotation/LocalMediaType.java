@@ -1,6 +1,6 @@
 package com.hqq.album.annotation;
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 /**
  * @Author : huangqiqiang

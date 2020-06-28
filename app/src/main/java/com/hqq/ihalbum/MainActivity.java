@@ -1,6 +1,6 @@
 package com.hqq.ihalbum;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -24,8 +24,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
-import static com.hqq.album.annotation.LocalMediaType.VALUE_TYPE_VIDEO;
 
 /**
   * @Author : huangqiqiang
