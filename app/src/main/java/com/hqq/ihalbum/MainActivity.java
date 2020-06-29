@@ -1,6 +1,7 @@
 package com.hqq.ihalbum;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -26,13 +27,13 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 /**
-  * @Author : huangqiqiang
-  * @Package : com.hqq.ihalbum
-  * @FileName :   MainActivity
-  * @Date  : 2019/9/16 0016  下午 8:33
-  * @Email :  qiqiang213@gmail.com
-  * @Descrive :
-  */
+ * @Author : huangqiqiang
+ * @Package : com.hqq.ihalbum
+ * @FileName :   MainActivity
+ * @Date : 2019/9/16 0016  下午 8:33
+ * @Email :  qiqiang213@gmail.com
+ * @Descrive :
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -113,6 +114,13 @@ public class MainActivity extends AppCompatActivity {
                 String gif = "https://images.shangwenwan.com/mall/6d392bfd-6273-4992-a24d-74f4b39b19d3?imageMogr2/size-limit/54.7k!/crop/!485x485a6a8";
                 PreviewUrlActivity.goPreviewUrlActivity(MainActivity.this, gif);
 
+            }
+        });
+
+        findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main2Activity.open(MainActivity.this);
             }
         });
     }

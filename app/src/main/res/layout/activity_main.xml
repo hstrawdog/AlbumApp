@@ -39,6 +39,11 @@
         android:layout_height="wrap_content"
         android:text="Gif预览" />
 
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="下个页面" />
 
 
 </LinearLayout>
