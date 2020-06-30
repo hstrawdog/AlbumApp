@@ -23,7 +23,6 @@ public class Main2Activity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         new Thread() {
             @Override
             public void run() {
@@ -31,7 +30,5 @@ public class Main2Activity extends MainActivity {
                 SystemClock.sleep(240000);
             }
         }.start();
-
-
     }
 }

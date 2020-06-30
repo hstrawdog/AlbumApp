@@ -1,5 +1,10 @@
 package com.hqq.album.common;
 
+import android.app.Activity;
+import android.content.Intent;
+
+import com.hqq.album.activity.AlbumDetailActivity;
+import com.hqq.album.activity.AlbumDirectoryActivity;
 import com.hqq.album.annotation.LocalMediaType;
 
 /**
@@ -11,6 +16,7 @@ import com.hqq.album.annotation.LocalMediaType;
  * @date: 2017-05-07 22:19
  */
 public class FunctionOptions {
+    Album mAlbum;
     /**
      * 多选最大可选数量
      */
@@ -27,6 +33,10 @@ public class FunctionOptions {
      * 默认显示的图片
      */
     private int albumType = LocalMediaType.VALUE_TYPE_IMAGE;
+
+    public FunctionOptions(Album album) {
+        mAlbum = album;
+    }
 
     private boolean isStartUpCamera() {
         return startUpCamera;
@@ -56,108 +66,17 @@ public class FunctionOptions {
         return albumType;
     }
 
-    private void setAlbumType(int albumType) {
+    protected FunctionOptions setAlbumType(int albumType) {
         this.albumType = albumType;
+        return this;
     }
 
-    public static class Builder {
-        private FunctionOptions options;
 
-        public Builder() {
-            options = new FunctionOptions();
-        }
-
-        public FunctionOptions getOptions() {
-            return options;
-        }
-
-        /**
-         * 设置 选择的最大数量
-         *
-         * @param maxSelectNum
-         * @return
-         */
-        public Builder setMaxSelectNum(int maxSelectNum) {
-            options.setMaxSelectNum(maxSelectNum);
-            return this;
-        }
-
-        /**
-         * 隐藏相机图标
-         *
-         * @param
-         * @return
-         */
-        public Builder setDisplayCamera() {
-            options.setDisplayCamera(false);
-            return this;
-        }
-
-        /**
-         * 是否显示相机图标
-         *
-         * @return
-         */
-        public boolean isDisplayCamera() {
-            return options.isDisplayCamera();
-        }
-
-        /**
-         * 设置直接启动相机拍照
-         *
-         * @return
-         */
-        public Builder setStartCamera() {
-            options.setStartUpCamera(true);
-            return this;
-        }
-
-        /**
-         * 判断是否启动相机
-         *
-         * @returnStartUp
-         */
-        public boolean isStartUpCamera() {
-            return options.isStartUpCamera();
-        }
-
-        /**
-         * 启动相册
-         *
-         * @param
-         * @return
-         */
-        public Builder setStartAlbum() {
-            options.startUpCamera = false;
-            return this;
-        }
+    public void forResult(int requestCode) {
+        Activity activity = mAlbum.getActivity();
+        Intent intent = new Intent(activity, AlbumDetailActivity.class);
+        activity.startActivityForResult(intent, requestCode);
 
 
-        /**
-         * 获取相册类型
-         *
-         * @return 类型
-         */
-        public int getAlbumType() {
-            return options.getAlbumType();
-        }
-
-        /**
-         * 设置相册显示的类型
-         *
-         * @param typeVideo
-         */
-        public void setAlbumType(int typeVideo) {
-            options.setAlbumType(typeVideo);
-        }
-
-        /**
-         * 获取选择的最大数
-         *
-         * @return
-         */
-        public int getMaxSelectNum() {
-            return options.getMaxSelectNum();
-        }
     }
 }

@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.hqq.album.R;
 import com.hqq.album.annotation.LocalMediaType;
-import com.hqq.album.common.PictureConfig;
 import com.hqq.album.dialog.OptAnimationLoader;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.utils.AlbumUtils;

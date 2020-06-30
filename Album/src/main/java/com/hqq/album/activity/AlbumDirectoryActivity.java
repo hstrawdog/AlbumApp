@@ -39,7 +39,6 @@ import com.hqq.album.activity.base.BaseActivity;
 import com.hqq.album.common.FunctionKey;
 import com.hqq.album.common.LocalMediaLoader;
 import com.hqq.album.common.OnSelectResultCallback;
-import com.hqq.album.common.PictureConfig;
 import com.hqq.album.decoration.RecycleViewDivider;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.entity.LocalMediaFolder;
@@ -79,7 +78,6 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
     protected void onDestroy() {
         super.onDestroy();
         mFolderList = null;
-        PictureConfig.getInstance().setSelectLocalMedia(null);
     }
 
     @Override

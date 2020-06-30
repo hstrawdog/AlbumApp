@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import com.hqq.album.R;
 import com.hqq.album.common.FunctionOptions;
 import com.hqq.album.common.OnSelectResultCallback;
-import com.hqq.album.common.PictureConfig;
 
 /**
  * @Author : huangqiqiang
@@ -84,7 +83,7 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
         int i = view.getId();
         if (i == R.id.btn_taking_pictures) {
             if (mOnSelectResultCallback != null) {
-                FunctionOptions.Builder builder = new FunctionOptions.Builder();
+                FunctionOptions.Builder builder = new FunctionOptions.Builder(this);
                 builder.setMaxSelectNum(mSelectSize).setStartCamera();
                 PictureConfig.getInstance().openPhoto(getActivity(), builder, mOnSelectResultCallback);
             } else if (mPhotoDialogClick != null) {
@@ -94,7 +93,7 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
 
         } else if (i == R.id.tv_album) {
             if (mOnSelectResultCallback != null) {
-                FunctionOptions.Builder builder = new FunctionOptions.Builder();
+                FunctionOptions.Builder builder = new FunctionOptions.Builder(this);
                 builder.setMaxSelectNum(mSelectSize).setStartAlbum();
                 PictureConfig.getInstance().openPhoto(getActivity(), builder, mOnSelectResultCallback);
 
