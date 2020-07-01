@@ -13,7 +13,9 @@ import com.hqq.album.AppManager;
 import com.hqq.album.R;
 import com.hqq.album.activity.base.BaseActivity;
 import com.hqq.album.common.FunctionKey;
+import com.hqq.album.common.FunctionOptions;
 import com.hqq.album.common.OnSelectResultCallback;
+import com.hqq.album.common.SelectOptions;
 import com.hqq.album.decoration.GridSpacingItemDecoration;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.utils.AlbumUtils;
@@ -40,9 +42,9 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        List<LocalMedia> list = PictureConfig.getInstance().getSelectLocalMedia();
+        List<LocalMedia> list = SelectOptions.getInstance().getFolderLocalMedia();
         mAlbumDetailAdapter.bindImagesData(list);
-        mTvFinish.setText("完成(" + PictureConfig.getInstance().getSelectMedia().size() + "/" + PictureConfig.getInstance().getBuilder().getMaxSelectNum() + ")");
+        mTvFinish.setText("完成(" + SelectOptions.getInstance().getSelectLocalMedia().size() + "/" + FunctionOptions.getInstance().getMaxSelectNum() + ")");
 
     }
 
@@ -53,14 +55,12 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
         initViews();
     }
 
-
     private void initViews() {
         mRecyclerView = (RecyclerView) findViewById(R.id.rcv_album_detail);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(4, AlbumUtils.dip2px(this, 2), false));
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        mAlbumDetailAdapter = new AlbumDetailAdapter(this, PictureConfig.getInstance().getBuilder().getMaxSelectNum());
-
+        mAlbumDetailAdapter = new AlbumDetailAdapter(this, FunctionOptions.getInstance().getMaxSelectNum());
         mRecyclerView.setAdapter(mAlbumDetailAdapter);
         mAlbumDetailAdapter.setOnPhotoSelectChangedListener(this);
         findViewById(R.id.album_back).setOnClickListener(this);
@@ -77,12 +77,7 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
             AppManager.getAppManager().finishActivity();
         }
         if (i == R.id.album_finish) {
-            OnSelectResultCallback resultCallback = PictureConfig.getInstance().getResultCallback();
-            if (resultCallback != null) {
-                resultCallback.onSelectSuccess(PictureConfig.getInstance().getSelectMedia());
-            }
-            AppManager.getAppManager().finishAllActivity();
-            PictureConfig.getInstance().setResultCallback(null);
+            AppManager.getAppManager().finishAllActivityAndCallBack();
         }
     }
 
@@ -93,7 +88,7 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onChange(List<LocalMedia> selectImages) {
-        mTvFinish.setText("完成(" + selectImages.size() + "/" + PictureConfig.getInstance().getBuilder().getMaxSelectNum() + ")");
+        mTvFinish.setText("完成(" + selectImages.size() + "/" +  FunctionOptions.getInstance().getMaxSelectNum() + ")");
     }
 
     @Override
@@ -103,7 +98,6 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
                         .putExtra(FunctionKey.KEY_FOLDER_NAME, getIntent().getStringExtra(FunctionKey.KEY_FOLDER_NAME))
                 , CODE_CLOSE);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

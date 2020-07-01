@@ -9,18 +9,22 @@
 package com.hqq.album.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.provider.Settings;
+
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -36,9 +40,12 @@ import com.hqq.album.Adapter.AlbumDirectoryAdapter;
 import com.hqq.album.AppManager;
 import com.hqq.album.R;
 import com.hqq.album.activity.base.BaseActivity;
+import com.hqq.album.annotation.LocalMediaType;
 import com.hqq.album.common.FunctionKey;
+import com.hqq.album.common.FunctionOptions;
 import com.hqq.album.common.LocalMediaLoader;
 import com.hqq.album.common.OnSelectResultCallback;
+import com.hqq.album.common.SelectOptions;
 import com.hqq.album.decoration.RecycleViewDivider;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.entity.LocalMediaFolder;
@@ -47,6 +54,7 @@ import com.hqq.album.utils.AlbumFileUtils;
 import com.hqq.album.customize.FilterImageView;
 
 /**
+ * 主界面
  * 文件夹 选择界面
  *
  * @Author : huangqiqiang
@@ -74,21 +82,13 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         initViews();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mFolderList = null;
-    }
 
     @Override
     public void onItemClick(String folderName, List<LocalMedia> images) {
-
-        PictureConfig.getInstance().setSelectLocalMedia(images);
+        SelectOptions.getInstance().setFolderLocalMedia(images);
         startActivity(new Intent(this, AlbumDetailActivity.class)
-                        .putExtra(FunctionKey.KEY_FOLDER_NAME, folderName)
-                // .putParcelableArrayListExtra(FunctionKey.IMAGES, (ArrayList<? extends Parcelable>) images)
+                .putExtra(FunctionKey.KEY_FOLDER_NAME, folderName)
         );
-        // ToastUtils.show(this,folderName);
     }
 
     @Override
@@ -100,6 +100,82 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
             startUpCamera();
 
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            // on take photo success
+            if (requestCode == FunctionKey.REQUEST_CODE_REQUEST_CAMERA) {
+                // 拍照返回
+                File file = new File(cameraPath);
+                //  int degree = AlbumFileUtils.readPictureDegree(file.getAbsolutePath());
+                //rotateImage(degree, file);  旋转图片
+
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+                // takePhotoSuccess = true;
+
+
+                // 生成新拍照片或视频对象
+                LocalMedia media = new LocalMedia();
+                media.setPath(cameraPath);
+                media.setLocalMediaType(LocalMediaType.VALUE_TYPE_IMAGE);
+                List<LocalMedia> result;
+                // 去压缩
+                result = new ArrayList<>();
+                result.add(media);
+                AppManager.getAppManager().finishAllActivity();
+
+            }
+        } else if (requestCode == FunctionKey.REQUEST_CODE_REQUEST_CAMERA && resultCode != RESULT_OK) {
+            // 这边是直接打开相册的 那返回的话 直接到上个界面
+            if (FunctionOptions.getInstance().isStartUpCamera()) {
+                AppManager.getAppManager().finishAllActivity();
+
+            }
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case FunctionKey.REQUEST_CODE_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    initData();
+                } else {
+                    Toast.makeText(mContext, "读取内存卡权限已被拒绝,请在系统设置中开启权限", Toast.LENGTH_SHORT).show();
+                    mTvProgress.setText("哎呀!没有获取到读取内存卡权限已被拒绝,\n请在系统设置中开启权限");
+                    //应用程序详情页面
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.parse("package:" + getPackageName()));
+                    startActivity(intent);
+                }
+                break;
+            case FunctionKey.REQUEST_CODE_CAMERA:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startOpenCamera();
+                } else {
+                    Toast.makeText(mContext, "拍照权限已被拒绝,请在系统设置中开启权限", Toast.LENGTH_SHORT).show();
+                    mTvProgress.setText("哎呀!没有获取到拍照权限,\n请在系统设置中开启权限");
+                    //应用程序详情页面
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.parse("package:" + getPackageName()));
+                    startActivity(intent);
+                }
+                break;
+            default:
+
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        mFolderList = null;
+
+        super.onDestroy();
+
     }
 
     private void startUpCamera() {
@@ -118,7 +194,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         findViewById(R.id.album_back).setOnClickListener(this);
 
         // 判断是否显示相机
-        if (PictureConfig.getInstance().getBuilder().isDisplayCamera()) {
+        if (FunctionOptions.getInstance().isDisplayCamera()) {
             mLocalAlbumCamera = findViewById(R.id.loacal_album_camera);
             mLocalAlbumCamera.setOnClickListener(this);
             mLocalAlbumCamera.setVisibility(View.VISIBLE);
@@ -142,7 +218,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
         if (hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             initData();
         } else {
-            requestPermission(FunctionKey.REQUEST_CODE_READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE);
+            requestPermission(FunctionKey.REQUEST_CODE_READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
         }
 
 
@@ -150,12 +226,12 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
 
     private void initData() {
         // 判断是否直接打开相机
-        if (PictureConfig.getInstance().getBuilder().isStartUpCamera()) {
+        if (FunctionOptions.getInstance().isStartUpCamera()) {
             startUpCamera();
             return;
         }
-        // 否则再去 读书内存中的数据
-        LocalMediaLoader localMediaLoader = new LocalMediaLoader(this, PictureConfig.getInstance().getBuilder().getAlbumType(), true);
+        // 否则再去 读取内存中的数据
+        LocalMediaLoader localMediaLoader = new LocalMediaLoader(this, FunctionOptions.getInstance().getAlbumType(), true);
         localMediaLoader.loadAllImage(new LocalMediaLoader.LocalMediaLoadListener() {
             @Override
             public void loadComplete(List<LocalMediaFolder> folders) {
@@ -192,79 +268,4 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            // on take photo success
-            if (requestCode == FunctionKey.REQUEST_CODE_REQUEST_CAMERA) {
-                // 拍照返回
-                File file = new File(cameraPath);
-                //  int degree = AlbumFileUtils.readPictureDegree(file.getAbsolutePath());
-                //rotateImage(degree, file);  旋转图片
-
-                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
-                // takePhotoSuccess = true;
-
-
-                // 生成新拍照片或视频对象
-                LocalMedia media = new LocalMedia();
-                media.setPath(cameraPath);
-                media.setLocalMediaType(1);
-                List<LocalMedia> result;
-                // 去压缩
-                result = new ArrayList<>();
-                result.add(media);
-                OnSelectResultCallback resultCallback = PictureConfig.getInstance().getResultCallback();
-                if (resultCallback != null) {
-                    // 暂时不去判断是否 单选
-                    resultCallback.onSelectSuccess(result);
-                }
-                AppManager.getAppManager().finishAllActivity();
-                PictureConfig.getInstance().setResultCallback(null);
-
-            }
-        } else if (requestCode == FunctionKey.REQUEST_CODE_REQUEST_CAMERA && resultCode != RESULT_OK) {
-            // 这边是直接打开相册的 那返回的话 直接到上个界面
-            if (PictureConfig.getInstance().getBuilder().isStartUpCamera()) {
-                PictureConfig.getInstance().getResultCallback().onSelectSuccess(new ArrayList<LocalMedia>());
-                AppManager.getAppManager().finishAllActivity();
-
-            }
-
-        }
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,  String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case FunctionKey.REQUEST_CODE_READ_EXTERNAL_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initData();
-                } else {
-                    Toast.makeText(mContext, "读取内存卡权限已被拒绝,请在系统设置中开启权限", Toast.LENGTH_SHORT).show();
-                    mTvProgress.setText("哎呀!没有获取到读取内存卡权限已被拒绝,\n请在系统设置中开启权限");
-                    //应用程序详情页面
-                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    intent.setData(Uri.parse("package:" + getPackageName()));
-                    startActivity(intent);
-                }
-                break;
-            case FunctionKey.REQUEST_CODE_CAMERA:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startOpenCamera();
-                } else {
-                    Toast.makeText(mContext, "拍照权限已被拒绝,请在系统设置中开启权限", Toast.LENGTH_SHORT).show();
-                    mTvProgress.setText("哎呀!没有获取到拍照权限,\n请在系统设置中开启权限");
-                    //应用程序详情页面
-                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    intent.setData(Uri.parse("package:" + getPackageName()));
-                    startActivity(intent);
-                }
-                break;
-            default:
-
-                break;
-        }
-    }
 }

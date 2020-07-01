@@ -2,11 +2,13 @@ package com.hqq.album.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,7 +20,9 @@ import com.hqq.album.AppManager;
 import com.hqq.album.R;
 import com.hqq.album.activity.base.BaseActivity;
 import com.hqq.album.common.FunctionKey;
+import com.hqq.album.common.FunctionOptions;
 import com.hqq.album.common.OnSelectResultCallback;
+import com.hqq.album.common.SelectOptions;
 import com.hqq.album.dialog.OptAnimationLoader;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.customize.FilterImageView;
@@ -77,6 +81,7 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
         });
         mPosition = getIntent().getIntExtra(FunctionKey.KEY_POSITION, 1) - 1;
         mRcAlbumList.scrollToPosition(mPosition);
+        updateSelectMenu();
 
     }
 
@@ -86,30 +91,26 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
         if (i == R.id.album_back) {
             AppManager.getAppManager().finishActivity();
         } else if (i == R.id.album_finish) {
-            OnSelectResultCallback resultCallback = PictureConfig.getInstance().getResultCallback();
-            if (resultCallback != null) {
-                resultCallback.onSelectSuccess(PictureConfig.getInstance().getSelectMedia());
-            }
+
             setResult(Activity.RESULT_OK);
             AppManager.getAppManager().finishAllActivity();
-            PictureConfig.getInstance().setResultCallback(null);
 
         } else if (i == R.id.ll_check) {
             if (mTvCheck.isSelected()) {
                 mTvCheck.setSelected(false);
-                for (LocalMedia media : PictureConfig.getInstance().getSelectMedia()) {
+                for (LocalMedia media : SelectOptions.getInstance().getSelectLocalMedia()) {
                     if (media.getPath().equals(mLocalMediaList.get(mPosition).getPath())) {
-                        PictureConfig.getInstance().getSelectMedia().remove(media);
+                        SelectOptions.getInstance().getSelectLocalMedia().remove(media);
                         break;
                     }
                 }
             } else {
-                if (PictureConfig.getInstance().getSelectMedia().size() < PictureConfig.getInstance().getBuilder().getMaxSelectNum()) {
-                    PictureConfig.getInstance().getSelectMedia().add(mLocalMediaList.get(mPosition));
+                if (SelectOptions.getInstance().getSelectLocalMedia().size() < FunctionOptions.getInstance().getMaxSelectNum()) {
+                    SelectOptions.getInstance().getSelectLocalMedia().add(mLocalMediaList.get(mPosition));
                     mTvCheck.setSelected(true);
                     mTvCheck.startAnimation(OptAnimationLoader.loadAnimation(mContext, R.anim.modal_in));
                 } else {
-                    Toast.makeText(mContext, mContext.getString(R.string.picture_message_max_num, PictureConfig.getInstance().getBuilder().getMaxSelectNum() + ""), Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, mContext.getString(R.string.picture_message_max_num, FunctionOptions.getInstance().getMaxSelectNum() + ""), Toast.LENGTH_LONG).show();
                 }
             }
             updateSelectMenu();
@@ -136,7 +137,7 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
         mLlCheck.setOnClickListener(this);
         mAlbumFinish.setOnClickListener(this);
 
-        mLocalMediaList = PictureConfig.getInstance().getSelectLocalMedia();
+        mLocalMediaList = SelectOptions.getInstance().getFolderLocalMedia();
 
         mAlbumTitle.setText(getIntent().getIntExtra(FunctionKey.KEY_POSITION, 1) + "/" + mLocalMediaList.size());
         mPreviewAdapter = new PreviewAdapter(this, mLocalMediaList);
@@ -145,9 +146,9 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
     }
 
     private void updateSelectMenu() {
-        if ((PictureConfig.getInstance().getSelectMedia().size() > 0)) {
+        if ((SelectOptions.getInstance().getSelectLocalMedia().size() > 0)) {
             mAlbumFinish.setVisibility(View.VISIBLE);
-            mAlbumFinish.setText("完成(" + PictureConfig.getInstance().getSelectMedia().size() + "/" + PictureConfig.getInstance().getBuilder().getMaxSelectNum() + ")");
+            mAlbumFinish.setText("完成(" + SelectOptions.getInstance().getSelectLocalMedia().size() + "/" + FunctionOptions.getInstance().getMaxSelectNum() + ")");
         } else {
             mAlbumFinish.setVisibility(View.GONE);
         }
@@ -163,7 +164,7 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
      * @return
      */
     public boolean isSelected(LocalMedia image) {
-        for (LocalMedia media : PictureConfig.getInstance().getSelectMedia()) {
+        for (LocalMedia media : SelectOptions.getInstance().getSelectLocalMedia()) {
             if (media.getPath().equals(image.getPath())) {
                 return true;
             }

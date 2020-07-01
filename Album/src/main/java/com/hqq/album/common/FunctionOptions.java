@@ -3,6 +3,8 @@ package com.hqq.album.common;
 import android.app.Activity;
 import android.content.Intent;
 
+import androidx.fragment.app.Fragment;
+
 import com.hqq.album.activity.AlbumDetailActivity;
 import com.hqq.album.activity.AlbumDirectoryActivity;
 import com.hqq.album.annotation.LocalMediaType;
@@ -34,49 +36,71 @@ public class FunctionOptions {
      */
     private int albumType = LocalMediaType.VALUE_TYPE_IMAGE;
 
-    public FunctionOptions(Album album) {
-        mAlbum = album;
+    public FunctionOptions() {
     }
 
-    private boolean isStartUpCamera() {
+    public static FunctionOptions getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
+    public boolean isStartUpCamera() {
         return startUpCamera;
     }
 
-    private void setStartUpCamera(boolean startUpCamera) {
+    public void setStartUpCamera(boolean startUpCamera) {
         this.startUpCamera = startUpCamera;
     }
 
-    private void setMaxSelectNum(int maxSelectNum) {
+    public void setMaxSelectNum(int maxSelectNum) {
         this.maxSelectNum = maxSelectNum;
     }
 
-    private int getMaxSelectNum() {
+    public int getMaxSelectNum() {
         return maxSelectNum;
     }
 
-    private boolean isDisplayCamera() {
+    public boolean isDisplayCamera() {
         return displayCamera;
     }
 
-    private void setDisplayCamera(boolean displayCamera) {
+    public void setDisplayCamera(boolean displayCamera) {
         this.displayCamera = displayCamera;
     }
 
-    private int getAlbumType() {
+    public int getAlbumType() {
         return albumType;
     }
 
-    protected FunctionOptions setAlbumType(int albumType) {
+    public FunctionOptions setAlbum(Album album) {
+        mAlbum = album;
+        return this;
+    }
+
+    public FunctionOptions setAlbumType(int albumType) {
         this.albumType = albumType;
         return this;
     }
 
-
+    /**
+     * 数据将回调给调用的 activity 或者Fragment
+     *
+     * @param requestCode
+     */
     public void forResult(int requestCode) {
         Activity activity = mAlbum.getActivity();
-        Intent intent = new Intent(activity, AlbumDetailActivity.class);
-        activity.startActivityForResult(intent, requestCode);
+        SelectOptions.getInstance().reset();
+        Intent intent = new Intent(activity, AlbumDirectoryActivity.class);
 
-
+        Fragment fragment = mAlbum.getFragment();
+        if (fragment != null) {
+            fragment.startActivityForResult(intent, requestCode);
+        } else {
+            activity.startActivityForResult(intent, requestCode);
+        }
     }
+
+    private static final class InstanceHolder {
+        private static final FunctionOptions INSTANCE = new FunctionOptions();
+    }
+
 }

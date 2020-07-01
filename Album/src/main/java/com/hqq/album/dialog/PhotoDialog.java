@@ -83,9 +83,9 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
         int i = view.getId();
         if (i == R.id.btn_taking_pictures) {
             if (mOnSelectResultCallback != null) {
-                FunctionOptions.Builder builder = new FunctionOptions.Builder(this);
-                builder.setMaxSelectNum(mSelectSize).setStartCamera();
-                PictureConfig.getInstance().openPhoto(getActivity(), builder, mOnSelectResultCallback);
+//                FunctionOptions.Builder builder = new FunctionOptions.Builder(this);
+//                builder.setMaxSelectNum(mSelectSize).setStartCamera();
+//                PictureConfig.getInstance().openPhoto(getActivity(), builder, mOnSelectResultCallback);
             } else if (mPhotoDialogClick != null) {
                 mPhotoDialogClick.onClickPictures();
             }
@@ -93,9 +93,9 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
 
         } else if (i == R.id.tv_album) {
             if (mOnSelectResultCallback != null) {
-                FunctionOptions.Builder builder = new FunctionOptions.Builder(this);
-                builder.setMaxSelectNum(mSelectSize).setStartAlbum();
-                PictureConfig.getInstance().openPhoto(getActivity(), builder, mOnSelectResultCallback);
+//                FunctionOptions.Builder builder = new FunctionOptions.Builder(this);
+//                builder.setMaxSelectNum(mSelectSize).setStartAlbum();
+//                PictureConfig.getInstance().openPhoto(getActivity(), builder, mOnSelectResultCallback);
 
             } else if (mPhotoDialogClick != null) {
                 mPhotoDialogClick.onClickAlbum();

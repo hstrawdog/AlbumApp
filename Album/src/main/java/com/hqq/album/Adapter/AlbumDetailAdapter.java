@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.hqq.album.R;
 import com.hqq.album.annotation.LocalMediaType;
+import com.hqq.album.common.SelectOptions;
 import com.hqq.album.dialog.OptAnimationLoader;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.utils.AlbumUtils;
@@ -24,10 +25,14 @@ import com.hqq.album.utils.LoadUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by huangqiqiang on 17/5/7.
- */
-
+ /**
+  * @Author : huangqiqiang
+  * @Package : com.hqq.album.Adapter
+  * @FileName :   AlbumDetailAdapter
+  * @Date  : 2017/5/7 0001  上午 11:08
+  * @Email :  qiqiang213@gmail.com
+  * @Descrive :
+  */
 public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<LocalMedia> images = new ArrayList<>();
@@ -38,7 +43,7 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void bindImagesData(List<LocalMedia> images) {
         this.images = images;
-        selectImages = PictureConfig.getInstance().getSelectMedia();
+        selectImages = SelectOptions.getInstance().getSelectLocalMedia();
         notifyDataSetChanged();
     }
 
@@ -74,7 +79,6 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         bindClick(position, contentHolder, localMedia);
     }
 
-
     public static String formatDuring(long mss) {
         long hours = (mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
         long minutes = (mss % (1000 * 60 * 60)) / (1000 * 60);
@@ -82,7 +86,6 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return hours + ":" + minutes + " "
                 + seconds + "";
     }
-
 
     /**
      * 绑定 点击事件
@@ -118,7 +121,6 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public int getItemCount() {
         return images.size();
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView mIvPicture;
@@ -167,7 +169,6 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             holder.mIvPicture.setColorFilter(ContextCompat.getColor(context, R.color.image_overlay), PorterDuff.Mode.SRC_ATOP);
         }
     }
-
 
     /**
      * 改变图片选中状态

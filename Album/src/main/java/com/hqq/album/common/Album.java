@@ -46,11 +46,19 @@ public class Album {
 
 
     public FunctionOptions choose(int valueTypeImage) {
-        return new FunctionOptions(this)
+        return FunctionOptions.getInstance()
+                .setAlbum(this)
                 .setAlbumType(valueTypeImage);
     }
 
     public Activity getActivity() {
         return mContext.get();
+    }
+
+    public Fragment getFragment() {
+        if (mFragment != null) {
+            return mFragment.get();
+        }
+        return null;
     }
 }

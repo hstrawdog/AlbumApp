@@ -10,27 +10,32 @@
  * Create on 2016-11-18 上午9:34
  * FileName: AppManager.java
  * Author: huang qiqiang
- * Contact: 
+ * Contact:
  */
 
 /*
  * Create on 2016-11-18 上午9:34
  * FileName: AppManager.java
  * Author: huang qiqiang
- * Contact: 
+ * Contact:
  */
 
 /*
  * Create on 2016-11-18 上午9:34
  * FileName: AppManager.java
  * Author: huang qiqiang
- * Contact: 
+ * Contact:
  */
 
 package com.hqq.album;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+
+import com.hqq.album.activity.AlbumDetailActivity;
+import com.hqq.album.activity.AlbumDirectoryActivity;
+import com.hqq.album.common.SelectOptions;
 
 import java.util.Stack;
 
@@ -42,6 +47,7 @@ import java.util.Stack;
  * @date: 2016/11/18  9:34
  */
 public class AppManager {
+
     private static Stack<Activity> activityStack;
     private static AppManager instance;
 
@@ -51,9 +57,11 @@ public class AppManager {
     /**
      * 单一实例
      */
-    public static AppManager getAppManager() {
+    public synchronized static AppManager getAppManager() {
         if (instance == null) {
-            instance = new AppManager();
+            synchronized (AppManager.class) {
+                instance = new AppManager();
+            }
         }
         return instance;
     }
@@ -66,14 +74,6 @@ public class AppManager {
             activityStack = new Stack<Activity>();
         }
         activityStack.add(activity);
-    }
-
-    /**
-     * 获取当前Activity（堆栈中最后一个压入的）
-     */
-    public Activity currentActivity() {
-        Activity activity = activityStack.lastElement();
-        return activity;
     }
 
     /**
@@ -97,50 +97,31 @@ public class AppManager {
     }
 
     /**
-     * 结束指定类名的Activity
-     */
-    public void finishActivity(Class<?> cls) {
-        for (Activity activity : activityStack) {
-            if (activity.getClass().equals(cls)) {
-                finishActivity(activity);
-            }
-        }
-    }
-
-    //获取指定类名的Activity
-    public Activity getActivity(Class<?> cls) {
-        for (Activity activity : activityStack) {
-            if (activity.getClass().equals(cls)) {
-                return activity;
-            }
-        }
-        return null;
-    }
-
-    /**
      * 结束所有Activity
      */
     public void finishAllActivity() {
+        finishAllActivity(false);
+    }
+
+    public void finishAllActivity(boolean isCallBack) {
         for (int i = 0, size = activityStack.size(); i < size; i++) {
             if (null != activityStack.get(i)) {
-              Activity activity = activityStack.get(i);
-              activity.finish();
-                activity=null;
+                Activity activity = activityStack.get(i);
+                if (isCallBack) {
+                    if (activity instanceof AlbumDirectoryActivity) {
+                        Intent intent = new Intent();
+                        intent.putParcelableArrayListExtra("data", SelectOptions.getInstance().getSelectLocalMedia());
+                        activity.setResult(Activity.RESULT_OK, intent);
+                    }
+                }
+                activity.finish();
+                activity = null;
             }
         }
         activityStack.clear();
     }
 
-    /**
-     * 退出应用程序
-     */
-    public void appExit(Context context) {
-        try {
-            finishAllActivity();
-            System.exit(0);
-        } catch (Exception e) {
-        }
+    public void finishAllActivityAndCallBack() {
+        finishAllActivity(true);
     }
-
-
 }

@@ -1,24 +1,26 @@
 package com.hqq.ihalbum;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.hqq.album.activity.PreviewUrlActivity;
+import com.hqq.album.annotation.LocalMediaType;
+import com.hqq.album.common.Album;
+import com.hqq.album.common.OnSelectResultCallback;
+import com.hqq.album.dialog.PhotoDialog;
+import com.hqq.album.entity.LocalMedia;
 
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-
-
-import com.hqq.album.activity.PreviewUrlActivity;
-import com.hqq.album.annotation.LocalMediaType;
-import com.hqq.album.common.Album;
-import com.hqq.album.common.FunctionOptions;
-import com.hqq.album.common.OnSelectResultCallback;
-import com.hqq.album.dialog.PhotoDialog;
-import com.hqq.album.entity.LocalMedia;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -140,5 +142,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            data.getParcelableArrayListExtra("data");
+            Log.e("---------------------", "onActivityResult: ");
+        }
 
+    }
 }
