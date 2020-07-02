@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.hqq.album.activity.PreviewUrlActivity;
 import com.hqq.album.annotation.LocalMediaType;
 import com.hqq.album.common.Album;
-import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.dialog.PhotoDialog;
 import com.hqq.album.entity.LocalMedia;
 
@@ -50,12 +49,15 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.button).setOnClickListener(this::previewUrl);
         findViewById(R.id.button2).setOnClickListener(this::openPhotoSelectDialog);
+        findViewById(R.id.button21).setOnClickListener(this::openPhotoSelectDialog4Activity);
         findViewById(R.id.button3).setOnClickListener(this::openCamera);
         findViewById(R.id.button4).setOnClickListener(this::openAlbum);
         findViewById(R.id.button7).setOnClickListener(this::openCameraAndAlbum);
         findViewById(R.id.button8).setOnClickListener(this::openVideoAlbum);
         findViewById(R.id.button5).setOnClickListener(this::httpsTest);
     }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -130,16 +132,28 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     private void openPhotoSelectDialog(View view) {
-        PhotoDialog.getPhotoSelectDialog(1, new OnSelectResultCallback() {
+        PhotoDialog.getSelectPhotoDialog(1, new PhotoDialog.PhotoDialogCallBack() {
             @Override
-            public void onSelectSuccess(List<LocalMedia> resultList) {
-                if (resultList.size() > 0) {
-                    Toast.makeText(MainActivity.this, resultList.get(0).getPath(), Toast.LENGTH_SHORT).show();
+            public void onSelectLocalMedia(ArrayList<LocalMedia> arrayList) {
+                if (arrayList != null && arrayList.size() > 0) {
+                    Toast.makeText(MainActivity.this, arrayList.get(0).getPath(), Toast.LENGTH_SHORT).show();
                 }
             }
+
         }).show(getSupportFragmentManager());
 
     }
+
+    /**
+     * 通用的选择Dialog 结果用Activity接收
+     *
+     * @param view
+     */
+    private void openPhotoSelectDialog4Activity(View view) {
+
+        PhotoDialog.getSelectPhotoDialog().show(getSupportFragmentManager());
+    }
+
 
     /**
      * 视频 入口

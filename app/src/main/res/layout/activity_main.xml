@@ -12,6 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="启动相册对话框" />
+    <Button
+        android:id="@+id/button21"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="启动相册对话框第二种回调方式" />
 
     <Button
         android:id="@+id/button3"

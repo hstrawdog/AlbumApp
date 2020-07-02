@@ -9,13 +9,11 @@
 package com.hqq.album.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.provider.Settings;
 
@@ -44,7 +42,6 @@ import com.hqq.album.annotation.LocalMediaType;
 import com.hqq.album.common.FunctionKey;
 import com.hqq.album.common.FunctionOptions;
 import com.hqq.album.common.LocalMediaLoader;
-import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.common.SelectOptions;
 import com.hqq.album.decoration.RecycleViewDivider;
 import com.hqq.album.entity.LocalMedia;

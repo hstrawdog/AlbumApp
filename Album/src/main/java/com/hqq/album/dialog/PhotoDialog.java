@@ -2,7 +2,6 @@ package com.hqq.album.dialog;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,6 @@ import android.view.ViewGroup;
 import com.hqq.album.R;
 import com.hqq.album.annotation.LocalMediaType;
 import com.hqq.album.common.Album;
-import com.hqq.album.common.FunctionOptions;
-import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.entity.LocalMedia;
 
 import java.util.ArrayList;
@@ -26,41 +23,43 @@ import java.util.ArrayList;
  * @Email :
  */
 public class PhotoDialog extends AbsDialog implements View.OnClickListener {
-    PhotoDialogClick mPhotoDialogClick;
-    OnSelectResultCallback mOnSelectResultCallback;
+    /**
+     * PhotoDialogCallBack 是空的时候 会直接回到给Activity
+     */
+    PhotoDialogCallBack mPhotoDialogCallBack;
     int mSelectSize = 1;
 
-
-    @Deprecated
-    public static PhotoDialog getPhotoDialog(PhotoDialogClick photoDialogClick) {
-        PhotoDialog photoDialog = new PhotoDialog();
-        photoDialog.setPhotoDialogClick(photoDialogClick);
-        return photoDialog;
+    /**
+     * 简单入口
+     *
+     * @return
+     */
+    public static PhotoDialog getSelectPhotoDialog() {
+        return new PhotoDialog();
     }
 
     /**
-     * @param selectSize              图片选择 张数
-     * @param mOnSelectResultCallback 图片选择回调
+     * 通过回调
+     *
+     * @param maxSelectSize
+     * @param photoDialogClick
      * @return
      */
-    public static PhotoDialog getPhotoSelectDialog(int selectSize, OnSelectResultCallback mOnSelectResultCallback) {
-        PhotoDialog photoDialog = new PhotoDialog();
-        photoDialog.setSelectSize(selectSize);
-        photoDialog.setOnSelectResultCallback(mOnSelectResultCallback);
+    public static PhotoDialog getSelectPhotoDialog(int maxSelectSize, PhotoDialogCallBack photoDialogClick) {
+        PhotoDialog photoDialog = getSelectPhotoDialog();
+        photoDialog.setSelectSize(maxSelectSize);
+        photoDialog.setPhotoDialogCallBack(photoDialogClick);
         return photoDialog;
     }
 
 
-    public void setOnSelectResultCallback(OnSelectResultCallback onSelectResultCallback) {
-        mOnSelectResultCallback = onSelectResultCallback;
+    public PhotoDialog setPhotoDialogCallBack(PhotoDialogCallBack photoDialogCallBack) {
+        mPhotoDialogCallBack = photoDialogCallBack;
+        return this;
     }
 
     public void setSelectSize(int selectSize) {
         mSelectSize = selectSize;
-    }
-
-    public void setPhotoDialogClick(PhotoDialogClick photoDialogClick) {
-        mPhotoDialogClick = photoDialogClick;
     }
 
     @Override
@@ -94,14 +93,17 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
             Album.from(PhotoDialog.this)
                     .choose(LocalMediaType.VALUE_TYPE_IMAGE)
                     .setStartUpCamera(true)
-                    .forResult(0x1)
-            ;
-
+                    .forResult(0x1);
+            if (mPhotoDialogCallBack == null) {
+                dismiss();
+            }
         } else if (i == R.id.tv_album) {
             Album.from(PhotoDialog.this)
                     .choose(LocalMediaType.VALUE_TYPE_IMAGE)
-                    .forResult(0x1)
-            ;
+                    .forResult(0x1);
+            if (mPhotoDialogCallBack == null) {
+                dismiss();
+            }
         } else if (i == R.id.btn_cancel) {
             dismiss();
         }
@@ -113,14 +115,15 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             ArrayList<LocalMedia> list = data.getParcelableArrayListExtra("data");
-            Log.e("---------------------", "onActivityResult: ");
+
+            if (mPhotoDialogCallBack != null) {
+                mPhotoDialogCallBack.onSelectLocalMedia(list);
+            }
             dismiss();
         }
     }
 
-    public interface PhotoDialogClick {
-        void onClickPictures();
-
-        void onClickAlbum();
+    public interface PhotoDialogCallBack {
+        void onSelectLocalMedia(ArrayList<LocalMedia> arrayList);
     }
 }

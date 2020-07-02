@@ -28,11 +28,6 @@ import com.hqq.album.R;
 public abstract class AbsDialog extends DialogFragment {
 
     boolean mLoaded = false;
-   protected AbsDialogClickListener mAbsDialogClickListener;
-
-    public void setAbsDialogClickListener(AbsDialogClickListener absDialogClickListener) {
-        mAbsDialogClickListener = absDialogClickListener;
-    }
 
     @Override
     public void onCancel(DialogInterface dialog) {
@@ -70,7 +65,6 @@ public abstract class AbsDialog extends DialogFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-//        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         super.onActivityCreated(savedInstanceState);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getBackground()));
         getDialog().getWindow().setLayout(setWeight(), setHeight());
@@ -91,8 +85,6 @@ public abstract class AbsDialog extends DialogFragment {
     public void onDestroyView() {
 
         super.onDestroyView();
-  //      unbinder.unbind();
-    //    mLoadingView = null;
     }
 
     /**

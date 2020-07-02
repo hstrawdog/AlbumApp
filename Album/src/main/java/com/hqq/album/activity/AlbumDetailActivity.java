@@ -14,7 +14,6 @@ import com.hqq.album.R;
 import com.hqq.album.activity.base.BaseActivity;
 import com.hqq.album.common.FunctionKey;
 import com.hqq.album.common.FunctionOptions;
-import com.hqq.album.common.OnSelectResultCallback;
 import com.hqq.album.common.SelectOptions;
 import com.hqq.album.decoration.GridSpacingItemDecoration;
 import com.hqq.album.entity.LocalMedia;
