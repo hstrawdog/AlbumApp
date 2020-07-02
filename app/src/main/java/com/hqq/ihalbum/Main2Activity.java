@@ -19,16 +19,4 @@ public class Main2Activity extends MainActivity {
         context.startActivityForResult(starter, -1);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        new Thread() {
-            @Override
-            public void run() {
-                //执行异步处理
-                SystemClock.sleep(240000);
-            }
-        }.start();
-    }
 }

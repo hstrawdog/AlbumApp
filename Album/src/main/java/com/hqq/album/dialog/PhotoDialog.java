@@ -1,13 +1,21 @@
 package com.hqq.album.dialog;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
 
 import com.hqq.album.R;
+import com.hqq.album.annotation.LocalMediaType;
+import com.hqq.album.common.Album;
 import com.hqq.album.common.FunctionOptions;
 import com.hqq.album.common.OnSelectResultCallback;
+import com.hqq.album.entity.LocalMedia;
+
+import java.util.ArrayList;
 
 /**
  * @Author : huangqiqiang
@@ -82,30 +90,31 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.btn_taking_pictures) {
-            if (mOnSelectResultCallback != null) {
-//                FunctionOptions.Builder builder = new FunctionOptions.Builder(this);
-//                builder.setMaxSelectNum(mSelectSize).setStartCamera();
-//                PictureConfig.getInstance().openPhoto(getActivity(), builder, mOnSelectResultCallback);
-            } else if (mPhotoDialogClick != null) {
-                mPhotoDialogClick.onClickPictures();
-            }
-            dismiss();
+
+            Album.from(PhotoDialog.this)
+                    .choose(LocalMediaType.VALUE_TYPE_IMAGE)
+                    .setStartUpCamera(true)
+                    .forResult(0x1)
+            ;
 
         } else if (i == R.id.tv_album) {
-            if (mOnSelectResultCallback != null) {
-//                FunctionOptions.Builder builder = new FunctionOptions.Builder(this);
-//                builder.setMaxSelectNum(mSelectSize).setStartAlbum();
-//                PictureConfig.getInstance().openPhoto(getActivity(), builder, mOnSelectResultCallback);
-
-            } else if (mPhotoDialogClick != null) {
-                mPhotoDialogClick.onClickAlbum();
-            }
-
-            dismiss();
-
+            Album.from(PhotoDialog.this)
+                    .choose(LocalMediaType.VALUE_TYPE_IMAGE)
+                    .forResult(0x1)
+            ;
         } else if (i == R.id.btn_cancel) {
             dismiss();
-        } else {
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            ArrayList<LocalMedia> list = data.getParcelableArrayListExtra("data");
+            Log.e("---------------------", "onActivityResult: ");
+            dismiss();
         }
     }
 

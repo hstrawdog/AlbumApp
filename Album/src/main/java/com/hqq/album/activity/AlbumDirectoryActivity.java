@@ -115,16 +115,12 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
                 sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
                 // takePhotoSuccess = true;
 
-
                 // 生成新拍照片或视频对象
                 LocalMedia media = new LocalMedia();
                 media.setPath(cameraPath);
                 media.setLocalMediaType(LocalMediaType.VALUE_TYPE_IMAGE);
-                List<LocalMedia> result;
-                // 去压缩
-                result = new ArrayList<>();
-                result.add(media);
-                AppManager.getAppManager().finishAllActivity();
+                SelectOptions.getInstance().getSelectLocalMedia().add(media);
+                AppManager.getAppManager().finishAllActivityAndCallBack();
 
             }
         } else if (requestCode == FunctionKey.REQUEST_CODE_REQUEST_CAMERA && resultCode != RESULT_OK) {

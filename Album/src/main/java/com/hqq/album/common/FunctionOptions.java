@@ -5,7 +5,6 @@ import android.content.Intent;
 
 import androidx.fragment.app.Fragment;
 
-import com.hqq.album.activity.AlbumDetailActivity;
 import com.hqq.album.activity.AlbumDirectoryActivity;
 import com.hqq.album.annotation.LocalMediaType;
 
@@ -18,6 +17,9 @@ import com.hqq.album.annotation.LocalMediaType;
  * @date: 2017-05-07 22:19
  */
 public class FunctionOptions {
+    /**
+     * 缓存的单利对象
+     */
     Album mAlbum;
     /**
      * 多选最大可选数量
@@ -43,16 +45,25 @@ public class FunctionOptions {
         return InstanceHolder.INSTANCE;
     }
 
+    private void rest() {
+        this.startUpCamera = false;
+        startUpCamera = false;
+        maxSelectNum = 9;
+        albumType = LocalMediaType.VALUE_TYPE_IMAGE;
+    }
+
     public boolean isStartUpCamera() {
         return startUpCamera;
     }
 
-    public void setStartUpCamera(boolean startUpCamera) {
+    public FunctionOptions setStartUpCamera(boolean startUpCamera) {
         this.startUpCamera = startUpCamera;
+        return this;
     }
 
-    public void setMaxSelectNum(int maxSelectNum) {
+    public FunctionOptions setMaxSelectNum(int maxSelectNum) {
         this.maxSelectNum = maxSelectNum;
+        return this;
     }
 
     public int getMaxSelectNum() {
@@ -63,8 +74,9 @@ public class FunctionOptions {
         return displayCamera;
     }
 
-    public void setDisplayCamera(boolean displayCamera) {
+    public FunctionOptions setDisplayCamera(boolean displayCamera) {
         this.displayCamera = displayCamera;
+        return this;
     }
 
     public int getAlbumType() {
@@ -77,6 +89,7 @@ public class FunctionOptions {
     }
 
     public FunctionOptions setAlbumType(int albumType) {
+        rest();
         this.albumType = albumType;
         return this;
     }
@@ -89,8 +102,8 @@ public class FunctionOptions {
     public void forResult(int requestCode) {
         Activity activity = mAlbum.getActivity();
         SelectOptions.getInstance().reset();
-        Intent intent = new Intent(activity, AlbumDirectoryActivity.class);
 
+        Intent intent = new Intent(activity, AlbumDirectoryActivity.class);
         Fragment fragment = mAlbum.getFragment();
         if (fragment != null) {
             fragment.startActivityForResult(intent, requestCode);

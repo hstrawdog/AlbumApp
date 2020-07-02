@@ -27,21 +27,25 @@ public class Album {
      */
     private final WeakReference<Fragment> mFragment;
 
-    public Album(Activity activity) {
+    private Album(Activity activity) {
         this(activity, null);
     }
 
-    public Album(Fragment fragment) {
+    private Album(Fragment fragment) {
         this(fragment.getActivity(), fragment);
     }
 
-    public Album(Activity activity, Fragment fragment) {
+    private Album(Activity activity, Fragment fragment) {
         mContext = new WeakReference<>(activity);
         mFragment = new WeakReference<>(fragment);
     }
 
     public static Album from(Activity activity) {
         return new Album(activity);
+    }
+
+    public static Album from(Fragment fragment) {
+        return new Album(fragment.getActivity(), fragment);
     }
 
 

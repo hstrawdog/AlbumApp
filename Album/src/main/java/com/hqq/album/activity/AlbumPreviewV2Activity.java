@@ -93,7 +93,7 @@ public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClick
         } else if (i == R.id.album_finish) {
 
             setResult(Activity.RESULT_OK);
-            AppManager.getAppManager().finishAllActivity();
+            AppManager.getAppManager().finishAllActivityAndCallBack();
 
         } else if (i == R.id.ll_check) {
             if (mTvCheck.isSelected()) {
