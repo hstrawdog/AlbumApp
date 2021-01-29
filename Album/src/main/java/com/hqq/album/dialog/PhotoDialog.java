@@ -89,10 +89,10 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.btn_taking_pictures) {
-
             Album.from(PhotoDialog.this)
                     .choose(LocalMediaType.VALUE_TYPE_IMAGE)
                     .setStartUpCamera(true)
+                    .setMaxSelectNum(mSelectSize)
                     .forResult(0x1);
             if (mPhotoDialogCallBack == null) {
                 dismiss();
@@ -100,6 +100,7 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
         } else if (i == R.id.tv_album) {
             Album.from(PhotoDialog.this)
                     .choose(LocalMediaType.VALUE_TYPE_IMAGE)
+                    .setMaxSelectNum(mSelectSize)
                     .forResult(0x1);
             if (mPhotoDialogCallBack == null) {
                 dismiss();
