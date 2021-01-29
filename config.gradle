@@ -22,8 +22,8 @@ ext {
             converterGson                : 'com.squareup.retrofit2:converter-gson:2.5.0',
             ioClient                     : 'io.socket:socket.io-client:1.0.0',
             // ------------- 图片请求 -------------
-            glide                        : 'com.github.bumptech.glide:glide:4.8.0',
-            glideCompiler                : 'com.github.bumptech.glide:compiler:4.8.0',
+            glide                        : 'com.github.bumptech.glide:glide:4.11.0',
+            glideCompiler                : 'com.github.bumptech.glide:compiler:4.11.0',
             // ------------- json解析 -------------
             gson                         : 'com.google.code.gson:gson:2.8.2',
             // ------------- eventBus -------------

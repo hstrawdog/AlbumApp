@@ -9,18 +9,22 @@
 package com.hqq.album.common;
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+
 import androidx.fragment.app.FragmentActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
+
 import android.text.TextUtils;
 
 import com.hqq.album.R;
 import com.hqq.album.annotation.LocalMediaType;
 import com.hqq.album.entity.LocalMedia;
 import com.hqq.album.entity.LocalMediaFolder;
+import com.hqq.album.utils.AlbumFileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,7 +47,7 @@ public class LocalMediaLoader {
             MediaStore.Images.Media.DATA,
             MediaStore.Images.Media.DISPLAY_NAME,
             MediaStore.Images.Media.DATE_ADDED,
-            MediaStore.Images.Media._ID
+            MediaStore.Images.Media._ID,
     };
 
     private final static String[] VIDEO_PROJECTION = {
@@ -111,9 +115,17 @@ public class LocalMediaLoader {
                                     continue;
                                 }
                                 long dateTime = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[2]));
-                                int duration = (mLocalMediaType == LocalMediaType.VALUE_TYPE_VIDEO ? data.getInt(data.getColumnIndexOrThrow(VIDEO_PROJECTION[4])) : 0);
+                                long id = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[3]));
+//                                Uri uri = AlbumFileUtils.getFile2Uri(activity, path);
+                                Uri uri = Uri.withAppendedPath(Uri.parse("content://media/external/images/media"), "" + id);
+                                int duration = 0;
+                                if (mLocalMediaType == LocalMediaType.VALUE_TYPE_VIDEO) {
+                                    duration = data.getInt(data.getColumnIndexOrThrow(VIDEO_PROJECTION[4]));
+                                    uri = Uri.withAppendedPath(Uri.parse("content://media/external/video/media"), "" + id);
+                                }
                                 LocalMedia image = new LocalMedia(path, dateTime, duration, mLocalMediaType);
-                                LocalMediaFolder folder = getImageFolder(path, imageFolders);
+                                image.setUri(uri);
+                                LocalMediaFolder folder = getImageFolder(path, uri, imageFolders);
                                 folder.getImages().add(image);
                                 folder.setType(mLocalMediaType);
                                 index++;
@@ -139,6 +151,7 @@ public class LocalMediaLoader {
                                     default:
                                 }
                                 allImageFolder.setFirstImagePath(allImages.get(0).getPath());
+                                allImageFolder.setFirstImageUri(allImages.get(0).getUri());
                                 allImageFolder.setName(title);
                                 allImageFolder.setType(mLocalMediaType);
                                 allImageFolder.setImages(allImages);
@@ -175,7 +188,7 @@ public class LocalMediaLoader {
         });
     }
 
-    private LocalMediaFolder getImageFolder(String path, List<LocalMediaFolder> imageFolders) {
+    private LocalMediaFolder getImageFolder(String path, Uri uri, List<LocalMediaFolder> imageFolders) {
         File imageFile = new File(path);
         File folderFile = imageFile.getParentFile();
 
@@ -188,6 +201,7 @@ public class LocalMediaLoader {
         newFolder.setName(folderFile.getName());
         newFolder.setPath(folderFile.getAbsolutePath());
         newFolder.setFirstImagePath(path);
+        newFolder.setFirstImageUri(uri);
         imageFolders.add(newFolder);
         return newFolder;
     }

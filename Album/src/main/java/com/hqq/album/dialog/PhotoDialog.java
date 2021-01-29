@@ -115,7 +115,6 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             ArrayList<LocalMedia> list = data.getParcelableArrayListExtra("data");
-
             if (mPhotoDialogCallBack != null) {
                 mPhotoDialogCallBack.onSelectLocalMedia(list);
             }

@@ -66,7 +66,7 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         selectImage(contentHolder, isSelected(localMedia), false);
 
-        LoadUtils.loadLocalMediaPath(localMedia.getLocalMediaType(), localMedia.getPath(), contentHolder.mIvPicture);
+        LoadUtils.loadLocalMediaPath(localMedia.getLocalMediaType(), localMedia.getUri(), contentHolder.mIvPicture);
 
         if (localMedia.getLocalMediaType() == LocalMediaType.VALUE_TYPE_VIDEO) {
             contentHolder.mRlDuration.setVisibility(View.VISIBLE);

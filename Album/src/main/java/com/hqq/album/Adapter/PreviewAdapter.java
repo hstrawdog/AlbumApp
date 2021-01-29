@@ -1,11 +1,16 @@
 package com.hqq.album.Adapter;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +30,9 @@ import com.bumptech.glide.request.target.Target;
 import com.hqq.album.R;
 import com.hqq.album.annotation.LocalMediaType;
 import com.hqq.album.entity.LocalMedia;
+import com.hqq.album.utils.AlbumFileUtils;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -72,7 +79,7 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewAdapter.ViewHold
             case LocalMediaType.VALUE_TYPE_IMAGE:
                 viewHolder.videoView.setVisibility(View.GONE);
                 Glide.with(context)
-                        .load(localMedia.getPath())
+                        .load( localMedia.getUri())
                         .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                         .listener(new RequestListener<Drawable>() {
                             @Override

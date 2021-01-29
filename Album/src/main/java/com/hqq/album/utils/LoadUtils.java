@@ -27,11 +27,9 @@ public class LoadUtils {
      * @param path
      * @param picture
      */
-    public static void loadImage(String path, ImageView picture) {
+    public static void loadImage(Uri path, ImageView picture) {
         RequestOptions options = new RequestOptions().placeholder(R.drawable.image_placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE).centerCrop();
-
-
         Glide.with(picture.getContext())
                 .load(path)
                 .apply(options)
@@ -45,13 +43,13 @@ public class LoadUtils {
      * @param path
      * @param picture
      */
-    public static void loadVideo(String path, ImageView picture) {
+    public static void loadVideo(Uri path, ImageView picture) {
         RequestOptions options = new RequestOptions().placeholder(R.drawable.image_placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .centerCrop();
         options.signature(new ObjectKey(System.currentTimeMillis()));
         Glide.with(picture.getContext())
-                .load(Uri.fromFile(new File(path)))
+                .load(path)
                 .thumbnail(0.5f)
                 .into(picture);
     }
@@ -63,7 +61,7 @@ public class LoadUtils {
      * @param path           地址
      * @param picture        控件
      */
-    public static void loadLocalMediaPath(int localMediaType, String path, ImageView picture) {
+    public static void loadLocalMediaPath(int localMediaType, Uri path, ImageView picture) {
         if (localMediaType == LocalMediaType.VALUE_TYPE_IMAGE) {
             LoadUtils.loadImage(path, picture);
         } else if (localMediaType == LocalMediaType.VALUE_TYPE_VIDEO) {

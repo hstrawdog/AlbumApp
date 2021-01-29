@@ -8,6 +8,8 @@
 
 package com.hqq.album.entity;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,11 +25,21 @@ public class LocalMediaFolder {
     private String name;
     private String path;
     private String firstImagePath;
+    private Uri firstImageUri;
     private int imageNum;
     private boolean isChecked;
     private int checkedNum;
     private int type;
     private List<LocalMedia> images = new ArrayList<LocalMedia>();
+
+
+    public Uri getFirstImageUri() {
+        return firstImageUri;
+    }
+
+    public void setFirstImageUri(Uri firstImageUri) {
+        this.firstImageUri = firstImageUri;
+    }
 
     public int getType() {
         return type;

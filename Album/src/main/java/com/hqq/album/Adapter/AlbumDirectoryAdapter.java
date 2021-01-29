@@ -67,7 +67,7 @@ public class AlbumDirectoryAdapter extends RecyclerView.Adapter<AlbumDirectoryAd
         } else {
             holder.mTvImgNum.setVisibility(View.INVISIBLE);
         }
-        LoadUtils.loadLocalMediaPath(folder.getType(), folder.getFirstImagePath(), holder.mFirstImage);
+        LoadUtils.loadLocalMediaPath(folder.getType(), folder.getFirstImageUri(), holder.mFirstImage);
 
         holder.mImageNum.setText("(" + imageNum + ")");
         holder.mTvFolderName.setText(name);

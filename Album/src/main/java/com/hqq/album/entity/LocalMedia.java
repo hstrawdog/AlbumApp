@@ -8,6 +8,7 @@
 
 package com.hqq.album.entity;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -65,6 +66,8 @@ public class LocalMedia implements Parcelable {
     @LocalMediaType
     private int localMediaType;
 
+    Uri uri;
+
 
     public LocalMedia() {
     }
@@ -74,6 +77,14 @@ public class LocalMedia implements Parcelable {
         this.duration = duration;
         this.lastUpdateAt = lastUpdateAt;
         this.localMediaType = type;
+    }
+
+    public Uri getUri() {
+        return uri;
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
     }
 
     public String getCutPath() {

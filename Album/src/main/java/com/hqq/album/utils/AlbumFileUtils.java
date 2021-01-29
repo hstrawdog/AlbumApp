@@ -1,8 +1,15 @@
 package com.hqq.album.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
+
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,4 +86,54 @@ public class AlbumFileUtils {
         }
         return degree;
     }
+
+    /**
+     * 获取图片uri
+     *
+     * @param context
+     * @param path
+     * @return
+     */
+    public static Uri getImageContentUri(Context context, String path) {
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Images.Media._ID}, MediaStore.Images.Media.DATA + "=? ",
+                new String[]{path}, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+            Uri baseUri = Uri.parse("content://media/external/images/media");
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            // 如果图片不在手机的共享图片数据库，就先把它插入。
+            if (new File(path).exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, path);
+                return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    /**
+     *
+     * @param context
+     * @param url
+     * @return
+     */
+    public static Uri getFile2Uri(Context context, String url) {
+        File tempFile = new File(url);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //如果在Android7.0以上,使用FileProvider获取Uri
+            try {
+                return FileProvider.getUriForFile(context,  "com.hqq.album.provider", tempFile);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {    //否则使用Uri.fromFile(file)方法获取Uri
+            return Uri.fromFile(tempFile);
+        }
+        return null;
+    }
+
+
 }
