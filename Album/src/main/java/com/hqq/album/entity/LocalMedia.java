@@ -184,6 +184,7 @@ public class LocalMedia implements Parcelable {
         dest.writeByte(this.isCut ? (byte) 1 : (byte) 0);
         dest.writeInt(this.position);
         dest.writeInt(this.localMediaType);
+        dest.writeParcelable(this.uri, flags);
     }
 
     protected LocalMedia(Parcel in) {
@@ -196,6 +197,7 @@ public class LocalMedia implements Parcelable {
         this.isCut = in.readByte() != 0;
         this.position = in.readInt();
         this.localMediaType = in.readInt();
+        this.uri = in.readParcelable(Uri.class.getClassLoader());
     }
 
     public static final Creator<LocalMedia> CREATOR = new Creator<LocalMedia>() {
