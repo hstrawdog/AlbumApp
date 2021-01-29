@@ -2,21 +2,26 @@ package com.hqq.ihalbum;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hqq.album.activity.PreviewUrlActivity;
 import com.hqq.album.annotation.LocalMediaType;
 import com.hqq.album.common.Album;
 import com.hqq.album.dialog.PhotoDialog;
 import com.hqq.album.entity.LocalMedia;
 
+import java.io.File;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -40,12 +45,14 @@ import javax.net.ssl.X509TrustManager;
 public class MainActivity extends AppCompatActivity {
 
     TextView mTvInfo;
+    TextView tv_file;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTvInfo = findViewById(R.id.tv_info);
+        tv_file = findViewById(R.id.tv_file);
 
         findViewById(R.id.button).setOnClickListener(this::previewUrl);
         findViewById(R.id.button2).setOnClickListener(this::openPhotoSelectDialog);
@@ -55,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button7).setOnClickListener(this::openCameraAndAlbum);
         findViewById(R.id.button8).setOnClickListener(this::openVideoAlbum);
         findViewById(R.id.button5).setOnClickListener(this::httpsTest);
+
     }
 
 
@@ -64,12 +72,15 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             ArrayList<LocalMedia> list = data.getParcelableArrayListExtra("data");
             Log.e("---------------------", "onActivityResult: ");
-
             StringBuilder stringBuilder = new StringBuilder();
-
             if (list != null) {
                 for (LocalMedia localMedia : list) {
                     stringBuilder.append(localMedia.getPath() + "\n");
+                    ImageView imageView = findViewById(R.id.imageView);
+
+                    tv_file.setText(new File(localMedia.getPath()).getName());
+
+                    Glide.with(imageView).load(Android10FileUtils.getRealPathFromUriAboveApiAndroidK(this,localMedia.getUri())).into(imageView);
                 }
             }
             mTvInfo.setText(stringBuilder.toString());
@@ -213,5 +224,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception ignored) {
         }
     }
+
 
 }
