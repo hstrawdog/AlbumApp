@@ -98,7 +98,7 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewAdapter.ViewHold
                 break;
             case LocalMediaType.VALUE_TYPE_VIDEO:
                 viewHolder.videoView.setMediaController(new MediaController(context));
-                viewHolder.videoView.setVideoURI(Uri.parse(localMedia.getPath()));
+                viewHolder.videoView.setVideoURI(localMedia.getUri());
                 viewHolder.videoView.start();
                 viewHolder.videoView.requestFocus();
                 viewHolder.videoView.setVisibility(View.VISIBLE);

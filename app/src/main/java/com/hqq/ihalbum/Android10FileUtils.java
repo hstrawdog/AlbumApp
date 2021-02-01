@@ -64,13 +64,9 @@ public class Android10FileUtils {
         return filePath;
     }
 
-    /**
-     * 适配Android 4.4以下(不包括api19),根据uri获取图片的绝对路径
-     *
-     * @param context 上下文对象
-     * @param uri     图片的Uri
-     * @return 如果Uri对应的图片存在, 那么返回该图片的绝对路径, 否则返回null
-     */
+
+
+
     public static String getRealPathFromUriBelowApiAndroidK(Context context, Uri uri) {
         return getDataColumn(context, uri, null, null);
     }

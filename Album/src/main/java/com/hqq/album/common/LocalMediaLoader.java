@@ -117,11 +117,11 @@ public class LocalMediaLoader {
                                 long dateTime = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[2]));
                                 long id = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[3]));
 //                                Uri uri = AlbumFileUtils.getFile2Uri(activity, path);
-                                Uri uri = Uri.withAppendedPath(Uri.parse("content://media/external/images/media"), "" + id);
+                                Uri uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + id);
                                 int duration = 0;
                                 if (mLocalMediaType == LocalMediaType.VALUE_TYPE_VIDEO) {
                                     duration = data.getInt(data.getColumnIndexOrThrow(VIDEO_PROJECTION[4]));
-                                    uri = Uri.withAppendedPath(Uri.parse("content://media/external/video/media"), "" + id);
+                                    uri = Uri.withAppendedPath(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, "" + id);
                                 }
                                 LocalMedia image = new LocalMedia(path, dateTime, duration, mLocalMediaType);
                                 image.setUri(uri);

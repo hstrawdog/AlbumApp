@@ -1,9 +1,14 @@
 package com.hqq.ihalbum;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -63,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button8).setOnClickListener(this::openVideoAlbum);
         findViewById(R.id.button5).setOnClickListener(this::httpsTest);
 
+
+
+
+
+
     }
 
 
@@ -79,14 +89,41 @@ public class MainActivity extends AppCompatActivity {
                     ImageView imageView = findViewById(R.id.imageView);
 
                     tv_file.setText(new File(localMedia.getPath()).getName());
-
-                    Glide.with(imageView).load(Android10FileUtils.getRealPathFromUriAboveApiAndroidK(this,localMedia.getUri())).into(imageView);
+                    Cursor cursor =
+                            searchTxtFromPublic(this, new File(localMedia.getPath()).getParent(), new File(localMedia.getPath()).getName());
+                    Glide.with(imageView).load(Environment.getExternalStorageDirectory().getAbsolutePath()+"/1610524936125.jpg").into(imageView);
                 }
             }
             mTvInfo.setText(stringBuilder.toString());
         }
 
     }
+
+    /**
+     * @param context
+     * @param filePath relative path in Q, such as: "DCIM/" or "DCIM/dir_name/"
+     *                 absolute path before Q
+     * @return
+     */
+    private static Cursor searchTxtFromPublic(Context context, String filePath, String fileName) {
+        if (TextUtils.isEmpty(fileName)) {
+            return null;
+        }
+        if (!filePath.endsWith("/")) {
+            filePath = filePath + "/";
+        }
+
+        String queryPathKey = MediaStore.Files.FileColumns.RELATIVE_PATH;
+        String selection = queryPathKey + "=? and " + MediaStore.Files.FileColumns.DISPLAY_NAME + "=?";
+        Cursor cursor = context.getContentResolver().query(MediaStore.Files.getContentUri(MediaStore.VOLUME_EXTERNAL),
+                new String[]{MediaStore.Files.FileColumns._ID, queryPathKey, MediaStore.Files.FileColumns.DISPLAY_NAME},
+                selection,
+                new String[]{filePath, fileName},
+                null);
+
+        return cursor;
+    }
+
 
     /**
      * 测试http预览
