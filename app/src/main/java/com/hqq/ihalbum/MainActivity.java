@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     Glide.with(imageView).load(Environment.getExternalStorageDirectory().getAbsolutePath()+"/1610524936125.jpg").into(imageView);
                 }
             }
+
             mTvInfo.setText(stringBuilder.toString());
         }
 

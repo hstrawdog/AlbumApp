@@ -108,10 +108,8 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
                 File file = new File(cameraPath);
                 //  int degree = AlbumFileUtils.readPictureDegree(file.getAbsolutePath());
                 //rotateImage(degree, file);  旋转图片
-
                 sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
                 // takePhotoSuccess = true;
-
                 // 生成新拍照片或视频对象
                 LocalMedia media = new LocalMedia();
                 media.setPath(cameraPath);

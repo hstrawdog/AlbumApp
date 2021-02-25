@@ -29,17 +29,13 @@ public class AlbumFileUtils {
     public static final String POSTFIX = ".JPEG";
     public static final String POST_VIDEO = ".mp4";
     public static final String APP_NAME = "ImageSelector";
-    public static final String CAMERA_PATH = "/" + APP_NAME + "/CameraImage/";
 
     public static File createCameraFile(Context context, int type) {
-        return createMediaFile(context, CAMERA_PATH, type);
+        return createMediaFile(context,         context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getPath() , type);
     }
 
     private static File createMediaFile(Context context, String parentPath, int type) {
-        String state = Environment.getExternalStorageState();
-        File rootDir = state.equals(Environment.MEDIA_MOUNTED) ? Environment.getExternalStorageDirectory() : context.getCacheDir();
-
-        File folderDir = new File(rootDir.getAbsolutePath() + parentPath);
+        File folderDir = new File( parentPath);
         if (!folderDir.exists() && folderDir.mkdirs()) {
 
         }
@@ -115,7 +111,6 @@ public class AlbumFileUtils {
     }
 
     /**
-     *
      * @param context
      * @param url
      * @return
@@ -125,7 +120,7 @@ public class AlbumFileUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //如果在Android7.0以上,使用FileProvider获取Uri
             try {
-                return FileProvider.getUriForFile(context,  context.getPackageName()+".provider", tempFile);
+                return FileProvider.getUriForFile(context, context.getPackageName() + ".provider", tempFile);
             } catch (Exception e) {
                 e.printStackTrace();
             }
