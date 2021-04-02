@@ -30,6 +30,9 @@
         <activity
             android:name="com.hqq.album.activity.PreviewUrlActivity"
             android:theme="@style/NoTitle" />
+        <activity
+            android:name="com.hqq.album.activity.PreviewUriActivity"
+            android:theme="@style/NoTitle" />
     </application>
 
 </manifest>
