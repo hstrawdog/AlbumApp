@@ -31,11 +31,11 @@ public class AlbumFileUtils {
     public static final String APP_NAME = "ImageSelector";
 
     public static File createCameraFile(Context context, int type) {
-        return createMediaFile(context,         context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getPath() , type);
+        return createMediaFile(context, context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getPath(), type);
     }
 
     private static File createMediaFile(Context context, String parentPath, int type) {
-        File folderDir = new File( parentPath);
+        File folderDir = new File(parentPath);
         if (!folderDir.exists() && folderDir.mkdirs()) {
 
         }

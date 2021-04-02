@@ -25,6 +25,7 @@ import com.hqq.album.annotation.LocalMediaType;
 import com.hqq.album.common.Album;
 import com.hqq.album.dialog.PhotoDialog;
 import com.hqq.album.entity.LocalMedia;
+import com.hqq.album.utils.AlbumFileUtils;
 
 import java.io.File;
 import java.security.SecureRandom;
@@ -69,10 +70,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button5).setOnClickListener(this::httpsTest);
 
 
-
-
-
-
     }
 
 
@@ -87,11 +84,8 @@ public class MainActivity extends AppCompatActivity {
                 for (LocalMedia localMedia : list) {
                     stringBuilder.append(localMedia.getPath() + "\n");
                     ImageView imageView = findViewById(R.id.imageView);
-
                     tv_file.setText(new File(localMedia.getPath()).getName());
-                    Cursor cursor =
-                            searchTxtFromPublic(this, new File(localMedia.getPath()).getParent(), new File(localMedia.getPath()).getName());
-                    Glide.with(imageView).load(Environment.getExternalStorageDirectory().getAbsolutePath()+"/1610524936125.jpg").into(imageView);
+                    Glide.with(imageView).load(AlbumFileUtils.getFile2Uri(this,localMedia.getPath())).into(imageView);
                 }
             }
 
