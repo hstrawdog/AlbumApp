@@ -28,10 +28,7 @@
             android:name="com.hqq.album.activity.AlbumPreviewV2Activity"
             android:theme="@style/NoTitle" />
         <activity
-            android:name="com.hqq.album.activity.PreviewUrlActivity"
-            android:theme="@style/NoTitle" />
-        <activity
-            android:name="com.hqq.album.activity.PreviewUriActivity"
+            android:name="com.hqq.album.activity.PreviewActivity"
             android:theme="@style/NoTitle" />
     </application>
 

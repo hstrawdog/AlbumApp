@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ import com.hqq.album.activity.base.BaseActivity;
 import com.hqq.album.common.FunctionKey;
 import com.hqq.album.customize.FilterImageView;
 import com.hqq.album.entity.LocalMedia;
+import com.hqq.album.entity.PreviewBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +67,8 @@ import java.util.List;
  * @Descrive :
  * @Email :
  */
-public class PreviewUriActivity extends BaseActivity implements View.OnClickListener {
-    List<Uri> mLocalMediaList;
+public class PreviewActivity extends BaseActivity implements View.OnClickListener {
+    List<Object> mLocalMediaList;
     private RecyclerView mRcAlbumList;
     private ConstraintLayout mAlbumTitleBar;
     private FilterImageView mAlbumBack;
@@ -79,32 +81,41 @@ public class PreviewUriActivity extends BaseActivity implements View.OnClickList
 
 
     public static void goPreviewUrlActivity2LocalMedia(Activity context, List<LocalMedia> data, int position) {
-
-        ArrayList<Uri> list = new ArrayList<Uri>();
+        ArrayList<Object> list = new ArrayList<>();
         for (LocalMedia localMedia : data) {
-            list.add(localMedia.getUri());
+            if (localMedia.getUri() != null) {
+                list.add(localMedia.getUri());
+            } else if (!localMedia.getPath().isEmpty()) {
+                list.add(localMedia.getPath());
+            }
         }
-        Intent intent = new Intent(context, PreviewUriActivity.class);
-        intent.putParcelableArrayListExtra(FunctionKey.KEY_DATA,  list);
+        Intent intent = new Intent(context, PreviewActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(FunctionKey.KEY_DATA, list);
+        intent.putExtras(bundle);
         intent.putExtra(FunctionKey.KEY_POSITION, position + 1);
         context.startActivity(intent);
         context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
-    public static void goPreviewUrlActivity(Activity context, ArrayList<Uri> list, int mPosition) {
-        Intent intent = new Intent(context, PreviewUriActivity.class);
-        intent.putParcelableArrayListExtra(FunctionKey.KEY_DATA,list);
+    public static void goPreviewUrlActivity(Activity context, ArrayList<Object> list, int mPosition) {
+        Intent intent = new Intent(context, PreviewActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(FunctionKey.KEY_DATA, list);
+        intent.putExtras(bundle);
         intent.putExtra(FunctionKey.KEY_POSITION, mPosition + 1);
         context.startActivity(intent);
         context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
-    public static void goPreviewUrlActivity(Activity context, Uri url) {
-        Intent intent = new Intent(context, PreviewUriActivity.class);
-        ArrayList<Uri> list = new ArrayList<>();
+    public static void goPreviewUrlActivity(Activity context, Object url) {
+        Intent intent = new Intent(context, PreviewActivity.class);
+        ArrayList<Object> list = new ArrayList<>();
         list.add(url);
-        intent.putParcelableArrayListExtra(FunctionKey.KEY_DATA, list);
         intent.putExtra(FunctionKey.KEY_POSITION, 1);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(FunctionKey.KEY_DATA, list);
+        intent.putExtras(bundle);
         context.startActivity(intent);
         context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
@@ -113,7 +124,7 @@ public class PreviewUriActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_preview_v2);
-        mLocalMediaList = getIntent().getParcelableArrayListExtra(FunctionKey.KEY_DATA);
+        mLocalMediaList = (List<Object>) getIntent().getSerializableExtra(FunctionKey.KEY_DATA);
         initView();
         mLlCheck.setVisibility(View.GONE);
         PreviewAdapter previewAdapter = new PreviewAdapter();
@@ -193,7 +204,7 @@ public class PreviewUriActivity extends BaseActivity implements View.OnClickList
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-            initData(PreviewUriActivity.this, viewHolder, mLocalMediaList.get(i));
+            initData(PreviewActivity.this, viewHolder, mLocalMediaList.get(i));
         }
 
         @Override
@@ -202,7 +213,7 @@ public class PreviewUriActivity extends BaseActivity implements View.OnClickList
         }
 
 
-        private void initData(final Context context, final ViewHolder viewHolder, Uri localMedia) {
+        private void initData(final Context context, final ViewHolder viewHolder, Object localMedia) {
             viewHolder.progressBar.setVisibility(View.VISIBLE);
             Glide.with(context)
                     .load(localMedia)
@@ -226,7 +237,6 @@ public class PreviewUriActivity extends BaseActivity implements View.OnClickList
 
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-
             VideoView videoView;
             ImageView imageView;
             ProgressBar progressBar;

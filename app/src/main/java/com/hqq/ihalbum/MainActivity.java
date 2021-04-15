@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,10 +15,9 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.hqq.album.activity.PreviewUrlActivity;
+import com.hqq.album.activity.PreviewActivity;
 import com.hqq.album.annotation.LocalMediaType;
 import com.hqq.album.common.Album;
 import com.hqq.album.dialog.PhotoDialog;
@@ -31,7 +28,6 @@ import java.io.File;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -128,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
     private void httpsTest(View view) {
         handleSSLHandshake();
         String gif = "https://images.shangwenwan.com/mall/6d392bfd-6273-4992-a24d-74f4b39b19d3?imageMogr2/size-limit/54.7k!/crop/!485x485a6a8";
-        PreviewUrlActivity.goPreviewUrlActivity(MainActivity.this, gif);
+        PreviewActivity.goPreviewUrlActivity(MainActivity.this, gif);
     }
 
     /**
@@ -215,12 +211,12 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     private void previewUrl(View view) {
-        List<String> list = new ArrayList<>();
+        ArrayList<Object> list = new ArrayList<>();
         list.add("http://img.pptjia.com/image/20180117/f4b76385a3ccdbac48893cc6418806d5.jpg");
         list.add("http://img.pptjia.com/image/20180117/f4b76385a3ccdbac48893cc6418806d5.jpg");
         list.add("http://img.pptjia.com/image/20180117/f4b76385a3ccdbac48893cc6418806d5.jpg");
         list.add("http://img.pptjia.com/image/20180117/f4b76385a3ccdbac48893cc6418806d5.jpg");
-        PreviewUrlActivity.goPreviewUrlActivity(MainActivity.this, list, 0);
+        PreviewActivity.goPreviewUrlActivity(MainActivity.this, list, 0);
     }
 
     /**

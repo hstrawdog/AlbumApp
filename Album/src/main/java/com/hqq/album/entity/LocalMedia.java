@@ -28,6 +28,10 @@ public class LocalMedia implements Parcelable {
      */
     private String path;
     /**
+     *  相册对应的 uri
+     */
+    Uri uri;
+    /**
      * 压缩后的地址
      * <p>
      * lunban
@@ -66,7 +70,6 @@ public class LocalMedia implements Parcelable {
     @LocalMediaType
     private int localMediaType;
 
-    Uri uri;
 
 
     public LocalMedia() {
