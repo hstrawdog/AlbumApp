@@ -80,7 +80,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
     int mPosition = 0;
 
 
-    public static void goPreviewUrlActivity2LocalMedia(Activity context, List<LocalMedia> data, int position) {
+    public static void openPreviewActivity2LocalMedia(Activity context, List<LocalMedia> data, int position) {
         ArrayList<Object> list = new ArrayList<>();
         for (LocalMedia localMedia : data) {
             if (localMedia.getUri() != null) {
@@ -98,7 +98,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
-    public static void goPreviewUrlActivity(Activity context, ArrayList<Object> list, int mPosition) {
+    public static void openPreviewActivity(Activity context, ArrayList<Object> list, int mPosition) {
         Intent intent = new Intent(context, PreviewActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(FunctionKey.KEY_DATA, list);
@@ -108,7 +108,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
-    public static void goPreviewUrlActivity(Activity context, Object url) {
+    public static void openPreviewActivity(Activity context, Object url) {
         Intent intent = new Intent(context, PreviewActivity.class);
         ArrayList<Object> list = new ArrayList<>();
         list.add(url);
