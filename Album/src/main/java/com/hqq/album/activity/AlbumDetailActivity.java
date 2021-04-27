@@ -92,7 +92,7 @@ public class AlbumDetailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onPictureClick(LocalMedia media, int position) {
-        startActivityForResult(new Intent(this, AlbumPreviewV2Activity.class)
+        startActivityForResult(new Intent(this, AlbumPreviewActivity.class)
                         .putExtra(FunctionKey.KEY_POSITION, position + 1)
                         .putExtra(FunctionKey.KEY_FOLDER_NAME, getIntent().getStringExtra(FunctionKey.KEY_FOLDER_NAME))
                 , CODE_CLOSE);

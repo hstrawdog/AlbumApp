@@ -6,6 +6,7 @@ import android.content.Intent;
 import androidx.fragment.app.Fragment;
 
 import com.hqq.album.activity.AlbumDirectoryActivity;
+import com.hqq.album.activity.AlbumFolderActivity;
 import com.hqq.album.annotation.LocalMediaType;
 
 /**
@@ -37,6 +38,11 @@ public class FunctionOptions {
      * 默认显示的图片
      */
     private int albumType = LocalMediaType.VALUE_TYPE_IMAGE;
+
+    /**
+     * 默认显示的文件夹
+     */
+    private String chooseFolder = "最近照片";
 
     public FunctionOptions() {
     }
@@ -94,6 +100,16 @@ public class FunctionOptions {
         return this;
     }
 
+
+    public String getChooseFolder() {
+        return chooseFolder;
+    }
+
+    public FunctionOptions setChooseFolder(String chooseFolder) {
+        this.chooseFolder = chooseFolder;
+        return this;
+    }
+
     /**
      * 数据将回调给调用的 activity 或者Fragment
      *
@@ -104,6 +120,23 @@ public class FunctionOptions {
         SelectOptions.getInstance().reset();
 
         Intent intent = new Intent(activity, AlbumDirectoryActivity.class);
+        Fragment fragment = mAlbum.getFragment();
+        if (fragment != null) {
+            fragment.startActivityForResult(intent, requestCode);
+        } else {
+            activity.startActivityForResult(intent, requestCode);
+        }
+    }
+
+    /**
+     * 打开指定文件夹
+     *
+     * @param requestCode
+     */
+    public void forFolderResult(int requestCode) {
+        Activity activity = mAlbum.getActivity();
+        SelectOptions.getInstance().reset();
+        Intent intent = new Intent(activity, AlbumFolderActivity.class);
         Fragment fragment = mAlbum.getFragment();
         if (fragment != null) {
             fragment.startActivityForResult(intent, requestCode);

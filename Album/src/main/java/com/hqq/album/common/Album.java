@@ -18,13 +18,19 @@ import java.lang.ref.WeakReference;
  * @Descrive :
  */
 public class Album {
-    /**
-     *
-     */
+
+
+    public static Album from(Activity activity) {
+        return new Album(activity);
+    }
+
+    public static Album from(Fragment fragment) {
+        return new Album(fragment.getActivity(), fragment);
+    }
+
+
     private final WeakReference<Activity> mContext;
-    /**
-     *
-     */
+
     private final WeakReference<Fragment> mFragment;
 
     private Album(Activity activity) {
@@ -39,15 +45,6 @@ public class Album {
         mContext = new WeakReference<>(activity);
         mFragment = new WeakReference<>(fragment);
     }
-
-    public static Album from(Activity activity) {
-        return new Album(activity);
-    }
-
-    public static Album from(Fragment fragment) {
-        return new Album(fragment.getActivity(), fragment);
-    }
-
 
     public FunctionOptions choose(int valueTypeImage) {
         return FunctionOptions.getInstance()

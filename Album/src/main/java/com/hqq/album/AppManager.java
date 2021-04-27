@@ -35,6 +35,7 @@ import android.content.Intent;
 
 import com.hqq.album.activity.AlbumDetailActivity;
 import com.hqq.album.activity.AlbumDirectoryActivity;
+import com.hqq.album.activity.AlbumFolderActivity;
 import com.hqq.album.common.SelectOptions;
 
 import java.util.Stack;
@@ -108,7 +109,7 @@ public class AppManager {
             if (null != activityStack.get(i)) {
                 Activity activity = activityStack.get(i);
                 if (isCallBack) {
-                    if (activity instanceof AlbumDirectoryActivity) {
+                    if (activity instanceof AlbumDirectoryActivity ||  activity instanceof AlbumFolderActivity) {
                         Intent intent = new Intent();
                         intent.putParcelableArrayListExtra("data", SelectOptions.getInstance().getSelectLocalMedia());
                         activity.setResult(Activity.RESULT_OK, intent);

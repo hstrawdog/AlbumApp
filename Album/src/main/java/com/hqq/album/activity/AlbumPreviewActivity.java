@@ -36,7 +36,7 @@ import java.util.List;
  * @Email : qiqiang213@gmail.com
  * @Descrive :
  */
-public class AlbumPreviewV2Activity extends BaseActivity implements View.OnClickListener {
+public class AlbumPreviewActivity extends BaseActivity implements View.OnClickListener {
 
 
     private RecyclerView mRcAlbumList;

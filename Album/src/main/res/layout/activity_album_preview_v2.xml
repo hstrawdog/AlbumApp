@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     android:orientation="vertical"
-    tools:context="com.hqq.album.activity.AlbumPreviewV2Activity">
+    tools:context="com.hqq.album.activity.AlbumPreviewActivity">
 
 
     <androidx.recyclerview.widget.RecyclerView

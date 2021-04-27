@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.hqq.album.activity.AlbumFolderActivity;
 import com.hqq.album.activity.PreviewActivity;
 import com.hqq.album.annotation.LocalMediaType;
 import com.hqq.album.common.Album;
@@ -63,8 +64,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button4).setOnClickListener(this::openAlbum);
         findViewById(R.id.button7).setOnClickListener(this::openCameraAndAlbum);
         findViewById(R.id.button8).setOnClickListener(this::openVideoAlbum);
+        findViewById(R.id.button9).setOnClickListener(this::openFolderAlbum);
         findViewById(R.id.button5).setOnClickListener(this::httpsTest);
-
+        findViewById(R.id.button5).setOnClickListener(this::httpsTest);
 
     }
 
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     stringBuilder.append(localMedia.getPath() + "\n");
                     ImageView imageView = findViewById(R.id.imageView);
                     tv_file.setText(new File(localMedia.getPath()).getName());
-                    Glide.with(imageView).load(AlbumFileUtils.getFile2Uri(this,localMedia.getPath())).into(imageView);
+                    Glide.with(imageView).load(AlbumFileUtils.getFile2Uri(this, localMedia.getPath())).into(imageView);
                 }
             }
 
@@ -124,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     private void httpsTest(View view) {
         handleSSLHandshake();
         String gif = "https://images.shangwenwan.com/mall/6d392bfd-6273-4992-a24d-74f4b39b19d3?imageMogr2/size-limit/54.7k!/crop/!485x485a6a8";
-        PreviewActivity.goPreviewUrlActivity(MainActivity.this, gif);
+        PreviewActivity.openPreviewActivity(MainActivity.this, gif);
     }
 
     /**
@@ -149,6 +151,19 @@ public class MainActivity extends AppCompatActivity {
         Album.from(MainActivity.this)
                 .choose(LocalMediaType.VALUE_TYPE_IMAGE)
                 .forResult(0x1)
+        ;
+    }
+
+    /**
+     * 打开指定文件夹
+     *
+     * @param view
+     */
+    private void openFolderAlbum(View view) {
+        Album.from(MainActivity.this)
+                .choose(LocalMediaType.VALUE_TYPE_IMAGE)
+                .setChooseFolder("爱饰拍")
+                .forFolderResult(0x1)
         ;
     }
 
@@ -216,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("http://img.pptjia.com/image/20180117/f4b76385a3ccdbac48893cc6418806d5.jpg");
         list.add("http://img.pptjia.com/image/20180117/f4b76385a3ccdbac48893cc6418806d5.jpg");
         list.add("http://img.pptjia.com/image/20180117/f4b76385a3ccdbac48893cc6418806d5.jpg");
-        PreviewActivity.goPreviewUrlActivity(MainActivity.this, list, 0);
+        PreviewActivity.openPreviewActivity(MainActivity.this, list, 0);
     }
 
     /**
