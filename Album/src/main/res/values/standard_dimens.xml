@@ -5,4 +5,6 @@
     <dimen name="dividing_0.5">0.5dip</dimen>
     <!-- 字体大小设置为dip 防止系统字体影响-->
     <dimen name="textsize_18">18.0dip</dimen>
+    <dimen name="textsize_16">16.0dip</dimen>
+    <dimen name="textsize_15">15.0dip</dimen>
 </resources>

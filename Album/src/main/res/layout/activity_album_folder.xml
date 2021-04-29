@@ -40,16 +40,18 @@
                 android:ellipsize="middle"
                 android:gravity="center"
                 android:maxLength="12"
+                android:paddingVertical="@dimen/x10"
                 android:singleLine="true"
                 android:textColor="@color/title_text_color"
-                android:textSize="@dimen/textsize_18"
+                android:textSize="@dimen/x28"
                 tools:text="123" />
 
             <ImageView
-                android:layout_width="@dimen/x40"
+                android:layout_width="@dimen/x35"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/x10"
                 android:src="@drawable/ic_down"
+                android:adjustViewBounds="true"
                 android:tint="@color/title_text_color" />
 
         </LinearLayout>
@@ -69,6 +71,7 @@
             android:paddingLeft="10dip"
             android:paddingRight="10dp"
             android:text="完成"
+            android:textSize="@dimen/x28"
             android:textColor="#ffffff" />
 
     </RelativeLayout>

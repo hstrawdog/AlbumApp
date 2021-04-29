@@ -63,6 +63,7 @@ public class AlbumFolderActivity extends BaseActivity implements AlbumDetailAdap
         mTvFinish.setOnClickListener(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.rc_list);
         mTvTile = (TextView) findViewById(R.id.album_title);
+        findViewById(R.id.album_back).setOnClickListener(this);
         findViewById(R.id.ll_title).setOnClickListener(this);
 
         initViews();
@@ -86,6 +87,14 @@ public class AlbumFolderActivity extends BaseActivity implements AlbumDetailAdap
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.album_back) {
+            if (mRecyclerView.getAdapter() == mAdapter){
+                mRecyclerView.removeItemDecorationAt(0);
+                mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(4, AlbumUtils.dip2px(this, 2), false));
+                mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+                mRecyclerView.setAdapter(mAlbumDetailAdapter);
+                return ;
+            }
+
             AppManager.getAppManager().finishActivity();
         } else if (i == R.id.album_finish) {
             AppManager.getAppManager().finishAllActivityAndCallBack();

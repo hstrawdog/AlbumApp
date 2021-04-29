@@ -163,8 +163,7 @@ public class MainActivity extends AppCompatActivity {
         Album.from(MainActivity.this)
                 .choose(LocalMediaType.VALUE_TYPE_IMAGE)
                 .setChooseFolder("爱饰拍")
-                .forFolderResult(0x1)
-        ;
+                .forFolderResult(0x1);
     }
 
     /**
