@@ -191,14 +191,20 @@ public class LocalMediaLoader {
     private LocalMediaFolder getImageFolder(String path, Uri uri, List<LocalMediaFolder> imageFolders) {
         File imageFile = new File(path);
         File folderFile = imageFile.getParentFile();
+        String name= folderFile.getName();
+        if (FunctionOptions.getInstance().getChooseFolder() !=null &&  !FunctionOptions.getInstance().getChooseFolder().isEmpty()) {
+            if ( path.contains(FunctionOptions.getInstance().getChooseFolder())){
+                name=FunctionOptions.getInstance().getChooseFolder();
+            }
+        }
 
         for (LocalMediaFolder folder : imageFolders) {
-            if (folder.getName().equals(folderFile.getName())) {
+            if (folder.getName().equals(name)) {
                 return folder;
             }
         }
         LocalMediaFolder newFolder = new LocalMediaFolder();
-        newFolder.setName(folderFile.getName());
+        newFolder.setName(name);
         newFolder.setPath(folderFile.getAbsolutePath());
         newFolder.setFirstImagePath(path);
         newFolder.setFirstImageUri(uri);
