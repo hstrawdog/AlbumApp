@@ -1,9 +1,5 @@
 package com.hqq.ihalbum;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-
-import leakcanary.AppWatcher;
 /**
  * @Author : huangqiqiang
  * @Package : com.hqq.ihalbum
