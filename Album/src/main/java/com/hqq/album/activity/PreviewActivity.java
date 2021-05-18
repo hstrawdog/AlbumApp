@@ -21,9 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +52,6 @@ import com.hqq.album.activity.base.BaseActivity;
 import com.hqq.album.common.FunctionKey;
 import com.hqq.album.customize.FilterImageView;
 import com.hqq.album.entity.LocalMedia;
-import com.hqq.album.entity.PreviewBean;
 
 import java.util.ArrayList;
 import java.util.List;
