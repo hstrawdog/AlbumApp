@@ -220,6 +220,8 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
                 viewHolder.imageView.setVisibility(View.GONE);
                 viewHolder.photoDraweeView.setVisibility(View.VISIBLE);
                 viewHolder.photoDraweeView.setImage(ImageSource.uri((Uri) localMedia));
+                viewHolder.progressBar.setVisibility(View.GONE);
+
             }else {
                 viewHolder.imageView.setVisibility(View.VISIBLE);
                 viewHolder.photoDraweeView.setVisibility(View.GONE);
