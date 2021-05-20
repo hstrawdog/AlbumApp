@@ -20,6 +20,7 @@ package com.hqq.album.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,7 +47,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.hqq.album.AppManager;
@@ -219,9 +222,18 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
             if (localMedia instanceof  Uri){
                 viewHolder.imageView.setVisibility(View.GONE);
                 viewHolder.photoDraweeView.setVisibility(View.VISIBLE);
-                viewHolder.photoDraweeView.setImage(ImageSource.uri((Uri) localMedia));
                 viewHolder.progressBar.setVisibility(View.GONE);
+                Glide.with(context)
+                        .asBitmap()
+                        .load(localMedia)
+                        .into(new SimpleTarget<Bitmap>(){
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                viewHolder.photoDraweeView.setImage(  ImageSource.bitmap(resource));
 
+                            }
+                        })
+                    ;
             }else {
                 viewHolder.imageView.setVisibility(View.VISIBLE);
                 viewHolder.photoDraweeView.setVisibility(View.GONE);
