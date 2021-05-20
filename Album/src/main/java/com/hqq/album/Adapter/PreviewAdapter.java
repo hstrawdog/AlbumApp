@@ -63,9 +63,6 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewAdapter.ViewHold
             case LocalMediaType.VALUE_TYPE_IMAGE:
 //                viewHolder.videoView.setVisibility(View.GONE);
 //                Point point= PhotoMetadataUtils.INSTANCE.getBitmapSize(localMedia.getUri(),(Activity)context);
-
-
-//
 //                Glide.with(context)
 //                        .load( localMedia.getUri())
 //                        .apply(new RequestOptions()
