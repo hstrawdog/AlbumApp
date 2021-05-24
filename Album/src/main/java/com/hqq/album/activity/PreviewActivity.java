@@ -218,58 +218,30 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
 
         private void initData(final Context context, final ViewHolder viewHolder, Object localMedia) {
             viewHolder.progressBar.setVisibility(View.VISIBLE);
-
-            if (localMedia instanceof  Uri){
-                viewHolder.imageView.setVisibility(View.GONE);
-                viewHolder.photoDraweeView.setVisibility(View.VISIBLE);
-                viewHolder.progressBar.setVisibility(View.GONE);
-                Glide.with(context)
-                        .asBitmap()
-                        .load(localMedia)
-                        .into(new SimpleTarget<Bitmap>(){
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                viewHolder.photoDraweeView.setImage(  ImageSource.bitmap(resource));
-
-                            }
-                        })
-                    ;
-            }else {
-                viewHolder.imageView.setVisibility(View.VISIBLE);
-                viewHolder.photoDraweeView.setVisibility(View.GONE);
-
+            viewHolder.photoDraweeView.setVisibility(View.VISIBLE);
+            viewHolder.progressBar.setVisibility(View.GONE);
             Glide.with(context)
+                    .asBitmap()
                     .load(localMedia)
-                    .apply(new RequestOptions()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL))
-                    .listener(new RequestListener<Drawable>() {
+                    .into(new SimpleTarget<Bitmap>() {
                         @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            Toast.makeText(context, "图片预览失败", Toast.LENGTH_SHORT).show();
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            viewHolder.photoDraweeView.setImage(ImageSource.bitmap(resource));
                             viewHolder.progressBar.setVisibility(View.GONE);
-                            return false;
                         }
                     })
-                    .into(viewHolder.imageView);
-            }
+            ;
 
         }
 
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             VideoView videoView;
-            ImageView imageView;
             ProgressBar progressBar;
             SubsamplingScaleImageView photoDraweeView;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                imageView = itemView.findViewById(R.id.preview_image);
                 videoView = itemView.findViewById(R.id.vv_view);
                 progressBar = itemView.findViewById(R.id.pb_bar);
                 photoDraweeView = itemView.findViewById(R.id.image_item);
