@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context="com.hqq.album.activity.AlbumPreviewActivity">
 
@@ -27,6 +27,7 @@
             android:paddingLeft="@dimen/x15"
             android:paddingRight="@dimen/x26"
             android:src="@mipmap/ic_back_gray"
+            android:tint="@color/black"
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <TextView
@@ -37,7 +38,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:singleLine="true"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="@dimen/textsize_18"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
