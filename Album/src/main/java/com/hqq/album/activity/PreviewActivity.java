@@ -226,9 +226,14 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
                     .into(new SimpleTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                            viewHolder.photoDraweeView.setImage(ImageSource.bitmap(resource));
+                            // 创建一个新的Bitmap
+                            Bitmap bitmap = Bitmap.createBitmap(resource);
+                            viewHolder.photoDraweeView.setImage(ImageSource.bitmap(bitmap));
                             viewHolder.progressBar.setVisibility(View.GONE);
+
+
                         }
+
                     })
             ;
 
