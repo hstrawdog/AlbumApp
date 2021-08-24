@@ -108,10 +108,10 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
             if (requestCode == FunctionKey.REQUEST_CODE_REQUEST_CAMERA) {
                 // 拍照返回
                 File file = new File(cameraPath);
-                int degree = AlbumFileUtils.readPictureDegree(file.getAbsolutePath());
-                //旋转图片
-                Bitmap bitmap = AlbumFileUtils.rotateBitmap(degree, BitmapFactory.decodeFile(cameraPath));
-                AlbumFileUtils.saveBitmap(cameraPath, bitmap);
+//                int degree = AlbumFileUtils.readPictureDegree(file.getAbsolutePath());
+//                //旋转图片
+//                Bitmap bitmap = AlbumFileUtils.rotateBitmap(degree, BitmapFactory.decodeFile(cameraPath));
+//                AlbumFileUtils.saveBitmap(cameraPath, bitmap);
                 sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
                 // takePhotoSuccess = true;
                 // 生成新拍照片或视频对象
