@@ -48,6 +48,7 @@ public class LocalMediaLoader {
             MediaStore.Images.Media.DISPLAY_NAME,
             MediaStore.Images.Media.DATE_ADDED,
             MediaStore.Images.Media._ID,
+            MediaStore.Images.Media.SIZE
     };
 
     private final static String[] VIDEO_PROJECTION = {
@@ -122,6 +123,12 @@ public class LocalMediaLoader {
                                 if (mLocalMediaType == LocalMediaType.VALUE_TYPE_VIDEO) {
                                     duration = data.getInt(data.getColumnIndexOrThrow(VIDEO_PROJECTION[4]));
                                     uri = Uri.withAppendedPath(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, "" + id);
+                                } else {
+                                    int size = data.getInt(data.getColumnIndexOrThrow(IMAGE_PROJECTION[4]));
+                                    //是否大于10K
+                                    if (size < (1024 * 10)) {
+                                        continue;
+                                    }
                                 }
                                 LocalMedia image = new LocalMedia(path, dateTime, duration, mLocalMediaType);
                                 image.setUri(uri);
