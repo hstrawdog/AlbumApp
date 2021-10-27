@@ -65,6 +65,7 @@ public class AlbumFolderActivity extends BaseActivity implements AlbumDetailAdap
         mTvTile = (TextView) findViewById(R.id.album_title);
         findViewById(R.id.album_back).setOnClickListener(this);
         findViewById(R.id.ll_title).setOnClickListener(this);
+        mFolderName = FunctionOptions.getInstance().getChooseFolder();
 
         initViews();
         mRecyclerView.setHasFixedSize(true);
@@ -155,7 +156,6 @@ public class AlbumFolderActivity extends BaseActivity implements AlbumDetailAdap
             @Override
             public void loadComplete(List<LocalMediaFolder> folders) {
                 mFolderList = folders;
-                mFolderName = FunctionOptions.getInstance().getChooseFolder();
                 setAlbum(folders);
                 if (mAlbumDetailAdapter.getItemCount()<=0) {
                     mFolderName ="最近照片";
