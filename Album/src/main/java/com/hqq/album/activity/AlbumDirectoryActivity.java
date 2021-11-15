@@ -226,7 +226,7 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
             return;
         }
         // 否则再去 读取内存中的数据
-        LocalMediaLoader localMediaLoader = new LocalMediaLoader(this, FunctionOptions.getInstance().getAlbumType(), true);
+        LocalMediaLoader localMediaLoader = new LocalMediaLoader(this, FunctionOptions.getInstance().getAlbumType(), FunctionOptions.getInstance().isSupportGif());
         localMediaLoader.loadAllImage(new LocalMediaLoader.LocalMediaLoadListener() {
             @Override
             public void loadComplete(List<LocalMediaFolder> folders) {

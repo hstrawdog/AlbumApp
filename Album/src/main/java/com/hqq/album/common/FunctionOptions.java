@@ -44,6 +44,14 @@ public class FunctionOptions {
      */
     private String chooseFolder = "最近照片";
 
+
+    /**
+     * 是否支持gif
+     */
+
+    private boolean isSupportGif = false;
+
+
     public FunctionOptions() {
     }
 
@@ -100,6 +108,15 @@ public class FunctionOptions {
         return this;
     }
 
+    public FunctionOptions setSupportGif(boolean supportGif) {
+        isSupportGif = supportGif;
+        return this;
+    }
+
+
+    public boolean isSupportGif() {
+        return isSupportGif;
+    }
 
     public String getChooseFolder() {
         return chooseFolder;

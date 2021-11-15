@@ -27,7 +27,14 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
      * PhotoDialogCallBack 是空的时候 会直接回到给Activity
      */
     PhotoDialogCallBack mPhotoDialogCallBack;
+    /**
+     * 最大选择1
+     */
     int mSelectSize = 1;
+
+
+    boolean isSupportGif = false;
+
 
     /**
      * 简单入口
@@ -62,6 +69,7 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
         mSelectSize = selectSize;
     }
 
+
     @Override
     public int setGravity() {
         return Gravity.BOTTOM;
@@ -93,6 +101,7 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
                     .choose(LocalMediaType.VALUE_TYPE_IMAGE)
                     .setStartUpCamera(true)
                     .setMaxSelectNum(mSelectSize)
+                    .setSupportGif(isSupportGif)
                     .forResult(0x1);
             if (mPhotoDialogCallBack == null) {
                 dismiss();
@@ -101,6 +110,7 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
             Album.from(PhotoDialog.this)
                     .choose(LocalMediaType.VALUE_TYPE_IMAGE)
                     .setMaxSelectNum(mSelectSize)
+                    .setSupportGif(isSupportGif)
                     .forResult(0x1);
             if (mPhotoDialogCallBack == null) {
                 dismiss();

@@ -88,12 +88,12 @@ public class AlbumFolderActivity extends BaseActivity implements AlbumDetailAdap
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.album_back) {
-            if (mRecyclerView.getAdapter() == mAdapter){
+            if (mRecyclerView.getAdapter() == mAdapter) {
                 mRecyclerView.removeItemDecorationAt(0);
                 mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(4, AlbumUtils.dip2px(this, 2), false));
                 mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
                 mRecyclerView.setAdapter(mAlbumDetailAdapter);
-                return ;
+                return;
             }
 
             AppManager.getAppManager().finishActivity();
@@ -151,14 +151,14 @@ public class AlbumFolderActivity extends BaseActivity implements AlbumDetailAdap
     }
 
     private void initData() {
-        LocalMediaLoader localMediaLoader = new LocalMediaLoader(this, FunctionOptions.getInstance().getAlbumType(), true);
+        LocalMediaLoader localMediaLoader = new LocalMediaLoader(this, FunctionOptions.getInstance().getAlbumType(), FunctionOptions.getInstance().isSupportGif());
         localMediaLoader.loadAllImage(new LocalMediaLoader.LocalMediaLoadListener() {
             @Override
             public void loadComplete(List<LocalMediaFolder> folders) {
                 mFolderList = folders;
                 setAlbum(folders);
-                if (mAlbumDetailAdapter.getItemCount()<=0) {
-                    mFolderName ="最近照片";
+                if (mAlbumDetailAdapter.getItemCount() <= 0) {
+                    mFolderName = "最近照片";
                     setAlbum(folders);
                 }
             }
