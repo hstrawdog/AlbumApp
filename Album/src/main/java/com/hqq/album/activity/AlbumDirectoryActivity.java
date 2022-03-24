@@ -112,7 +112,9 @@ public class AlbumDirectoryActivity extends BaseActivity implements AlbumDirecto
 //                //旋转图片
 //                Bitmap bitmap = AlbumFileUtils.rotateBitmap(degree, BitmapFactory.decodeFile(cameraPath));
 //                AlbumFileUtils.saveBitmap(cameraPath, bitmap);
-                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+                if (FunctionOptions.getInstance().isSendAlbum()) {
+                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+                }
                 // takePhotoSuccess = true;
                 // 生成新拍照片或视频对象
                 LocalMedia media = new LocalMedia();

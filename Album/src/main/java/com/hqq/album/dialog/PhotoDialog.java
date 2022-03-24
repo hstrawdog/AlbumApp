@@ -35,6 +35,7 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
 
     boolean isSupportGif = false;
 
+    boolean isSendAlbum = true;
 
     /**
      * 简单入口
@@ -102,6 +103,7 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
                     .setStartUpCamera(true)
                     .setMaxSelectNum(mSelectSize)
                     .setSupportGif(isSupportGif)
+                    .setIsSendAlbum(isSendAlbum)
                     .forResult(0x1);
             if (mPhotoDialogCallBack == null) {
                 dismiss();

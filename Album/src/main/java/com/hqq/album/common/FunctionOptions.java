@@ -51,6 +51,11 @@ public class FunctionOptions {
 
     private boolean isSupportGif = false;
 
+    /**
+     * 拍照后是否发送至相册
+     */
+    private boolean isSendAlbum = true;
+
 
     public FunctionOptions() {
     }
@@ -113,9 +118,18 @@ public class FunctionOptions {
         return this;
     }
 
+    public FunctionOptions setIsSendAlbum(boolean isSendAlbum) {
+        this.isSendAlbum = isSendAlbum;
+        return this;
+    }
+
 
     public boolean isSupportGif() {
         return isSupportGif;
+    }
+
+    public boolean isSendAlbum() {
+        return isSendAlbum;
     }
 
     public String getChooseFolder() {

@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjects/AlbumApp/Album/src/main/res/layout/activity_album_detail.xml" value="0.34444444444444444" />
+        <entry key="..\:/AndroidStudioProjects/AlbumApp/Album/src/main/res/layout/activity_album_folder.xml" value="0.271875" />
         <entry key="..\:/AndroidStudioProjects/AlbumApp/Album/src/main/res/layout/fragment_album_preview.xml" value="0.35885416666666664" />
       </map>
     </option>
