@@ -35,7 +35,7 @@ public class PhotoDialog extends AbsDialog implements View.OnClickListener {
 
     boolean isSupportGif = false;
 
-    boolean isSendAlbum = true;
+    public boolean isSendAlbum = true;
 
     /**
      * 简单入口
